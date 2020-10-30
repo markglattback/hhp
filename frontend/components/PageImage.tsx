@@ -22,9 +22,9 @@ export type OptimisedImageProps = {
   height?: number;
 } & NextImageProps;
 
-export default function PageImage({ ...props }: OptimisedImageProps) {
+export default function PageImage({ header, ...props }: OptimisedImageProps) {
   // header images
-  if (props.header) {
+  if (header) {
     return (
       <ImageWrapper>
         <Image

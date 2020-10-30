@@ -5,8 +5,10 @@ import createSchema from "part:@sanity/base/schema-creator";
 import schemaTypes from "all:part:@sanity/base/schema-type";
 
 // We import object and document schemas
+import assets from "./assets";
 import blockContent from "./blockContent";
 import blockQuoteContent from "./blockQuoteContent";
+import mainQuote from "./mainQuote";
 import pageContent from "./pageContent";
 import pageImage from "./pageImage";
 import quote from "./quote";
@@ -20,8 +22,10 @@ export default createSchema({
   // Then proceed to concatenate our document type
   // to the ones provided by any plugins that are installed
   types: schemaTypes.concat([
+    assets,
     blockContent,
     blockQuoteContent,
+    mainQuote,
     pageContent,
     pageImage,
     quote,

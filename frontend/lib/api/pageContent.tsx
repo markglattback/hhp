@@ -6,6 +6,7 @@ import SubHeading from "components/SubHeading";
 import PageImage from "components/PageImage";
 import MainQuote from "components/MainQuote";
 import BlockContent from "@sanity/block-content-to-react";
+import Quote from "components/Quote";
 
 export type PageContent = {
   metaDescription: string;
@@ -49,7 +50,7 @@ export const serializers = {
   types: {
     block: BlockRenderer,
     subHeading: (props) => <SubHeading>{props.node.content}</SubHeading>,
-    quote: (props) => (
+    mainQuote: (props) => (
       <MainQuote
         text={props.node.text as string}
         person={props.node.person as string}
@@ -76,6 +77,13 @@ export const serializers = {
         />
       );
     },
+    quote: (props) => (
+      <Quote
+        snippet={props.node.snippet}
+        text={props.node.text}
+        person={props.node.person}
+      />
+    ),
   },
   marks: {
     // @ts-ignore

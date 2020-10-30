@@ -1,6 +1,6 @@
 export default {
-  name: "pageImage",
-  title: "Page Image",
+  name: "assets",
+  title: "Assets",
   type: "document",
   fields: [
     {
@@ -19,9 +19,9 @@ export default {
       validation: (Rule) => Rule.required(),
     },
     {
-      name: "headerImage",
-      title: "Header Image",
-      type: "boolean",
+      name: "link",
+      title: "Link",
+      type: "url",
     },
   ],
 };

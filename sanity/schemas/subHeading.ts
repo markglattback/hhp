@@ -1,6 +1,6 @@
 export default {
   name: "subHeading",
-  title: "SubHeading",
+  title: "Sub Heading",
   type: "document",
   fields: [
     {

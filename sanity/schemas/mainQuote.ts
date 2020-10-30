@@ -1,13 +1,8 @@
 export default {
-  name: "quote",
-  title: "Quote",
+  name: "mainQuote",
+  title: "Main Quote",
   type: "document",
   fields: [
-    {
-      name: "snippet",
-      title: "Snippet",
-      type: "string",
-    },
     {
       name: "text",
       title: "Text",
