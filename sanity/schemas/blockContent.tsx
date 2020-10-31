@@ -30,6 +30,7 @@ export default {
         { title: "H6", value: "h6" },
         { title: "Quote", value: "blockquote" },
         { title: "Smaller Text", value: "smallertext" },
+        { title: "Large Text", value: "largetext" },
       ],
       lists: [{ title: "Bullet", value: "bullet" }],
       // Marks let you mark up inline text in the block editor.
@@ -82,7 +83,16 @@ export default {
       type: "quote",
     },
     {
+      type: "callToActionRef",
+    },
+    {
       type: "trialButton",
+    },
+    {
+      type: "video",
+    },
+    {
+      type: "videoRef",
     },
   ],
 };

@@ -2,6 +2,7 @@ import { AppProps } from "next/app";
 import Nav from "./Nav";
 import { useEffect } from "react";
 import styled from "styled-components";
+import Container from "styled components/Container";
 
 const Main = styled.main`
   padding-top: 54px;
@@ -13,7 +14,9 @@ export default function Layout({ Component, pageProps }: AppProps) {
     <>
       <Nav compact={false} />
       <Main>
-        <Component {...pageProps} />
+        <Container>
+          <Component {...pageProps} />
+        </Container>
       </Main>
     </>
   );

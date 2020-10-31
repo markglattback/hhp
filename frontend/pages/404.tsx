@@ -9,7 +9,7 @@ import BlockContent from "@sanity/block-content-to-react";
 import Container from "styled components/Container";
 
 export const getStaticProps = async () => {
-  const pageContent: PageContent = await getPageContentWithSlug("/");
+  const pageContent: PageContent = await getPageContentWithSlug("/404");
 
   return {
     props: {
@@ -18,21 +18,21 @@ export const getStaticProps = async () => {
   };
 };
 
-export default function Home({
+export default function Custom404({
   pageContent,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <>
       <Head>
         <title>{pageContent.metaTitle}</title>
-        <meta name="description" content={pageContent.metaDescription} />
-        <meta name="keywords" content="street dance classes" />
       </Head>
       <div>
-        <BlockContent
-          blocks={pageContent.structuredContent}
-          serializers={serializers}
-        />
+        <Container>
+          <BlockContent
+            blocks={pageContent.structuredContent}
+            serializers={serializers}
+          />
+        </Container>
       </div>
     </>
   );

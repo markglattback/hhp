@@ -15,6 +15,11 @@ const Wrapper = styled.div`
     font-weight: 500;
     text-transform: uppercase;
     margin: 0 auto;
+    cursor: pointer;
+
+    :hover {
+      background: var(--white);
+    }
   }
 
   .caption {

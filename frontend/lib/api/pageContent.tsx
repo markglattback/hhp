@@ -1,4 +1,5 @@
 // @ts-nocheck
+
 import client from "../client";
 import getImageUrl from "../getImageUrl";
 import TrialButton from "components/TrialButton";
@@ -7,6 +8,9 @@ import PageImage from "components/PageImage";
 import MainQuote from "components/MainQuote";
 import BlockContent from "@sanity/block-content-to-react";
 import Quote from "components/Quote";
+import { getClassesCTAWithRef } from "./getCallToActionWithRef";
+import ClassesCTA from "components/ClassesCTA";
+import YoutubeVideo from "components/YoutubeVideo";
 
 export type PageContent = {
   metaDescription: string;
@@ -26,7 +30,19 @@ export async function getPageContentWithSlug(
  	metaDescription,
   metaTitle,
   slug,
-  structuredContent
+  structuredContent[] {
+    ...,
+    _type == 'callToActionRef' => {
+    	"data": *[_type=='callToAction' && _id == ^._ref] {
+        ...
+      }
+    },
+    _type == 'videoRef' => {
+      "data": *[_type=='video' && _id == ^._ref] {
+        ...
+      }
+    }
+  }
 }`,
     { slug }
   );
@@ -40,6 +56,10 @@ const BlockRenderer = (props) => {
   // check for custom styles
   if (style === "smallertext") {
     return <p className="smaller-text">{props.children}</p>;
+  }
+
+  if (style === "largetext") {
+    return <p className="large-text">{props.children}</p>;
   }
 
   // fall back to default
@@ -69,7 +89,6 @@ export const serializers = {
       return (
         <PageImage
           src={getImageUrl(props.node.file.asset._ref as string)
-            // .maxWidth(1024)
             .sharpen(100)
             .url()}
           alt={props.node.altText as string}
@@ -84,9 +103,22 @@ export const serializers = {
         person={props.node.person}
       />
     ),
+    callToActionRef: ({ node: { data } }) => {
+      return (
+        <ClassesCTA
+          headline={data[0].headlineText}
+          buttonOneText={data[0].buttonOneText}
+          buttonOneLink={data[0].buttonOneLink.current}
+          buttonTwoText={data[0].buttonTwoText}
+          buttonTwoLink={data[0].buttonTwoLink.current}
+        />
+      );
+    },
+    videoRef: ({ node: { data } }) => {
+      return <YoutubeVideo url={data[0].videoURL as string} />;
+    },
   },
   marks: {
-    // @ts-ignore
     color: (props) => {
       return <span style={{ color: props.mark.hex }}>{props.children}</span>;
     },

@@ -7,13 +7,17 @@ import schemaTypes from "all:part:@sanity/base/schema-type";
 // We import object and document schemas
 import assets from "./assets";
 import blockContent from "./blockContent";
-import blockQuoteContent from "./blockQuoteContent";
+import blockContentSimple from "./blockContentSimple";
+import callToAction from "./callToAction";
+import callToActionRef from "./callToActionRef";
 import mainQuote from "./mainQuote";
 import pageContent from "./pageContent";
 import pageImage from "./pageImage";
 import quote from "./quote";
 import subHeading from "./subHeading";
 import trialButton from "./trialButton";
+import video from "./video";
+import videoRef from "./videoRef";
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -24,12 +28,16 @@ export default createSchema({
   types: schemaTypes.concat([
     assets,
     blockContent,
-    blockQuoteContent,
+    blockContentSimple,
+    callToAction,
+    callToActionRef,
     mainQuote,
     pageContent,
     pageImage,
     quote,
     subHeading,
     trialButton,
+    video,
+    videoRef,
   ]),
 });
