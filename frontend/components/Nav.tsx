@@ -24,6 +24,7 @@ const Header = styled.header`
     max-width: var(--maxWidth);
     display: flex;
     align-items: center;
+    margin: 0 auto;
   }
 
   div.brand-logo > img {

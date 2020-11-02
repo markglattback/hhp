@@ -1,4 +1,7 @@
 import styled from "styled-components";
+import { useInView } from "react-intersection-observer";
+import Youtube, { Options, PlayerVars } from "react-youtube";
+import { useState, SyntheticEvent } from "react";
 
 const Wrapper = styled.div`
   width: min(729px, 100%);
@@ -22,21 +25,55 @@ const PreserveAspectRatioWrap = styled.div`
 `;
 
 export default function YoutubeVideo({ url }: { url: string }) {
-  const src = `https://www.youtube.com/embed/${
-    url.split("watch?v=")[1]
-  }?autoplay=1&mute=1&modestbranding=1&rel=0&controls=0`;
+  // YouTube Setup
+  type YTEventTarget = YT.Player & EventTarget;
+  const [player, setPlayer] = useState<YTEventTarget | null>(null);
+
+  let id = url.split("watch?v=")[1];
+
+  const playerVars: PlayerVars = {
+    enablejsapi: 1,
+    modestbranding: 1,
+    autoplay: 1,
+    mute: 1,
+    controls: 1,
+    rel: 1,
+    iv_load_policy: 3,
+  };
+
+  const opts: Options = {
+    width: "560",
+    height: "315",
+    playerVars,
+  };
+
+  function onReady(event: Event) {
+    setPlayer(event.target as YTEventTarget);
+    player?.pauseVideo();
+  }
+
+  function onPlayVideo(event: Event) {
+    player?.playVideo();
+  }
+
+  function onPauseVideo(event: Event) {
+    player?.pauseVideo();
+  }
+
+  // Intersection Observer Setup
+
+  const { ref, inView, entry } = useInView({});
+
+  if (inView) {
+    player?.playVideo();
+  } else {
+    player?.pauseVideo();
+  }
 
   return (
-    <Wrapper>
+    <Wrapper ref={ref}>
       <PreserveAspectRatioWrap>
-        <iframe
-          width="560"
-          height="315"
-          src={src}
-          frameBorder="0"
-          allow="accelerometer; autoplay=1; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        ></iframe>
+        <Youtube videoId={id} opts={opts} onReady={onReady} />
       </PreserveAspectRatioWrap>
     </Wrapper>
   );
