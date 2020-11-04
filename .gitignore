@@ -15,6 +15,9 @@ coverage
 # production
 /frontend/build
 
+# sanity
+/sanity/dist
+
 # misc
 .DS_Store
 *.pem
