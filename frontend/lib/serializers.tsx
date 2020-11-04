@@ -1,7 +1,5 @@
 // @ts-nocheck
-import groq from "groq";
-import client from "../client";
-import getImageUrl from "../getImageUrl";
+import getImageUrl from './getImageUrl';
 import TrialButton from "components/TrialButton";
 import SubHeading from "components/SubHeading";
 import PageImage from "components/PageImage";
@@ -10,48 +8,7 @@ import BlockContent from "@sanity/block-content-to-react";
 import Quote from "components/Quote";
 import ClassesCTA from "components/ClassesCTA";
 import YoutubeVideo from "components/YoutubeVideo";
-
-export type PageContent = {
-  metaDescription: string;
-  metaTitle: string;
-  slug: {
-    __type: string;
-    current: string;
-  };
-  structuredContent: object[];
-  pageSections: object[];
-};
-
-export async function getPageContentWithSlug(
-  slug: string
-): Promise<PageContent> {
-  const data = await client.fetch(
-    groq`*[_type == 'pageContent' && slug.current == $slug] {
-  ...,
-  structuredContent[] {
-    ...,
-    _type == 'callToActionRef' => {
-    	"data": *[_type=='callToAction' && _id == ^._ref] {
-        ...
-      }
-    },
-    _type == 'videoRef' => {
-      "data": *[_type=='video' && _id == ^._ref] {
-        ...
-      }
-    },
-    _type == 'reference' => ^->{ ... }
-  },
-  pageSections[] {
-    ...,
-    _type == 'reference' => ^->{ ... }
-  }
-}`,
-    { slug }
-  );
-
-  return data[0];
-}
+import LargeButton from 'components/LargeButton';
 
 const BlockRenderer = (props) => {
   const { style = "normal", children = [], markDefs = [] } = props.node;
@@ -84,14 +41,65 @@ const BlockRenderer = (props) => {
   return BlockContent.defaultSerializers.types.block(props);
 };
 
+const NewLine = ({ text }: { text: string | undefined }) => {
+  if (!text) return null;
+
+  return (
+    <>
+      <br/>
+      {text}
+    </>
+  )
+}
+
+type Tags = 'H1' | 'H2' | 'H3';
+
+const Heading = ({ node, tag }: { node: any, tag: Tags }) => {
+  const HeadingContent = () => (
+    <>
+      {node.firstLine}
+      <NewLine text={node.secondLine} />
+      <NewLine text={node.thirdLine} />
+    </>
+  )
+
+  return (    
+    <>
+    { (tag === 'H1') && <h1><HeadingContent /></h1> }
+    { (tag === 'H2') && <h2><HeadingContent /></h2> }
+    { (tag === 'H3') && <h3><HeadingContent /></h3> }
+    <SubHeading>
+      {node.subHeadingFirstLine}
+      <NewLine text={node.subHeadingSecondLine} />
+    </SubHeading>
+  </>
+    )
+}
+
 export const serializers = {
   types: {
     block: BlockRenderer,
+    heading1: (props) => <Heading node={props.node} tag="H1" />,
+    heading2: (props) => <Heading node={props.node} tag="H2" />,
+    heading3: (props) => <Heading node={props.node} tag="H3" />,
     subHeading: (props) => <SubHeading>{props.node.content}</SubHeading>,
+    bigQuote: (props) => (
+      <MainQuote
+        text={props.node.text as string}
+        person={props.node.person as string}
+      />
+    ),
     mainQuote: (props) => (
       <MainQuote
         text={props.node.text as string}
         person={props.node.person as string}
+      />
+    ),
+    largeButton: (props) => (
+      <LargeButton
+        buttonText={props.node.text as string}
+        additionalText={props.node.additionalText}
+        href={props.node.link}
       />
     ),
     trialButton: (props) => (
@@ -122,23 +130,23 @@ export const serializers = {
         person={props.node.person}
       />
     ),
-    callToActionRef: ({ node: { data } }) => {
+    callToAction: (props) => {
       return (
         <ClassesCTA
-          headline={data[0].headlineText}
-          buttonOneText={data[0].buttonOneText}
-          buttonOneLink={data[0].buttonOneLink.current}
-          buttonTwoText={data[0].buttonTwoText}
-          buttonTwoLink={data[0].buttonTwoLink.current}
+          headline={props.node.headlineText}
+          buttonOneText={props.node.buttonOneText}
+          buttonOneLink={props.node.buttonOneLink.current}
+          buttonTwoText={props.node.buttonTwoText}
+          buttonTwoLink={props.node.buttonTwoLink.current}
         />
       );
     },
-    videoRef: ({ node: { data } }) => {
-      return <YoutubeVideo url={data[0].videoURL as string} />;
+    video: (props) => {
+      return <YoutubeVideo url={props.node.videoURL as string} />;
     },
   },
   marks: {
-    newLine: (props) => <br />,
+    highlightText: (props) => <span style={{ color: 'var(--yellow)' }}>{props.children}</span>,
     noSpacing: (props) => {
       return <span className="no-spacing">{props.children}</span>;
     },

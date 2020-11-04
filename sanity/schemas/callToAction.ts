@@ -1,8 +1,11 @@
+import internal from "./internal";
+
 export default {
   name: "callToAction",
   title: "Call To Action",
   type: "document",
   fields: [
+    internal,
     {
       name: "headlineText",
       title: "Headline Text",

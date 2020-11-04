@@ -33,5 +33,11 @@ export default {
       type: "blockContent",
       validation: (Rule) => Rule.required(),
     },
+    // {
+    //   title: "Page Sections",
+    //   name: "pageSections",
+    //   type: "array",
+    //   of: [{ type: "reference", to: [{ type: "section", title: "Section" }] }],
+    // },
   ],
 };

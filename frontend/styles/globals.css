@@ -83,8 +83,17 @@ h1 {
   letter-spacing: 0.6rem;
 }
 
+h2 {
+  font-size: 2rem;
+  text-transform: uppercase;
+}
+
 p {
   margin: 1.5rem 0;
+}
+
+.no-spacing {
+  margin: 0;
 }
 
 .smaller-text {
@@ -92,9 +101,15 @@ p {
 }
 
 .large-text {
-  font-size: 2.25rem;
+  font-size: 2rem;
+  font-weight: 500;
+  text-transform: uppercase;
   line-height: 1.3;
   margin: 0;
+}
+
+.large-text:first-of-type {
+  margin-top: 1.5rem;
 }
 
 .caption {
@@ -107,4 +122,10 @@ p {
   h1 {
     font-size: 2rem;
   }
+}
+
+/*  general */
+
+section {
+  margin-bottom: 2rem;
 }

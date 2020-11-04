@@ -1,12 +1,11 @@
 import * as React from "react";
-
-export const YellowTextIcon = () => (
-  <span style={{ fontWeight: "bold", color: "#ff0" }}>{"\u25A0"}</span>
-);
-
-export const YellowTextRender = (props) => (
-  <span style={{ color: "#ff0" }}>{props.children}</span>
-);
+import {
+  YellowTextIcon,
+  YellowTextRender,
+  NoSpacingIcon,
+  NewLineIcon,
+  NewLineRender,
+} from "../custom_block_components";
 
 export default {
   title: "Block Content",
@@ -22,6 +21,7 @@ export default {
       // use your content.
       styles: [
         { title: "Normal", value: "normal" },
+        { title: "No Spacing", value: "noSpacing" },
         { title: "H1", value: "h1" },
         { title: "H2", value: "h2" },
         { title: "H3", value: "h3" },
@@ -48,6 +48,21 @@ export default {
               render: YellowTextRender,
             },
           },
+          {
+            title: "No Spacing",
+            value: "noSpacing",
+            blockEditor: {
+              icon: NoSpacingIcon,
+            },
+          },
+          {
+            title: "New Line",
+            value: "newLine",
+            blockEditor: {
+              icon: NewLineIcon,
+              render: NewLineRender,
+            },
+          },
         ],
         // Annotations can be any object structure – e.g. a link or a footnote.
         annotations: [
@@ -65,6 +80,7 @@ export default {
           },
         ],
       },
+      of: [{ type: "lineBreak" }],
     },
     // You can add additional types here. Note that you can't use
     // primitive types such as 'string' and 'number' in the same array
@@ -77,22 +93,23 @@ export default {
       type: "subHeading",
     },
     {
-      type: "mainQuote",
-    },
-    {
       type: "quote",
     },
     {
       type: "callToActionRef",
     },
     {
-      type: "trialButton",
+      type: "section",
     },
     {
-      type: "video",
+      type: "largeButton",
     },
     {
       type: "videoRef",
+    },
+    {
+      type: "reference",
+      to: [{ type: "section" }],
     },
   ],
 };

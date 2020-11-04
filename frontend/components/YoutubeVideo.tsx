@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useInView } from "react-intersection-observer";
 import Youtube, { Options, PlayerVars } from "react-youtube";
-import { useState, SyntheticEvent } from "react";
+import { useState, SyntheticEvent, useEffect } from "react";
 
 const Wrapper = styled.div`
   width: min(729px, 100%);
@@ -26,7 +26,7 @@ const PreserveAspectRatioWrap = styled.div`
 
 export default function YoutubeVideo({ url }: { url: string }) {
   // YouTube Setup
-  type YTEventTarget = YT.Player & EventTarget;
+  type YTEventTarget = YT.Player & EventTarget & any;
   const [player, setPlayer] = useState<YTEventTarget | null>(null);
 
   let id = url.split("watch?v=")[1];
@@ -37,7 +37,7 @@ export default function YoutubeVideo({ url }: { url: string }) {
     autoplay: 1,
     mute: 1,
     controls: 1,
-    rel: 1,
+    rel: 0,
     iv_load_policy: 3,
   };
 
@@ -47,16 +47,34 @@ export default function YoutubeVideo({ url }: { url: string }) {
     playerVars,
   };
 
-  function onReady(event: Event) {
-    setPlayer(event.target as YTEventTarget);
+  function onReady({ target, data }: { target: YTEventTarget; data: number }) {
+    setPlayer(target as YTEventTarget);
+    console.log("pauding from onready");
+
     player?.pauseVideo();
   }
 
-  function onPlayVideo(event: Event) {
+  function onPlayVideo({
+    target,
+    data,
+  }: {
+    target: YTEventTarget;
+    data: number;
+  }) {
+    console.log("playing");
+
     player?.playVideo();
   }
 
-  function onPauseVideo(event: Event) {
+  function onPauseVideo({
+    target,
+    data,
+  }: {
+    target: YTEventTarget;
+    data: number;
+  }) {
+    console.log("pausing");
+
     player?.pauseVideo();
   }
 
@@ -64,16 +82,24 @@ export default function YoutubeVideo({ url }: { url: string }) {
 
   const { ref, inView, entry } = useInView({});
 
-  if (inView) {
-    player?.playVideo();
-  } else {
-    player?.pauseVideo();
-  }
+  useEffect(() => {
+    if (inView) {
+      player?.playVideo();
+    } else {
+      player?.pauseVideo();
+    }
+  }, [inView]);
 
   return (
     <Wrapper ref={ref}>
       <PreserveAspectRatioWrap>
-        <Youtube videoId={id} opts={opts} onReady={onReady} />
+        <Youtube
+          videoId={id}
+          opts={opts}
+          onReady={onReady}
+          onPlay={onPlayVideo}
+          onPause={onPauseVideo}
+        />
       </PreserveAspectRatioWrap>
     </Wrapper>
   );

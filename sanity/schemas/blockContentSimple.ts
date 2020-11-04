@@ -1,4 +1,4 @@
-import { YellowTextIcon, YellowTextRender } from "./blockContent";
+import { YellowTextIcon, YellowTextRender } from "../custom_block_components";
 
 export default {
   title: "Block Quote Content",
