@@ -1,15 +1,12 @@
 import Head from "next/head";
-import {
-  getPageContentWithSlug,
-  PageContent,
-  serializers,
-} from "lib/api/pageContent";
 import { InferGetStaticPropsType } from "next";
 import BlockContent from "@sanity/block-content-to-react";
 import Container from "styled components/Container";
+import { getPageWithSlug, PageContent } from "lib/api/queries";
+import { serializers } from "lib/serializers";
 
 export const getStaticProps = async () => {
-  const pageContent: PageContent = await getPageContentWithSlug("/404");
+  const pageContent: PageContent = await getPageWithSlug('/');
 
   return {
     props: {
@@ -18,22 +15,26 @@ export const getStaticProps = async () => {
   };
 };
 
+
 export default function Custom404({
   pageContent,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
+  const { content } = pageContent;
+  
   return (
     <>
       <Head>
         <title>{pageContent.metaTitle}</title>
       </Head>
-      <div>
-        <Container>
-          <BlockContent
-            blocks={pageContent.structuredContent}
-            serializers={serializers}
-          />
-        </Container>
-      </div>
+      <>
+        {content.map((section) => {
+          return (
+            <section id={section.sectionName}>
+              <BlockContent blocks={section.content} serializers={serializers} />
+            </section>
+          )
+        })}
+      </>
     </>
   );
 }

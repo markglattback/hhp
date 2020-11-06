@@ -1,14 +1,14 @@
 // @ts-nocheck
 import getImageUrl from './getImageUrl';
-import TrialButton from "components/TrialButton";
-import SubHeading from "components/SubHeading";
-import PageImage from "components/PageImage";
-import MainQuote from "components/MainQuote";
+import TrialButton from "../components/TrialButton";
+import SubHeading from "../components/SubHeading";
+import PageImage from "../components/PageImage";
+import MainQuote from "../components/MainQuote";
+import Quote from "../components/Quote";
+import CallToActionSection from "../components/CallToAction";
+import YoutubeVideo from "../components/YoutubeVideo";
+import LargeButton from '../components/LargeButton';
 import BlockContent from "@sanity/block-content-to-react";
-import Quote from "components/Quote";
-import ClassesCTA from "components/ClassesCTA";
-import YoutubeVideo from "components/YoutubeVideo";
-import LargeButton from 'components/LargeButton';
 
 const BlockRenderer = (props) => {
   const { style = "normal", children = [], markDefs = [] } = props.node;
@@ -132,7 +132,7 @@ export const serializers = {
     ),
     callToAction: (props) => {
       return (
-        <ClassesCTA
+        <CallToActionSection
           headline={props.node.headlineText}
           buttonOneText={props.node.buttonOneText}
           buttonOneLink={props.node.buttonOneLink.current}

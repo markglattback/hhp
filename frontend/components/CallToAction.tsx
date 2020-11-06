@@ -1,7 +1,7 @@
-import Link from "next/link";
+import Link, { LinkProps } from "next/link";
 import styled from "styled-components";
-import BlockContent from "@sanity/block-content-to-react";
-import { serializers } from "lib/api/pageContent";
+import BlockContent, { BlockContentProps } from "@sanity/block-content-to-react";
+import { serializers } from "../lib/serializers";
 
 const CallToActionWrapper = styled.div`
   font-size: 2.25rem;
@@ -31,31 +31,40 @@ const CallToActionWrapper = styled.div`
   }
 `;
 
-type Props = {
-  headline: string;
+export type ButtonProps = {
+  text: string;
+} & LinkProps;
+
+
+export function LinkButton({ text, ...props }: ButtonProps) {
+  return (
+    <Link {...props} >
+      <button type="button">{text}</button>
+    </Link>
+  )
+}
+
+export type CallToActionProps = {
+  headline: BlockContentProps['blocks'];
   buttonOneText: string;
   buttonOneLink: string;
   buttonTwoText: string;
   buttonTwoLink: string;
 };
 
-export default function ClassesCTA({
+export default function CallToAction({
   headline,
   buttonOneText,
   buttonOneLink,
   buttonTwoText,
   buttonTwoLink,
-}: Props) {
+}: CallToActionProps) {
   return (
     <CallToActionWrapper>
       <BlockContent blocks={headline} serializers={serializers} />
       <div className="buttons">
-        <Link href={buttonOneLink}>
-          <button type="button">{buttonOneText}</button>
-        </Link>
-        <Link href={buttonTwoLink}>
-          <button type="button">{buttonTwoText}</button>
-        </Link>
+        <LinkButton text={buttonOneText} href={buttonOneLink} />
+        <LinkButton text={buttonTwoText} href={buttonTwoLink} />
       </div>
     </CallToActionWrapper>
   );

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Image from "next/image";
-import { serializers } from "lib/api/pageContent";
+import { serializers } from "../lib/serializers";
 // @ts-ignore
 import BlockContent from "@sanity/block-content-to-react";
 

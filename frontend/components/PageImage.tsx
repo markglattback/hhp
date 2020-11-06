@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Image from "next/image";
+import Image, { ImageProps } from "next/image";
 
 const ImageWrapper = styled.div`
   max-width: 976px; /* to maintain 16:9 aspect ratio */
@@ -13,23 +13,16 @@ const ImageWrapper = styled.div`
   }
 `;
 
-type NextImageProps = Parameters<typeof Image>[0];
-
-export type OptimisedImageProps = {
-  alt: string;
-  header: boolean | undefined;
-  width?: number;
-  height?: number;
-} & NextImageProps;
-
-export default function PageImage({ header, ...props }: OptimisedImageProps) {
+export default function PageImage({ src, header, ...props }: { src: string, header: boolean | undefined, props: ImageProps }) {
   // header images
   if (header) {
     return (
       <ImageWrapper>
         <Image
+          src={src}
           width={1036}
           height={491}
+          layout="intrinsic"
           quality={100}
           priority
           loading="eager"
@@ -41,7 +34,7 @@ export default function PageImage({ header, ...props }: OptimisedImageProps) {
 
   return (
     <ImageWrapper>
-      <Image unsized {...props} />
+      <Image src={src} layout="fill" {...props} />
     </ImageWrapper>
   );
 }

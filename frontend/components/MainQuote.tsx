@@ -1,7 +1,7 @@
 import styled from "styled-components";
 // @ts-ignore
 import BlockContent from "@sanity/block-content-to-react";
-import { serializers } from "lib/api/pageContent";
+import { serializers } from "../lib/serializers";
 
 const QuoteWrapper = styled.figure`
   q {

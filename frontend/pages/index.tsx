@@ -5,8 +5,6 @@ import { getPageWithSlug, PageContent } from "lib/api/queries";
 import { serializers } from "lib/serializers";
 
 export const getStaticProps = async () => {
-  // const pageContent: PageContent = await getPageContentWithSlug("/");
-  
   const pageContent: PageContent = await getPageWithSlug('/');
 
   return {
