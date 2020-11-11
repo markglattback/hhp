@@ -14,7 +14,9 @@ const CallToActionWrapper = styled.div`
     gap: 1rem;
   }
 
-  button {
+  a.button {
+    background: var(--white);
+    color: var(--black);
     font-size: 1rem;
     font-weight: 700;
     letter-spacing: 0.14rem;
@@ -29,6 +31,10 @@ const CallToActionWrapper = styled.div`
       color: var(--white);
     }
   }
+
+  a.button {
+    text-decoration: none;
+  }
 `;
 
 export type ButtonProps = {
@@ -39,7 +45,7 @@ export type ButtonProps = {
 export function LinkButton({ text, ...props }: ButtonProps) {
   return (
     <Link {...props} >
-      <button type="button">{text}</button>
+      <a className="button">{text}</a>
     </Link>
   )
 }

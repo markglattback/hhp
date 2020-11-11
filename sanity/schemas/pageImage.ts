@@ -1,3 +1,5 @@
+import { Rule } from "@sanity/validation/src/Rule";
+
 export default {
   name: "pageImage",
   title: "Page Image",
@@ -10,13 +12,13 @@ export default {
       options: {
         hotspot: true,
       },
-      validation: (Rule) => Rule.required(),
+      validation: (Rule: Rule) => Rule.required(),
     },
     {
       name: "altText",
       title: "Alt Text",
       type: "string",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule: Rule) => Rule.required(),
     },
     {
       name: "headerImage",

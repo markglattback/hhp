@@ -1,3 +1,5 @@
+import { Rule } from "@sanity/validation/src/Rule";
+
 export default {
   name: "video",
   title: "Video",
@@ -15,7 +17,7 @@ export default {
       options: {
         hotspot: true,
       },
-      validation: (Rule) => Rule.required(),
+      validation: (Rule: Rule) => Rule.required(),
     },
   ],
 };

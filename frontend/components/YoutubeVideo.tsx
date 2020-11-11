@@ -49,8 +49,6 @@ export default function YoutubeVideo({ url }: { url: string }) {
 
   function onReady({ target, data }: { target: YTEventTarget; data: number }) {
     setPlayer(target as YTEventTarget);
-    console.log("pauding from onready");
-
     player?.pauseVideo();
   }
 
@@ -61,8 +59,6 @@ export default function YoutubeVideo({ url }: { url: string }) {
     target: YTEventTarget;
     data: number;
   }) {
-    console.log("playing");
-
     player?.playVideo();
   }
 
@@ -73,8 +69,6 @@ export default function YoutubeVideo({ url }: { url: string }) {
     target: YTEventTarget;
     data: number;
   }) {
-    console.log("pausing");
-
     player?.pauseVideo();
   }
 

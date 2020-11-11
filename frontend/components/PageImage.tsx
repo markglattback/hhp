@@ -4,6 +4,7 @@ import Image, { ImageProps } from "next/image";
 const ImageWrapper = styled.div`
   max-width: 976px; /* to maintain 16:9 aspect ratio */
   margin: 0 auto;
+  position: relative;
 
   img {
     display: block;
@@ -32,9 +33,9 @@ export default function PageImage({ src, header, ...props }: { src: string, head
     );
   }
 
-  return (
-    <ImageWrapper>
-      <Image src={src} layout="fill" {...props} />
-    </ImageWrapper>
-  );
-}
+    return (
+      <ImageWrapper>
+        <Image src={src} layout="fill" {...props} />
+      </ImageWrapper>
+    );
+  }

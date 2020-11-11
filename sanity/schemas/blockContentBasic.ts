@@ -4,7 +4,11 @@ import {
   Caption,
   Caption2,
   Large,
+  LargeCaps,
 } from "../custom_block_components/styles";
+import LinkExternal from "../custom_icons/LinkExternal/LinkExternal";
+import { HiOutlineExternalLink } from 'react-icons/hi'
+import { FiLink2 } from 'react-icons/fi'
 
 export default {
   title: "Block Content Basic",
@@ -25,6 +29,13 @@ export default {
           value: "small",
           blockEditor: {
             render: BodySmall,
+          },
+        },
+        {
+          title: "Large Caps",
+          value: "largeCaps",
+          blockEditor: {
+            render: LargeCaps,
           },
         },
         {
@@ -81,6 +92,26 @@ export default {
             ],
           },
           {
+            title: "External Link",
+            name: "linkExternal",
+            type: "object",
+            fields: [
+              {
+                title: "Slug",
+                name: "slug",
+                type: "reference",
+                to: [
+                  {
+                    type: "linkExternal",
+                  },
+                ],
+              },
+            ],
+            blockEditor: {
+              icon: HiOutlineExternalLink,
+            }
+          },
+          {
             title: "Internal Link",
             name: "linkInternal",
             type: "object",
@@ -96,6 +127,9 @@ export default {
                 ],
               },
             ],
+            blockEditor: {
+              icon: FiLink2,
+            }
           },
         ],
       },

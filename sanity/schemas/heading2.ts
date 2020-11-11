@@ -1,3 +1,5 @@
+import { Rule } from "@sanity/validation/src/Rule";
+
 export default {
   name: "heading2",
   title: "Heading - H2",
@@ -11,7 +13,7 @@ export default {
       name: "firstLine",
       title: "First Line",
       type: "string",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule: Rule) => Rule.required(),
       fieldset: "heading",
     },
     {

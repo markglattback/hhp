@@ -6,7 +6,7 @@ import { getPageWithSlug, PageContent } from "lib/api/queries";
 import { serializers } from "lib/serializers";
 
 export const getStaticProps = async () => {
-  const pageContent: PageContent = await getPageWithSlug('/');
+  const pageContent: PageContent = await getPageWithSlug('/404');
 
   return {
     props: {
@@ -29,7 +29,7 @@ export default function Custom404({
       <>
         {content.map((section) => {
           return (
-            <section id={section.sectionName}>
+            <section id={section.sectionName} key={section._key}>
               <BlockContent blocks={section.content} serializers={serializers} />
             </section>
           )

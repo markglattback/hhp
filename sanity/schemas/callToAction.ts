@@ -19,7 +19,10 @@ export default {
     {
       name: "buttonOneLink",
       title: "Button One Link",
-      type: "slug",
+      type: "reference",
+      to: [{
+        type: "linkInternal"
+      }],
     },
     {
       name: "buttonTwoText",
@@ -29,7 +32,10 @@ export default {
     {
       name: "buttonTwoLink",
       title: "Button Two Link",
-      type: "slug",
+      type: "reference",
+      to: [{
+        type: 'linkInternal'
+      }]
     },
   ],
 };

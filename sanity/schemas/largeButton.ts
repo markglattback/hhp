@@ -1,3 +1,4 @@
+import { Rule } from "@sanity/validation/src/Rule";
 import internal from "./internal";
 
 export default {
@@ -10,7 +11,7 @@ export default {
       title: "Text",
       type: "string",
       description: "The text shown within the button",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule: Rule) => Rule.required(),
     },
     {
       name: "link",
@@ -25,7 +26,7 @@ export default {
         },
       ],
       description: "Either an internal slug or external url",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule: Rule) => Rule.required(),
     },
     {
       name: "additionalText",

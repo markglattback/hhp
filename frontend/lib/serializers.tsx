@@ -1,6 +1,5 @@
 // @ts-nocheck
 import getImageUrl from './getImageUrl';
-import TrialButton from "../components/TrialButton";
 import SubHeading from "../components/SubHeading";
 import PageImage from "../components/PageImage";
 import MainQuote from "../components/MainQuote";
@@ -9,6 +8,8 @@ import CallToActionSection from "../components/CallToAction";
 import YoutubeVideo from "../components/YoutubeVideo";
 import LargeButton from '../components/LargeButton';
 import BlockContent from "@sanity/block-content-to-react";
+import Link from 'next/link';
+import { ReactChildren } from 'react';
 
 const BlockRenderer = (props) => {
   const { style = "normal", children = [], markDefs = [] } = props.node;
@@ -33,8 +34,12 @@ const BlockRenderer = (props) => {
     return <p className="smaller-text">{props.children}</p>;
   }
 
-  if (style === "largetext") {
+  if (style === "large") {
     return <p className="large-text">{props.children}</p>;
+  }
+
+  if (style === "largeCaps") {
+    return <p className="large-text large-text--caps">{props.children}</p>;
   }
 
   // fall back to default
@@ -76,6 +81,21 @@ const Heading = ({ node, tag }: { node: any, tag: Tags }) => {
     )
 }
 
+
+/* check if child is highlighted */
+function checkChildrenForHighlights(children): boolean {
+  if (children.length === 0) return false;
+  if (children.length > 1) return false;
+
+  const child = children[0];
+
+  if (typeof child === 'string') return false;
+
+  if (child.props.node.mark === 'highlightText') return true;
+
+  return false;  
+}
+
 export const serializers = {
   types: {
     block: BlockRenderer,
@@ -95,22 +115,21 @@ export const serializers = {
         person={props.node.person as string}
       />
     ),
-    largeButton: (props) => (
-      <LargeButton
-        buttonText={props.node.text as string}
-        additionalText={props.node.additionalText}
-        href={props.node.link}
-      />
-    ),
-    trialButton: (props) => (
-      <TrialButton
-        buttonText={props.node.text as string}
-        href={props.node.link}
-      />
-    ),
-    image: (props) => (
-      <img src={getImageUrl(props.node.asset._ref as string)} />
-    ),
+    largeButton: (props) => {
+      const additionalText = props.node.additionalText && props.node.additionalText[0];
+      const href = props.node.link.href.url || props.node.link.href.slug.current;
+
+      return (
+        <LargeButton
+          buttonText={props.node.text as string}
+          additionalText={additionalText}
+          href={href}
+        />
+      );
+    },
+    image: (props) => {
+      return (<img src={getImageUrl(props.node.asset._ref as string)} />
+    )},
     lineBreak: (props) => <br />,
     pageImage: (props) => {
       return (
@@ -135,9 +154,9 @@ export const serializers = {
         <CallToActionSection
           headline={props.node.headlineText}
           buttonOneText={props.node.buttonOneText}
-          buttonOneLink={props.node.buttonOneLink.current}
+          buttonOneLink={props.node.buttonOneLink.slug}
           buttonTwoText={props.node.buttonTwoText}
-          buttonTwoLink={props.node.buttonTwoLink.current}
+          buttonTwoLink={props.node.buttonTwoLink.slug}
         />
       );
     },
@@ -146,12 +165,18 @@ export const serializers = {
     },
   },
   marks: {
-    highlightText: (props) => <span style={{ color: 'var(--yellow)' }}>{props.children}</span>,
+    linkExternal: (props) => {
+      return <a href={props.mark.url} target="_blank" rel="noreferrer noopener">{props.children}</a>
+    },
+    linkInternal: (props) => {
+      // ADD TEXT DECORATION STYLE TO ANCHORS IF REQUIRED
+      let highlight = checkChildrenForHighlights(props.children);
+      
+      return <Link href={props.mark.slug as string}><a style={{ textDecorationColor: highlight ? 'var(--yellow)' : 'inherit'}}>{props.children}</a></Link>
+    },
+    highlightText: (props) => <span style={{ color: 'var(--yellow)', textDecorationColor: "var(--yellow)" }}>{props.children}</span>,
     noSpacing: (props) => {
       return <span className="no-spacing">{props.children}</span>;
-    },
-    yellowText: (props) => {
-      return <span style={{ color: "var(--yellow)" }}>{props.children}</span>;
     },
   },
   styles: {

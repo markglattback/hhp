@@ -10,11 +10,8 @@ import blockContent from "./blockContent";
 import blockContentSimple from "./blockContentSimple";
 import callToAction from "./callToAction";
 import callToActionRef from "./callToActionRef";
-import mainQuote from "./mainQuote";
-import pageContent from "./pageContent";
 import pageImage from "./pageImage";
 import quote from "./quote";
-import subHeading from "./subHeading";
 import largeButton from "./largeButton";
 import video from "./video";
 import videoRef from "./videoRef";
@@ -28,6 +25,7 @@ import heading3 from "./heading3";
 import bigQuote from "./bigQuote";
 import linkInternal from "./linkInternal";
 import linkExternal from "./linkExternal";
+import heading from "./heading";
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -43,6 +41,7 @@ export default createSchema({
     blockContentSimple,
     callToAction,
     callToActionRef,
+    heading,
     heading1,
     heading2,
     heading3,
@@ -50,13 +49,10 @@ export default createSchema({
     lineBreak,
     linkExternal,
     linkInternal,
-    // mainQuote,
     page,
-    // pageContent,
     pageImage,
     quote,
     section,
-    subHeading,
     video,
     videoRef,
   ]),

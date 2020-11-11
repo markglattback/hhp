@@ -29,7 +29,7 @@ export default function Home({
       <>
         {content.map((section) => {
           return (
-            <section id={section.sectionName}>
+            <section id={section.sectionName} key={section._key}>
               <BlockContent blocks={section.content} serializers={serializers} />
             </section>
           )

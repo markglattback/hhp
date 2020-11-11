@@ -8,13 +8,13 @@ interface NavLinkProps extends LinkProps {
 
 /* Components */
 export default function NavLink({ text, ...props }: NavLinkProps) {
-  const router = useRouter();
+  const router = useRouter();  
 
   const active = router.pathname === `/${props.href}` ? "true" : undefined;
   return (
     <li className={active && "active"}>
       <Link {...props}>
-        <a>{text}</a>
+        <a aria-current={active && "page"}>{text}</a>
       </Link>
     </li>
   );

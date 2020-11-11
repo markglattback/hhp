@@ -2,12 +2,14 @@ import styled from "styled-components";
 import Link, { LinkProps } from "next/link";
 import BlockContent from "@sanity/block-content-to-react";
 import { serializers } from "../lib/serializers";
+import { UrlObject } from "url";
+import { useRouter } from "next/router";
 
 const Wrapper = styled.div`
   width: fit-content;
   margin: 1.5rem auto;
 
-  button {
+  button, a.button {
     display: block;
     border: none;
     background: var(--yellow);
@@ -24,14 +26,23 @@ const Wrapper = styled.div`
     }
   }
 
+  a.button {
+    text-decoration: none;
+  }
+
   .caption {
     width: 100%;
+
+    p {
+      margin: 0;
+      margin-top: 0.5rem;
+    }
   }
 `;
 
 interface Props extends LinkProps {
   buttonText: string;
-  additionalText: object[];
+  additionalText?: object[];
 }
 
 export default function LargeButton({
@@ -40,15 +51,27 @@ export default function LargeButton({
   href,
   ...props
 }: Props) {
+  let isExternalUrl: boolean = false;
+
+  // convert to string from UrlObject
+  if (typeof href !== 'string') {
+    href = href.toString();
+  }
+
+  if (!href.startsWith('/')) isExternalUrl = true;
+
   return (
     <Wrapper>
       <div>
-        <Link href={href} {...props}>
+        {!isExternalUrl && (<Link href={href} {...props}>
           <button type="button">{buttonText}</button>
-        </Link>
-        <div className="caption">
-          <BlockContent blocks={additionalText} serializers={serializers} />
-        </div>
+        </Link>)}
+        {isExternalUrl && (<a href={href} target="_blank" rel="noreferrer noopener" className="button">{buttonText}</a>)}
+        {additionalText && (
+          <div className="caption">
+            <BlockContent blocks={additionalText} serializers={serializers} />
+          </div>
+        )}
       </div>
     </Wrapper>
   );

@@ -34,8 +34,36 @@ export async function getPageWithSlug(slug: string): Promise<PageContent> {
         content[] {
           ...,
           _type == 'reference' => ^-> { ... },
-          _type == 'callToActionRef' => ^-> { ... },
+          _type == 'largeButton' => {
+            ...,
+            link {
+              ...,
+              "href": ^-> { ... }
+            },
+            additionalText[] {
+              ...,
+              markDefs[] {
+                ...,
+                _type == "linkInternal" => ^.slug-> { "slug": slug.current }
+              }
+            }
+          },
+          _type == 'callToActionRef' => ^-> {
+            ...,
+            buttonOneLink {
+              ...,
+              "slug": ^-> slug.current
+            },
+            buttonTwoLink {
+              ...,
+              "slug": ^-> slug.current
+            }
+          },
           _type == 'videoRef' => ^-> { ... },
+          markDefs[] {
+            ...,
+            _type == "linkInternal" => ^.slug-> { "slug": slug.current }
+          }
         }
       }
     }

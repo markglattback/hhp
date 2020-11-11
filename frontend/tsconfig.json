@@ -13,9 +13,10 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "baseUrl": "."
   },
   "exclude": ["node_modules"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "jest.config.js", "components/ClassesCTA.test.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "jest.config.js", "components/ClassesCTA.test.js", "lib/example.test.js"],
   "files": ["@types/block-content-to-react.d.ts"]
 }

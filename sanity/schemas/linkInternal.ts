@@ -1,3 +1,4 @@
+import { Rule } from "@sanity/validation/src/Rule";
 import internal from "./internal";
 
 export default {
@@ -10,7 +11,7 @@ export default {
       name: "slug",
       title: "Slug",
       type: "slug",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule: Rule) => Rule.required(),
     },
   ],
 };

@@ -1,3 +1,5 @@
+import { Rule } from "@sanity/validation/src/Rule";
+
 export default {
   name: "quote",
   title: "Quote",
@@ -7,16 +9,19 @@ export default {
       name: "snippet",
       title: "Snippet",
       type: "string",
+      validation: (Rule: Rule) => Rule.required(),
     },
     {
       name: "text",
       title: "Text",
-      type: "blockQuoteContent",
+      type: "blockContentBasic",
+      validation: (Rule: Rule) => Rule.required(),
     },
     {
       name: "person",
       title: "Person",
       type: "string",
+      validation: (Rule: Rule) => Rule.required(),
     },
     {
       name: "reference",
