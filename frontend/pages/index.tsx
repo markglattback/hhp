@@ -1,21 +1,23 @@
 import Head from "next/head";
 import { InferGetStaticPropsType } from "next";
 import BlockContent from "@sanity/block-content-to-react";
-import { getPageWithSlug, PageContent } from "lib/api/queries";
+import getAllPageContent, { getPageWithSlug, PageContent } from "lib/api/queries";
 import { serializers } from "lib/serializers";
+import { Category } from "components/Footer";
 
 export const getStaticProps = async () => {
   const pageContent: PageContent = await getPageWithSlug('/');
 
   return {
     props: {
-      pageContent,
+      pageContent
     },
   };
 };
 
 export default function Home({
   pageContent,
+  // footerContent,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const { content } = pageContent;
 

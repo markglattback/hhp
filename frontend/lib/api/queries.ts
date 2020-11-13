@@ -1,3 +1,4 @@
+import { Category } from "components/Footer";
 import groq from "groq";
 import client from "lib/client";
 
@@ -18,7 +19,7 @@ export type PageContent = {
   metaTitle: string;
   name: string;
   slug: {
-    __type: string;
+    _type: string;
     current: string;
   };  
 };
@@ -73,4 +74,28 @@ export async function getPageWithSlug(slug: string): Promise<PageContent> {
   )
 
   return data[0];
+}
+
+export async function getFooterContent(): Promise<Category[]> {
+  const data = await client.fetch(groq`
+    *[_type == 'footerCategories'] | order(footerPosition) {
+      ...,
+      links[] {
+        ...,
+        linkRef -> { ... }
+      }
+    }
+  `)
+
+  return data;
+}
+
+export default async function getAllPageContent({slug}: {slug: string}): Promise<{ pageContent: PageContent, footerContent: Category[] }> {
+  const pageContent = await getPageWithSlug(slug);
+  const footerContent = await getFooterContent();
+
+  return {
+    pageContent,
+    footerContent
+  }
 }

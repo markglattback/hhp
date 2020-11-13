@@ -3,6 +3,7 @@
   --white: #fff;
   --black: #000;
   --grey: #a0a09f;
+  --gray: #a0a09f;
   --activeLink: rgba(50, 50, 50, 1);
   --buttonRed: #ff6161;
   --textRed: #d31f3d;
@@ -105,10 +106,11 @@ p {
 }
 
 .large-text {
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 500;
   line-height: 1.3;
-  margin: 0;
+  margin: 0 auto;
+  max-width: 800px;
 }
 
 .large-text:first-of-type {
@@ -116,6 +118,7 @@ p {
 }
 
 .large-text--caps {
+  font-size: 2rem;
   text-transform: uppercase;
 }
 

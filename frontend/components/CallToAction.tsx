@@ -8,6 +8,19 @@ const CallToActionWrapper = styled.div`
   font-weight: 500;
   text-transform: uppercase;
 
+  p {
+    margin: 0 auto;
+    line-height: 1.3;
+  }
+
+  p:first-of-type {
+    margin-top: 1.5rem;
+  }
+
+  p:last-of-type {
+    margin-bottom: 1.5rem;
+  }
+
   div.buttons {
     display: grid;
     grid-template-columns: repeat(2, 1fr);

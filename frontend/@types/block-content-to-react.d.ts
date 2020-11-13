@@ -92,9 +92,9 @@ declare module "@sanity/block-content-to-react" {
        */
       marks?: Record<string, (props: any) => JSX.Element | null>;
       /** React component to use when rendering a list node */
-      list?: React.Component;
+      list?: React.Component | ((props: any) => JSX.Element);
       /** React component to use when rendering a list item node */
-      listItem?: React.Component;
+      listItem?: React.Component | ((props: any) => JSX.Element);
       /**
        * React component to use when transforming newline characters
        * to a hard break (<br/> by default, pass false to render newline character)

@@ -3,8 +3,13 @@ import "styles/normalize.css";
 import "styles/globals.css";
 import Head from "next/head";
 import Layout from "components/Layout";
+import { getFooterContent } from "lib/api/queries";
 
-export default function MyApp(props: AppProps) {
+export type CustomAppProps = AppProps & {
+  appProps: any;
+}
+
+export default function MyApp(props: CustomAppProps) {    
   return (
     <>
       <Head>
@@ -23,4 +28,12 @@ export default function MyApp(props: AppProps) {
       <Layout {...props} />
     </>
   );
+}
+
+MyApp.getInitialProps = async () => {
+  const footerContent = await getFooterContent();
+
+  return { appProps: {
+    footerContent
+  } }
 }

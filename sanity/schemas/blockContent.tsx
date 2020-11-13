@@ -90,9 +90,6 @@ export default {
       options: { hotspot: true },
     },
     {
-      type: "subHeading",
-    },
-    {
       type: "quote",
     },
     {

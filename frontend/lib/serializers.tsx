@@ -10,6 +10,7 @@ import LargeButton from '../components/LargeButton';
 import BlockContent from "@sanity/block-content-to-react";
 import Link from 'next/link';
 import { ReactChildren } from 'react';
+import List from 'components/List';
 
 const BlockRenderer = (props) => {
   const { style = "normal", children = [], markDefs = [] } = props.node;
@@ -40,6 +41,10 @@ const BlockRenderer = (props) => {
 
   if (style === "largeCaps") {
     return <p className="large-text large-text--caps">{props.children}</p>;
+  }
+
+  if (style === "caption") {
+    return <span className="caption">{props.children}</span>;
   }
 
   // fall back to default
@@ -73,10 +78,12 @@ const Heading = ({ node, tag }: { node: any, tag: Tags }) => {
     { (tag === 'H1') && <h1><HeadingContent /></h1> }
     { (tag === 'H2') && <h2><HeadingContent /></h2> }
     { (tag === 'H3') && <h3><HeadingContent /></h3> }
-    <SubHeading>
-      {node.subHeadingFirstLine}
-      <NewLine text={node.subHeadingSecondLine} />
-    </SubHeading>
+    {node.subHeadingFirstLine && (
+      <SubHeading>
+        {node.subHeadingFirstLine}
+        <NewLine text={node.subHeadingSecondLine} />
+      </SubHeading>
+    )}
   </>
     )
 }
@@ -102,7 +109,13 @@ export const serializers = {
     heading1: (props) => <Heading node={props.node} tag="H1" />,
     heading2: (props) => <Heading node={props.node} tag="H2" />,
     heading3: (props) => <Heading node={props.node} tag="H3" />,
-    subHeading: (props) => <SubHeading>{props.node.content}</SubHeading>,
+    heading: (props) => (
+      // used for headline style callouts without a need for a semantic h tags
+      <SubHeading>
+        {props.node.firstLine}
+        <NewLine text={props.node.secondLine} />
+      </SubHeading>
+    ),
     bigQuote: (props) => (
       <MainQuote
         text={props.node.text as string}
@@ -164,6 +177,7 @@ export const serializers = {
       return <YoutubeVideo url={props.node.videoURL as string} />;
     },
   },
+  list: List,
   marks: {
     linkExternal: (props) => {
       return <a href={props.mark.url} target="_blank" rel="noreferrer noopener">{props.children}</a>

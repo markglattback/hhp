@@ -60,7 +60,7 @@ export default {
           },
         },
       ],
-      lists: [],
+      lists: [{ title: "Bullet", value: "bullet" }],
       // Marks let you mark up inline text in the block editor.
       marks: {
         // Decorators usually describe a single property – e.g. a typographic
@@ -133,6 +133,10 @@ export default {
           },
         ],
       },
+    },
+    {
+      // renders multi-line headine without any h tags
+      type: "heading",
     },
     {
       // renders multi-line H1 tag

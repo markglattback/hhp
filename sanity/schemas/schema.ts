@@ -26,6 +26,7 @@ import bigQuote from "./bigQuote";
 import linkInternal from "./linkInternal";
 import linkExternal from "./linkExternal";
 import heading from "./heading";
+import footerCategories from "./footerCategories";
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -41,6 +42,7 @@ export default createSchema({
     blockContentSimple,
     callToAction,
     callToActionRef,
+    footerCategories,
     heading,
     heading1,
     heading2,

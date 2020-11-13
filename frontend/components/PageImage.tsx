@@ -8,15 +8,13 @@ const ImageWrapper = styled.div`
 
   img {
     display: block;
-    width: 100%;
-    height: auto;
     object-fit: cover;
   }
 `;
 
 export default function PageImage({ src, header, ...props }: { src: string, header: boolean | undefined, props: ImageProps }) {
   // header images
-  if (header) {
+ 
     return (
       <ImageWrapper>
         <Image
@@ -25,17 +23,10 @@ export default function PageImage({ src, header, ...props }: { src: string, head
           height={491}
           layout="intrinsic"
           quality={100}
-          priority
-          loading="eager"
+          priority={header || undefined}
+          loading={header ? "eager" : "lazy"}
           {...props}
         />
-      </ImageWrapper>
-    );
-  }
-
-    return (
-      <ImageWrapper>
-        <Image src={src} layout="fill" {...props} />
       </ImageWrapper>
     );
   }
