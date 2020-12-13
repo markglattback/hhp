@@ -79,7 +79,7 @@ export default function Nav({ compact }: Props) {
         <ul>
           <NavLink href="street-dance-facts" text="News" />
           <NavLink
-            href="dance-classes-in-harlow-school"
+            href="/street-dance-classes/schools/harlow"
             text="Harlow Dance School"
           />
           <NavLink

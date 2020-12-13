@@ -15,6 +15,7 @@ export default {
       title: "Slug",
       name: "slug",
       type: "slug",
+      description: "Don't include a '/' at the start otherwise it will render a 404",
       validation: (Rule: Rule) => Rule.required(),
     },
     {

@@ -114,15 +114,18 @@ declare module "@sanity/block-content-to-react" {
     dataset?: string;
   }
 
-  
 
   /** React component for transforming Sanity block content to React components */
   function BlockContent(props: BlockContentProps): JSX.Element;
 
+  interface DefaultSerializers extends BlockContentProps.serializers {
+    types: {
+      block: (props: any) => JSX.Element | null;
+    }
+  }
+  
   /** Default serializers for transforming Sanity block content **/
-  function defaultSerializers(props: any): JSX.Element;
-
-  BlockContent.prototype.defaultSerializers = defaultSerializers;
+  BlockContent.defaultSerializers = DefaultSerializers;
 
   export default BlockContent;
 }

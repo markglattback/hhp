@@ -6,6 +6,8 @@ const FooterWrapper = styled.footer`
   color: var(--grey);
   border-top: 3px solid var(--grey);
   padding: 1.5rem 0;
+  position: relative;
+  flex-shrink: 0;
 
   div.links {
     display: grid;
@@ -65,8 +67,9 @@ export type linkRef = {
 })
 
 export type Category = {
+  _id: string;
   categoryName: string;
-  links: LinkObject[];
+  links?: LinkObject[];
 }
 
 type FooterProps = {
@@ -80,11 +83,11 @@ export default function Footer ({ categories }: FooterProps) {
       <div className="links">
         {categories.map(category => {
           return (
-            <div className="category">
+            <div className="category" key={category._id}>
               <div className="category-name">{category.categoryName}</div>
               <div className="category-links">
                 <ul>
-                  {category.links.map(link => {
+                  {category.links && category.links.map(link => {
                     const { linkRef, linkText } = link;
                     
                     // internal links

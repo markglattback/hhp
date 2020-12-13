@@ -1,7 +1,7 @@
 import CallToAction, { CallToActionProps, LinkButton } from '../components/CallToAction';
 import { shallow } from 'enzyme'; 
 import BlockContent from '@sanity/block-content-to-react';
-import { serializers } from '../lib/serializers';
+import serializers from '../lib/serializers';
 
 // mock data from Sanity
 const data: CallToActionProps = {

@@ -1,7 +1,7 @@
 import Link, { LinkProps } from "next/link";
 import styled from "styled-components";
 import BlockContent, { BlockContentProps } from "@sanity/block-content-to-react";
-import { serializers } from "../lib/serializers";
+import serializers from "../lib/serializers";
 
 const CallToActionWrapper = styled.div`
   font-size: 2.25rem;

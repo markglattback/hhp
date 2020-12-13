@@ -7,7 +7,7 @@ declare module "@sanity/validation/src/Rule" {
     static number = (def) => new Rule(def).type('Number')
     static boolean = (def) => new Rule(def).type('Boolean')
     static dateTime = (def) => new Rule(def).type('Date')
-    static valueOfField = (path) => ({type: Rule.FIELD_REF, path})
+    static valueOfField = (path) => ({ type: Rule.FIELD_REF, path })
 
     constructor(typeDef) {
       this.FIELD_REF = Rule.FIELD_REF
@@ -108,104 +108,104 @@ declare module "@sanity/validation/src/Rule" {
         throw new Error(`Unknown type "${targetType}"`)
       }
 
-      const rule = this.cloneWithRules([{flag: 'type', constraint: type}])
+      const rule = this.cloneWithRules([{ flag: 'type', constraint: type }])
       rule._type = type
       return rule
     }
 
     all(children) {
-      return this.cloneWithRules([{flag: 'all', constraint: children}])
+      return this.cloneWithRules([{ flag: 'all', constraint: children }])
     }
 
     either(children) {
-      return this.cloneWithRules([{flag: 'either', constraint: children}])
+      return this.cloneWithRules([{ flag: 'either', constraint: children }])
     }
 
     // Shared rules
     optional() {
-      const rule = this.cloneWithRules([{flag: 'presence', constraint: 'optional'}])
+      const rule = this.cloneWithRules([{ flag: 'presence', constraint: 'optional' }])
       rule._required = false
       return rule
     }
 
     required() {
-      const rule = this.cloneWithRules([{flag: 'presence', constraint: 'required'}])
+      const rule = this.cloneWithRules([{ flag: 'presence', constraint: 'required' }])
       rule._required = true
       return rule
     }
 
     custom(fn) {
-      return this.cloneWithRules([{flag: 'custom', constraint: fn}])
+      return this.cloneWithRules([{ flag: 'custom', constraint: fn }])
     }
 
     min(len) {
-      return this.cloneWithRules([{flag: 'min', constraint: len}])
+      return this.cloneWithRules([{ flag: 'min', constraint: len }])
     }
 
     max(len) {
-      return this.cloneWithRules([{flag: 'max', constraint: len}])
+      return this.cloneWithRules([{ flag: 'max', constraint: len }])
     }
 
     length(len) {
-      return this.cloneWithRules([{flag: 'length', constraint: len}])
+      return this.cloneWithRules([{ flag: 'length', constraint: len }])
     }
 
     valid(value) {
       const values = Array.isArray(value) ? value : [value]
-      return this.cloneWithRules([{flag: 'valid', constraint: values}])
+      return this.cloneWithRules([{ flag: 'valid', constraint: values }])
     }
 
     // Numbers only
     integer() {
-      return this.cloneWithRules([{flag: 'integer'}])
+      return this.cloneWithRules([{ flag: 'integer' }])
     }
 
     precision(limit) {
-      return this.cloneWithRules([{flag: 'precision', constraint: limit}])
+      return this.cloneWithRules([{ flag: 'precision', constraint: limit }])
     }
 
     positive() {
-      return this.cloneWithRules([{flag: 'min', constraint: 0}])
+      return this.cloneWithRules([{ flag: 'min', constraint: 0 }])
     }
 
     negative() {
-      return this.cloneWithRules([{flag: 'lessThan', constraint: 0}])
+      return this.cloneWithRules([{ flag: 'lessThan', constraint: 0 }])
     }
 
     greaterThan(num) {
-      return this.cloneWithRules([{flag: 'greaterThan', constraint: num}])
+      return this.cloneWithRules([{ flag: 'greaterThan', constraint: num }])
     }
 
     lessThan(num) {
-      return this.cloneWithRules([{flag: 'lessThan', constraint: num}])
+      return this.cloneWithRules([{ flag: 'lessThan', constraint: num }])
     }
 
     // String only
     uppercase() {
-      return this.cloneWithRules([{flag: 'stringCasing', constraint: 'uppercase'}])
+      return this.cloneWithRules([{ flag: 'stringCasing', constraint: 'uppercase' }])
     }
 
     lowercase() {
-      return this.cloneWithRules([{flag: 'stringCasing', constraint: 'lowercase'}])
+      return this.cloneWithRules([{ flag: 'stringCasing', constraint: 'lowercase' }])
     }
 
     regex(pattern, name, opts) {
-      let options = opts || {name}
+      let options = opts || { name }
       if (!opts && name && (name.name || name.invert)) {
         options = name
       }
 
-      const constraint = Object.assign({}, options, {pattern})
-      return this.cloneWithRules([{flag: 'regex', constraint}])
+      const constraint = Object.assign({}, options, { pattern })
+      return this.cloneWithRules([{ flag: 'regex', constraint }])
     }
 
     email(options) {
-      return this.cloneWithRules([{flag: 'email', constraint: options}])
+      return this.cloneWithRules([{ flag: 'email', constraint: options }])
     }
 
     uri(opts = {}) {
       const options = Object.assign(
-        {scheme: ['http', 'https'], allowRelative: false, relativeOnly: false},
+        { scheme: ['http', 'https'], allowRelative: false, relativeOnly: false },
         opts
       )
 
@@ -223,21 +223,21 @@ declare module "@sanity/validation/src/Rule" {
         throw new Error('scheme must have at least 1 scheme specified')
       }
 
-      return this.cloneWithRules([{flag: 'uri', constraint: {options}}])
+      return this.cloneWithRules([{ flag: 'uri', constraint: { options } }])
     }
 
     // Array only
     unique(comparator) {
-      return this.cloneWithRules([{flag: 'unique', constraint: comparator}])
+      return this.cloneWithRules([{ flag: 'unique', constraint: comparator }])
     }
 
     // Objects only
     reference() {
-      return this.cloneWithRules([{flag: 'reference'}])
+      return this.cloneWithRules([{ flag: 'reference' }])
     }
 
     block(fn) {
-      return this.cloneWithRules([{flag: 'block', constraint: fn}])
+      return this.cloneWithRules([{ flag: 'block', constraint: fn }])
     }
 
     fields(rules) {
@@ -256,7 +256,7 @@ declare module "@sanity/validation/src/Rule" {
       if (base && ['image', 'file'].includes(base.name)) {
         assetType = base.name === 'image' ? 'Image' : 'File'
       }
-      return this.cloneWithRules([{flag: 'assetRequired', constraint: {assetType}}])
+      return this.cloneWithRules([{ flag: 'assetRequired', constraint: { assetType } }])
     }
-  } 
+  }
 }

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Link, { LinkProps } from "next/link";
 import BlockContent from "@sanity/block-content-to-react";
-import { serializers } from "../lib/serializers";
+import serializers from "../lib/serializers";
 import { UrlObject } from "url";
 import { useRouter } from "next/router";
 

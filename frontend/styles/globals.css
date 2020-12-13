@@ -41,7 +41,6 @@ html {
   box-sizing: inherit;
 }
 
-html,
 body {
   padding: 0;
   margin: 0;
@@ -54,6 +53,7 @@ body {
   color: var(--white);
   letter-spacing: 0.12em;
   line-height: 1.5;
+  height: 100%;
 }
 
 a {
@@ -138,4 +138,11 @@ p {
 
 section {
   margin-bottom: 2rem;
+}
+
+/* Allows sticky footy */
+#__next {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }

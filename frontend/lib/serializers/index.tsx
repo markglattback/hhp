@@ -1,23 +1,92 @@
-// @ts-nocheck
-import getImageUrl from './getImageUrl';
-import SubHeading from "../components/SubHeading";
-import PageImage from "../components/PageImage";
-import MainQuote from "../components/MainQuote";
-import Quote from "../components/Quote";
-import CallToActionSection from "../components/CallToAction";
-import YoutubeVideo from "../components/YoutubeVideo";
-import LargeButton from '../components/LargeButton';
+import getImageUrl from '../getImageUrl';
+import Heading from "../../components/Heading";
+import PageImage from "../../components/PageImage";
+import MainQuote from "../../components/MainQuote";
+import Quote from "../../components/Quote";
+import CallToActionSection from "../../components/CallToAction";
+import YoutubeVideo from "../../components/YoutubeVideo";
+import LargeButton from '../../components/LargeButton';
 import BlockContent from "@sanity/block-content-to-react";
 import Link from 'next/link';
-import { ReactChildren } from 'react';
 import List from 'components/List';
+import { Url } from 'url';
 
-const BlockRenderer = (props) => {
+/** CUSTOM SERIALIZER TYPES **/
+// Based on expected query return shape
+
+interface SanityBlockContent {
+  _key: string;
+  [key: string]: any;
+}
+
+interface Slug {
+  _type: 'slug';
+  current: string;
+}
+
+
+export interface SanityObjectResult {
+  _key?: string; // if part of an array response
+  _type: string;
+}
+
+export interface SanityDocumentResult extends SanityObjectResult {
+  _createdAt: string;
+  _id: string;
+  _rev: string;
+  _updatedAt: string;
+}
+
+export interface HeadingTagProps {
+  node: {
+    _type: 'heading';
+    headingElement: 'none' | 'H1' | 'H2' | 'H3';
+    firstLine?: string;
+    secondLine?: string;
+    headingSize?: 'big' | 'medium' | 'small';
+    subHeadingFirstLine?: string;
+    subHeadingSecondLine?: string;
+    displaySubHeadingFirst: boolean | undefined | null;
+    subHeadingSize?: 'big' | 'medium' | 'small' | 'smallest';
+    useBodyColor: boolean | undefined | null;
+  } & SanityObjectResult;
+}
+
+export interface BigQuoteProps {
+  node: {
+    _ref: string;
+    _type: 'bigQuote';
+    internalName: string;
+    person: string;
+    reference?: Url;
+    text: SanityBlockContent[];
+  } & SanityDocumentResult;
+}
+
+export interface LargeButtonProps {
+  node: {
+    _type: 'largeButton';
+    text: string;
+    link: {
+      _ref: string;
+      _type: 'reference';
+      href: {
+        internalName: string;
+      } & ({ url: string } | { slug: Slug })
+      & SanityDocumentResult;
+    };
+    additionalText: SanityBlockContent[];
+  } & SanityObjectResult;
+}
+
+
+
+const BlockRenderer = (props: any) => {
   const { style = "normal", children = [], markDefs = [] } = props.node;
 
   if (style === "normal") {
     let noSpacing = false;
-    children.forEach((child) => {
+    children.forEach((child: any) => {
       if (child.marks.length) {
         for (let i = 0; i < child.marks.length; i++) {
           if (child.marks[i] === "noSpacing") noSpacing = true;
@@ -51,46 +120,9 @@ const BlockRenderer = (props) => {
   return BlockContent.defaultSerializers.types.block(props);
 };
 
-const NewLine = ({ text }: { text: string | undefined }) => {
-  if (!text) return null;
-
-  return (
-    <>
-      <br/>
-      {text}
-    </>
-  )
-}
-
-type Tags = 'H1' | 'H2' | 'H3';
-
-const Heading = ({ node, tag }: { node: any, tag: Tags }) => {
-  const HeadingContent = () => (
-    <>
-      {node.firstLine}
-      <NewLine text={node.secondLine} />
-      <NewLine text={node.thirdLine} />
-    </>
-  )
-
-  return (    
-    <>
-    { (tag === 'H1') && <h1><HeadingContent /></h1> }
-    { (tag === 'H2') && <h2><HeadingContent /></h2> }
-    { (tag === 'H3') && <h3><HeadingContent /></h3> }
-    {node.subHeadingFirstLine && (
-      <SubHeading>
-        {node.subHeadingFirstLine}
-        <NewLine text={node.subHeadingSecondLine} />
-      </SubHeading>
-    )}
-  </>
-    )
-}
-
 
 /* check if child is highlighted */
-function checkChildrenForHighlights(children): boolean {
+function checkChildrenForHighlights(children: any[]): boolean {
   if (children.length === 0) return false;
   if (children.length > 1) return false;
 
@@ -100,32 +132,18 @@ function checkChildrenForHighlights(children): boolean {
 
   if (child.props.node.mark === 'highlightText') return true;
 
-  return false;  
+  return false;
 }
 
-export const serializers = {
+export default {
   types: {
     block: BlockRenderer,
-    heading1: (props) => <Heading node={props.node} tag="H1" />,
-    heading2: (props) => <Heading node={props.node} tag="H2" />,
-    heading3: (props) => <Heading node={props.node} tag="H3" />,
-    heading: (props) => (
-      // used for headline style callouts without a need for a semantic h tags
-      <SubHeading>
-        {props.node.firstLine}
-        <NewLine text={props.node.secondLine} />
-      </SubHeading>
-    ),
-    bigQuote: (props) => (
+    heading: (props: HeadingTagProps) => <Heading {...props.node} />,
+    bigQuote: ({ node }: BigQuoteProps) => (
       <MainQuote
-        text={props.node.text as string}
-        person={props.node.person as string}
-      />
-    ),
-    mainQuote: (props) => (
-      <MainQuote
-        text={props.node.text as string}
-        person={props.node.person as string}
+        text={node.text}
+        person={node.person}
+        reference={node.reference}
       />
     ),
     largeButton: (props) => {
@@ -142,7 +160,8 @@ export const serializers = {
     },
     image: (props) => {
       return (<img src={getImageUrl(props.node.asset._ref as string)} />
-    )},
+      )
+    },
     lineBreak: (props) => <br />,
     pageImage: (props) => {
       return (
@@ -185,8 +204,8 @@ export const serializers = {
     linkInternal: (props) => {
       // ADD TEXT DECORATION STYLE TO ANCHORS IF REQUIRED
       let highlight = checkChildrenForHighlights(props.children);
-      
-      return <Link href={props.mark.slug as string}><a style={{ textDecorationColor: highlight ? 'var(--yellow)' : 'inherit'}}>{props.children}</a></Link>
+
+      return <Link href={props.mark.slug as string}><a style={{ textDecorationColor: highlight ? 'var(--yellow)' : 'inherit' }}>{props.children}</a></Link>
     },
     highlightText: (props) => <span style={{ color: 'var(--yellow)', textDecorationColor: "var(--yellow)" }}>{props.children}</span>,
     noSpacing: (props) => {

@@ -139,18 +139,6 @@ export default {
       type: "heading",
     },
     {
-      // renders multi-line H1 tag
-      type: "heading1",
-    },
-    {
-      // renders multi-line H2 tag
-      type: "heading2",
-    },
-    {
-      // renders multi-line H3 tag
-      type: "heading3",
-    },
-    {
       // renders a formatted image
       type: "pageImage",
       title: "Page Image",

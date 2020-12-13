@@ -9,6 +9,7 @@ import { CustomAppProps } from "pages/_app";
 const Main = styled.main`
   padding-top: 54px;
   text-align: center;
+  flex: 1 0 auto;
 `;
 
 export default function Layout({ Component, pageProps, appProps }: CustomAppProps) {

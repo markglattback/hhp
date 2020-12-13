@@ -90,6 +90,22 @@ export async function getFooterContent(): Promise<Category[]> {
   return data;
 }
 
+export type SlugObject = {
+  _type: 'slug';
+  current: string;
+}
+
+export async function getAllSlugs(): Promise<SlugObject[]> {
+  const data = await client.fetch(groq`
+    *[_type == 'page'] {
+      slug
+    }
+  `);
+
+
+  return data.map((page: PageContent) => page.slug);
+}
+
 export default async function getAllPageContent({slug}: {slug: string}): Promise<{ pageContent: PageContent, footerContent: Category[] }> {
   const pageContent = await getPageWithSlug(slug);
   const footerContent = await getFooterContent();

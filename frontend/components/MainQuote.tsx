@@ -1,7 +1,7 @@
 import styled from "styled-components";
 // @ts-ignore
 import BlockContent from "@sanity/block-content-to-react";
-import { serializers } from "../lib/serializers";
+import serializers, { BigQuoteProps } from "../lib/serializers";
 
 const QuoteWrapper = styled.figure`
   q {
@@ -36,18 +36,15 @@ const QuoteWrapper = styled.figure`
   }
 `;
 
-type Props = {
-  text: string;
-  person: string;
-};
+type Props = Pick<BigQuoteProps['node'], 'text' | 'person' | 'reference'>;
 
-export default function MainQuote({ text, person }: Props) {
+export default function MainQuote({ text, person, reference }: Props) {
   return (
     <QuoteWrapper>
       <q>
         <BlockContent blocks={text} serializers={serializers} />
       </q>
-      <figcaption>{person}</figcaption>
+  <figcaption>{person}</figcaption>
     </QuoteWrapper>
   );
 }

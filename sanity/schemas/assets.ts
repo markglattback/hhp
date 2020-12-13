@@ -1,6 +1,6 @@
-import { Rule } from "@sanity/validation/src/Rule";
+import Sanity, { SanityDocumentType } from "./types";
 
-export default {
+const assets: SanityDocumentType = {
   name: "assets",
   title: "Assets",
   type: "document",
@@ -12,13 +12,13 @@ export default {
       options: {
         hotspot: true,
       },
-      validation: (Rule: Rule) => Rule.required(),
+      validation: (rule) => rule.required(),
     },
     {
       name: "altText",
       title: "Alt Text",
       type: "string",
-      validation: (Rule: Rule) => Rule.required(),
+      validation: (rule) => rule.required(),
     },
     {
       name: "link",
@@ -27,3 +27,6 @@ export default {
     },
   ],
 };
+
+
+export default assets;
