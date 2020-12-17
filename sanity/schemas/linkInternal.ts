@@ -1,7 +1,8 @@
 import { Rule } from "@sanity/validation/src/Rule";
+import Sanity from "./helpers";
 import internal from "./internal";
 
-export default {
+export default Sanity.createDocumentType({
   name: "linkInternal",
   title: "Internal Link",
   type: "document",
@@ -14,4 +15,4 @@ export default {
       validation: (Rule: Rule) => Rule.required(),
     },
   ],
-};
+});

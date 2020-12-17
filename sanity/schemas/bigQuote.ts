@@ -1,6 +1,6 @@
-import { Rule } from "@sanity/validation/src/Rule";
+import Sanity from './helpers';
 
-export default {
+const bigQuote = Sanity.createDocumentType({
   name: "bigQuote",
   title: "Big Quote",
   type: "document",
@@ -9,19 +9,19 @@ export default {
       name: "internalName",
       title: "Internal Name",
       type: "string",
-      validation: (Rule: Rule) => Rule.required(),
+      validation: (Rule) => Rule.required(),
     },
     {
       name: "text",
       title: "Text",
       type: "blockQuoteContent",
-      validation: (Rule: Rule) => Rule.required(),
+      validation: (Rule) => Rule.required(),
     },
     {
       name: "person",
       title: "Person",
       type: "string",
-      validation: (Rule: Rule) => Rule.required(),
+      validation: (Rule) => Rule.required(),
     },
     {
       name: "reference",
@@ -29,4 +29,7 @@ export default {
       type: "url",
     },
   ],
-};
+});
+
+
+export default bigQuote;

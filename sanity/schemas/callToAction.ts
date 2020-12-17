@@ -1,6 +1,7 @@
+import Sanity from "./helpers";
 import internal from "./internal";
 
-export default {
+export default Sanity.createDocumentType({
   name: "callToAction",
   title: "Call To Action",
   type: "document",
@@ -38,4 +39,4 @@ export default {
       }]
     },
   ],
-};
+});

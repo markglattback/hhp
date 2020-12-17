@@ -1,6 +1,7 @@
+import Sanity from "./helpers";
 import internal from "./internal";
 
-export default {
+export default Sanity.createDocumentType({
   name: "linkExternal",
   title: "External Link",
   type: "document",
@@ -13,4 +14,4 @@ export default {
       validation: (Rule) => Rule.required(),
     },
   ],
-};
+});

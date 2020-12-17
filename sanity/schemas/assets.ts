@@ -1,6 +1,6 @@
-import Sanity, { SanityDocumentType } from "./types";
+import Sanity, { SanityDocumentResult } from "./helpers";
 
-const assets: SanityDocumentType = {
+const assets = Sanity.createDocumentType({
   name: "assets",
   title: "Assets",
   type: "document",
@@ -26,7 +26,6 @@ const assets: SanityDocumentType = {
       type: "url",
     },
   ],
-};
-
+});
 
 export default assets;

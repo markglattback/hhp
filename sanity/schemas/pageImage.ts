@@ -1,6 +1,7 @@
 import { Rule } from "@sanity/validation/src/Rule";
+import Sanity from "./helpers";
 
-export default {
+export default Sanity.createDocumentType({
   name: "pageImage",
   title: "Page Image",
   type: "document",
@@ -26,4 +27,4 @@ export default {
       type: "boolean",
     },
   ],
-};
+});

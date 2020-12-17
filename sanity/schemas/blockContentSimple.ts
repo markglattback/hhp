@@ -1,6 +1,7 @@
 import { YellowTextIcon, YellowTextRender } from "../custom_block_components";
+import Sanity from "./helpers";
 
-export default {
+export default Sanity.createArrayType({
   title: "Block Quote Content",
   name: "blockQuoteContent",
   type: "array",
@@ -33,4 +34,4 @@ export default {
       },
     },
   ],
-};
+});

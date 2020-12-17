@@ -1,6 +1,7 @@
 import { Rule } from "@sanity/validation/src/Rule";
+import Sanity from "./helpers";
 
-export default {
+export default Sanity.createDocumentType({
   name: "pageContent",
   title: "Page Content",
   type: "document",
@@ -36,4 +37,4 @@ export default {
       validation: (Rule: Rule) => Rule.required(),
     },
   ],
-};
+});

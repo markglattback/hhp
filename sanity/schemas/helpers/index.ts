@@ -1,3 +1,5 @@
+import createSchema from "part:@sanity/base/schema-creator";
+import schemaTypes from "all:part:@sanity/base/schema-type";
 import { Rule } from "@sanity/validation/src/Rule";
 
 type DefaultSchemaTypes = 'array' | 'block' | 'boolean' | 'date' | 'datetime' | 'document' | 'file' | 'geopoint' | 'image' | 'number' | 'object' | 'reference' | 'slug' | 'string' | 'span' | 'text' | 'url';
@@ -61,10 +63,8 @@ export interface SanityDocumentType extends SanitySchemaType {
   liveEdit?: boolean;
   orderings?: DocumentOrderings[];
   fields: SanityFields[];
-  fieldSets?: SanityFieldset[];
+  fieldsets?: SanityFieldset[];
   preview?: SanityPreview;
-  // validation?: SanityValidationFunction<BasicValidation>;
-  // validation?: (Rule: Rule) => Rule;
 }
 
 export interface SanityFileType extends SanitySchemaType {
@@ -108,7 +108,7 @@ export interface SanityNumberType extends SanitySchemaType {
 export interface SanityObjectType extends SanitySchemaType {
   type: 'object';
   fields: SanityFields[];
-  fieldsets?: SanityFieldset;
+  fieldsets?: SanityFieldset[];
   preview?: SanityPreview;
   inputComponent?: JSX.Element;
   options?: {
@@ -185,7 +185,7 @@ export type SanityContentTypesRecord = {
 }
 
 export type SanityContentTypes =
-  | SanityArrayType
+  SanityArrayType
   | SanityBlockType
   | SanityBooleanType
   | SanityDateType
@@ -204,10 +204,8 @@ export type SanityContentTypes =
 
 //  Array specific types
 type ArrayContentTypes =
-  | {
-    type: string & DefaultSchemaTypes;
-    title?: string;
-  }
+  | { type: 'reference', to: { type: string, title?: string }[] }
+  | { type: string extends 'reference' | 'block' ? never : string, title?: string, options?: any }
   | SanityBlockType;
 
 
@@ -217,7 +215,8 @@ type BlockStyles =
   | {
     title: string extends 'Normal' ? never : string; // normal represents unstyled text
     value: string extends 'normal' ? never : string;
-  } | DefaultStyles;
+    blockEditor?: BlockEditorOptions;
+  } | (DefaultStyles & { blockEditor?: BlockEditorOptions });
 
 type DefaultStyles =
   | { title: "Normal", value: "normal" }
@@ -234,14 +233,12 @@ type BlockLists =
   | { title: 'Bullet', value: 'bullet' };
 
 interface BlockMarks {
-  decorators: {
-    title: string;
-    value: string;
+  decorators?: {
+    title: string
+    value: string
     blockEditor?: BlockEditorOptions;
-  }[] & DefaultDecorators[];
-  annotations:
-  | { title: "Link", value: 'link' }
-  | CustomAnnotation;
+  }[] | (DefaultDecorators & { blockEditor?: BlockEditorOptions })[];
+  annotations?: { title: "Link", value: 'link' }[] | CustomAnnotation[];
 }
 
 type DefaultDecorators =
@@ -252,17 +249,17 @@ type DefaultDecorators =
   | { title: 'Strike', value: 'strike-through' }
 
 type CustomAnnotation =
-  | {
+  {
     title: string;
     name: string;
     type: string;
-    fields?: SanityFields;
+    fields?: SanityFields[];
     blockEditor?: BlockEditorOptions;
   }
 
 interface BlockEditorOptions {
-  icon: JSX.Element;
-  rendeR: JSX.Element;
+  icon?: (props: any) => JSX.Element;
+  render?: (props: any) => JSX.Element;
 }
 
 
@@ -289,33 +286,10 @@ interface DocumentOrderings {
   }[];
 }
 
-
-
 /* Field Types */
-interface NameTitlePair {
-  name: string;
-  title: string;
-}
-
-// type SanityFields =
-//   | {
-//     name: string;
-//     type: string extends 'block' | 'span' ? never : DefaultSchemaTypes;
-//     title?: string;
-//     description?: string;
-//     hidden?: boolean;
-//     fieldset?: string;
-//   } | {
-//     name: string;
-//     type: 'reference',
-//     title?: string;
-//     description?: string;
-//     hidden?: boolean;
-//     fieldset?: string;
-//     to: { type: DefaultSchemaTypes }[]
-//   }
-
-type SanityFields = SanityContentTypes;
+// type SanityFields = SanityContentTypes;
+type Overwrite<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;
+type SanityFields = SanityContentTypes | Overwrite<SanityContentTypes, { type: string }> // required to allow custom types in field name
 
 interface SanityFieldset {
   name: string;
@@ -323,7 +297,7 @@ interface SanityFieldset {
   options?: {
     collapsible?: boolean;
     collapsed?: boolean;
-    columns: number;
+    columns?: number;
   }
 }
 
@@ -340,7 +314,7 @@ type SanityPreview =
     select: {
       [key: string]: string;
     },
-    prepare: (selection: { [key: string]: string }) => { title: string; subtitle: string; media: string | JSX.Element; };
+    prepare: (selection: { [key: string]: string }) => { title: string; subtitle?: string; media?: string | JSX.Element; };
   }
 
 /* Validation Types */
@@ -355,16 +329,89 @@ export interface SanityObjectResult {
   _type: string;
 }
 
-export interface SanityDocumentResult extends SanityObjectResult {
+
+
+// Works
+export type SanityDocumentResult<T extends SanityDocumentType> = SanityDocumentResultHelper<T, T['fields'][number]>
+
+type SanityDocumentResultHelper<T extends SanityDocumentType, X extends SanityFields> = {
   _createdAt: string;
   _id: string;
   _rev: string;
   _updatedAt: string;
+  _type: T['name'];
+} &
+  {
+    [K in X['name']]: FieldResult<X & { name: K }>
+  }
+
+type FieldResult<T extends SanityFields> =
+  T['type'] extends 'array' ? SanityFields[]
+  : T['type'] extends 'boolean' ? boolean
+  : T['type'] extends 'number' ? number
+  : T['type'] extends 'string' ? string
+  : any;
+
+
+// Types for creation of content types when using Sanity static methods
+type CreateArrayTypeSchema<T extends SanityArrayType> = {
+  [K in keyof T]: T[K];
+}
+
+type CreateDocumentTypeSchema<T extends SanityDocumentType> = {
+  [K in keyof T]: T[K];
+} & {
+  fields: Array<Readonly<T['fields'][number]>>;
+}
+
+type CreateObjectTypeSchema<T extends SanityObjectType> = {
+  [K in keyof T]: T[K];
+} & {
+  fields: Array<Readonly<T['fields'][number]>>;
+  fieldset?: Array<Readonly<T['fieldsets'] extends Array<SanityFieldset> ? T['fieldsets'][number] : undefined>>;
+}
+
+type CreateReferenceTypeSchema<T extends SanityReferenceType> = {
+  [K in keyof T]: T[K];
+} & {
+  to: Array<Readonly<T['to'][number]>>
 }
 
 
+// Sanity class with methods to assist in creation of types
 export default class Sanity {
-  static createContentType<T extends keyof SanityContentTypesRecord>(schema: SanityContentTypesRecord[T]): SanityContentTypesRecord[T] {
+  static createContentType<T extends keyof SanityContentTypesRecord>(schema: SanityContentTypesRecord[T]): object {
     return schema;
+  }
+
+  static createSchema<T extends SanityContentTypes[]>(name: string, schema: T): SchemaReturnType<typeof name, typeof schema> {
+    return createSchema({
+      name,
+      types: schemaTypes.concat(schema)
+    });
+  }
+
+  static createArrayType<T extends SanityArrayType>(schema: CreateArrayTypeSchema<T>): { [K in keyof typeof schema]: typeof schema[K] } {
+    return { ...schema };
+  }
+
+  static createDocumentType<T extends SanityDocumentType>(schema: CreateDocumentTypeSchema<T>): { [K in keyof typeof schema]: typeof schema[K] } {
+    return { ...schema, fields: schema.fields, fieldsets: schema.fieldsets };
+  }
+
+  static createObjectType<T extends SanityObjectType>(schema: CreateObjectTypeSchema<T>): { [K in keyof typeof schema]: typeof schema[K] } {
+    return { ...schema, fields: schema.fields, fieldsets: schema.fieldsets };
+  }
+
+  static createReferenceType<T extends SanityReferenceType>(schema: CreateReferenceTypeSchema<T>): { [K in keyof typeof schema]: typeof schema[K] } {
+    return { ...schema, to: schema.to };
+  }
+}
+
+
+interface SchemaReturnType<N, T> {
+  _source: {
+    name: N,
+    types: T
   }
 }

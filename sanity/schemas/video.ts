@@ -1,6 +1,7 @@
 import { Rule } from "@sanity/validation/src/Rule";
+import Sanity from "./helpers";
 
-export default {
+export default Sanity.createDocumentType({
   name: "video",
   title: "Video",
   type: "document",
@@ -20,4 +21,4 @@ export default {
       validation: (Rule: Rule) => Rule.required(),
     },
   ],
-};
+});

@@ -9,8 +9,9 @@ import {
 import LinkExternal from "../custom_icons/LinkExternal/LinkExternal";
 import { HiOutlineExternalLink } from 'react-icons/hi'
 import { FiLink2 } from 'react-icons/fi'
+import Sanity from "./helpers";
 
-export default {
+export default Sanity.createArrayType({
   title: "Block Content Basic",
   name: "blockContentBasic",
   type: "array",
@@ -165,9 +166,9 @@ export default {
       type: "videoRef",
       title: "Video"
     },
-{
-  type: 'callToActionRef',
-  title: 'Call to Action'
-}
+    {
+      type: 'callToActionRef',
+      title: 'Call to Action'
+    }
   ],
-};
+});

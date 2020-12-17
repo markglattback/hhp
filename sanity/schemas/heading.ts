@@ -1,6 +1,7 @@
 import { Rule } from '@sanity/validation/src/Rule';
+import Sanity from './helpers';
 
-export default {
+export default Sanity.createObjectType({
   name: "heading",
   title: "Heading",
   type: "object",
@@ -12,28 +13,34 @@ export default {
       subHeadingSecondLine: 'subHeadingSecondLine',
       element: 'headingElement',
     },
-    prepare: (selection: { firstLine?: string;
+    prepare: (selection: {
+      firstLine?: string;
       secondLine?: string;
       subHeadingFirstLine?: string;
       subHeadingSecondLine?: string;
-      element: string; }) => {
-        const titlePrefix = selection.element === 'none' ? '' : `${selection.element} - `;
-        const titleContent = selection.firstLine || selection.subHeadingFirstLine || '';
-        
-        return {
-          title: `${titlePrefix}${titleContent}`,
-        }
+      element?: string;
+    }) => {
+      const titlePrefix = selection.element === 'none' ? '' : `${selection.element} - `;
+      const titleContent = selection.firstLine || selection.subHeadingFirstLine || '';
+
+      return {
+        title: `${titlePrefix}${titleContent}`,
+      }
     }
   },
   fieldsets: [
-    { name: "heading", title: "Heading Text" , options: {
-      collapsible: true,
-      collapsed: false,
-    }},
-    { name: "subHeading", title: "Sub Heading Text", options: {
-      collapsible: true,
-      collapsed: true,
-    } },
+    {
+      name: "heading", title: "Heading Text", options: {
+        collapsible: true,
+        collapsed: false,
+      }
+    },
+    {
+      name: "subHeading", title: "Sub Heading Text", options: {
+        collapsible: true,
+        collapsed: true,
+      }
+    }
   ],
   fields: [
     {
@@ -131,4 +138,4 @@ export default {
       }
     }
   ],
-};
+});

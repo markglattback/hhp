@@ -6,8 +6,9 @@ import {
   NewLineIcon,
   NewLineRender,
 } from "../custom_block_components";
+import Sanity from "./helpers";
 
-export default {
+export default Sanity.createArrayType({
   title: "Block Content",
   name: "blockContent",
   type: "array",
@@ -108,4 +109,4 @@ export default {
       to: [{ type: "section" }],
     },
   ],
-};
+});

@@ -23,35 +23,57 @@ import linkInternal from "./linkInternal";
 import linkExternal from "./linkExternal";
 import heading from "./heading";
 import footerCategories from "./footerCategories";
+import Sanity from "./helpers";
 
-// Then we give our schema to the builder and provide the result to Sanity
-const schema = createSchema({
-  // We name our schema
-  name: "default",
-  // Then proceed to concatenate our document type
-  // to the ones provided by any plugins that are installed
-  types: schemaTypes.concat([
-    assets,
-    bigQuote,
-    blockContent,
-    blockContentBasic,
-    blockContentSimple,
-    callToAction,
-    callToActionRef,
-    footerCategories,
-    heading,
-    largeButton,
-    linkExternal,
-    linkInternal,
-    page,
-    pageImage,
-    quote,
-    section,
-    video,
-    videoRef,
-  ]),
-});
+const schema = Sanity.createSchema('default', [
+  assets,
+  bigQuote,
+  blockContent,
+  blockContentBasic,
+  blockContentSimple,
+  callToAction,
+  callToActionRef,
+  footerCategories,
+  heading,
+  largeButton,
+  linkExternal,
+  linkInternal,
+  page,
+  pageImage,
+  quote,
+  section,
+  video,
+  videoRef,
+]);
 
-console.log(schema._source.types);
+// // Then we give our schema to the builder and provide the result to Sanity
+// const schema = createSchema({
+//   // We name our schema
+//   name: "default",
+//   // Then proceed to concatenate our document type
+//   // to the ones provided by any plugins that are installed
+//   types: schemaTypes.concat([
+//     assets,
+//     bigQuote,
+//     blockContent,
+//     blockContentBasic,
+//     blockContentSimple,
+//     callToAction,
+//     callToActionRef,
+//     footerCategories,
+//     heading,
+//     largeButton,
+//     linkExternal,
+//     linkInternal,
+//     page,
+//     pageImage,
+//     quote,
+//     section,
+//     video,
+//     videoRef,
+//   ]),
+// });
+
+console.log(schema);
 
 export default schema;

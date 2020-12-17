@@ -1,6 +1,7 @@
 import { Rule } from "@sanity/validation/src/Rule";
+import Sanity from "./helpers";
 
-export default {
+export default Sanity.createObjectType({
   name: "section",
   title: "Section",
   type: "object",
@@ -25,4 +26,4 @@ export default {
       type: "blockContentBasic",
     },
   ],
-};
+});

@@ -1,6 +1,7 @@
 import { Rule } from "@sanity/validation/src/Rule";
+import Sanity from "./helpers";
 
-export default {
+export default Sanity.createDocumentType({
   name: "quote",
   title: "Quote",
   type: "document",
@@ -29,4 +30,4 @@ export default {
       type: "url",
     },
   ],
-};
+});
