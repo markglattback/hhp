@@ -22,15 +22,13 @@ const StyledHeading = styled.div<StyledProps>`
   }
 
   div.sub-heading {
-    color: ${({ useBodyColor }) => useBodyColor ? 'var(--white)' : 'var(--yellow)'}};
+    color: ${({ useBodyColor }) => useBodyColor ? 'var(--white)' : 'var(--yellow)'};
     font-size: ${({ subHeadingFontSize }) => subHeadingFontSize ? fontSizes[subHeadingFontSize] : '1.5rem'};
     line-height: 1;
     text-transform: uppercase;
     font-weight: 500;
     letter-spacing: ${({ subHeadingWithH1 }) => subHeadingWithH1 ? '0.4rem' : 'inherit'};
   }
-
-
 `;
 
 
