@@ -22,7 +22,7 @@ const StyledHeading = styled.div<StyledProps>`
   }
 
   div.sub-heading {
-    color: ${({ useBodyColor }) => {console.log(useBodyColor); return useBodyColor ? 'var(--white)' : 'var(--yellow)'}};
+    color: ${({ useBodyColor }) => useBodyColor ? 'var(--white)' : 'var(--yellow)'}};
     font-size: ${({ subHeadingFontSize }) => subHeadingFontSize ? fontSizes[subHeadingFontSize] : '1.5rem'};
     line-height: 1;
     text-transform: uppercase;
@@ -35,20 +35,20 @@ const StyledHeading = styled.div<StyledProps>`
 
 
 
-function NewLine ({ text }: { text: string | undefined }) {
+function NewLine({ text }: { text: string | undefined }) {
   if (!text) return null;
 
   return (
     <>
-      <br/>
+      <br />
       {text}
     </>
   )
 }
 
-export default function Heading (props: HeadingTagProps['node']) {
+export default function Heading(props: HeadingTagProps['node']) {
   const reversed = props.displaySubHeadingFirst;
-  
+
   const HeadingContent = () => (
     <>
       {props.firstLine}
@@ -64,16 +64,16 @@ export default function Heading (props: HeadingTagProps['node']) {
   }
 
   const HeadingToRender: () => JSX.Element | null = Headings[props.headingElement];
-  
-  const content: (() => JSX.Element | null)[]  = [HeadingToRender];
+
+  const content: (() => JSX.Element | null)[] = [HeadingToRender];
 
   // if there's subheading content
   if (props.subHeadingFirstLine) {
     const SubHeading = () => (
-        <div className="sub-heading">
-          {props.subHeadingFirstLine}
-          {<NewLine text={props.subHeadingSecondLine} />}
-        </div>);
+      <div className="sub-heading">
+        {props.subHeadingFirstLine}
+        {<NewLine text={props.subHeadingSecondLine} />}
+      </div>);
 
     if (reversed) {
       content.unshift(SubHeading);
@@ -81,10 +81,10 @@ export default function Heading (props: HeadingTagProps['node']) {
       content.push(SubHeading);
     }
   }
-  
-  return (    
+
+  return (
     <StyledHeading fontSize={props.headingSize} subHeadingFontSize={props.subHeadingSize} useBodyColor={props.useBodyColor} subHeadingWithH1={props.headingElement === 'H1'}>
       {content.map((Component, index) => <Component key={`${props._key}_${index}`} />)}
     </StyledHeading>
-    )
+  )
 }

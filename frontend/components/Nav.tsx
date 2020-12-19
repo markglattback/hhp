@@ -1,4 +1,6 @@
-import styled from "styled-components";
+import { useState } from "react";
+import styled, { css } from "styled-components";
+import NavCategory from "./NavCategory";
 import NavLink from "./NavLink";
 
 /* TYPES */
@@ -7,7 +9,8 @@ type Props = {
 };
 
 /* STYLES */
-const Header = styled.header`
+const Header = styled.header<{ open: boolean }>`
+  grid-area: content;
   position: fixed;
   top: 0px;
   left: 0px;
@@ -20,11 +23,31 @@ const Header = styled.header`
   letter-spacing: -0.015rem;
   z-index: var(--zIndexFront);
 
+  /* mobile nav */
+  @media (max-width: 480px) {
+    transform: translateX(100vw);
+    
+    ${({ open }) => open && css`
+      transform: translateX(0);
+    `}
+  }
+
   nav {
-    max-width: var(--maxWidth);
+    max-width: min(100%, var(--maxWidth));
     display: flex;
+    justify-content: center;
     align-items: center;
     margin: 0 auto;
+
+    @media (max-width: 480px) {
+      flex-direction: column;
+      transform: translateX(100vw);
+      transition: 0.3s ease-in-out;
+
+      ${({ open }) => open && css`
+        transform: translateX(0);
+      `}
+    }
   }
 
   div.brand-logo > img {
@@ -37,6 +60,10 @@ const Header = styled.header`
     list-style: none;
     margin: 0;
     padding: 0;
+
+    @media (max-width: 480px) {
+      flex-direction: column;
+    }
   }
 
   li:hover,
@@ -45,7 +72,11 @@ const Header = styled.header`
   }
 
   li:hover {
-    transition-duration: 0.3s;
+    transition-duration: 0.15s;
+  }
+
+  li.nav-category:hover,:link.nav-catergoy:active {
+    background: none;
   }
 
   a {
@@ -70,30 +101,44 @@ const Header = styled.header`
 
 /* Components */
 export default function Nav({ compact }: Props) {
+  const [open, setOpen] = useState(false);
+
+  function openMenu() {
+    setOpen(true);
+  }
+
+  function closeMenu() {
+    setOpen(false);
+  }
+
   return (
-    <Header>
+    <Header open={open} >
       <nav>
         <div className="brand-logo">
           <img src="/hhp-logo.png" alt="Hip Hop Pop Logo" />
         </div>
         <ul>
           <NavLink href="street-dance-facts" text="News" />
-          <NavLink
-            href="/street-dance-classes/schools/harlow"
-            text="Harlow Dance School"
-          />
-          <NavLink
-            href="dance-classes-in-bishops-stortford"
-            text="Stortford Dance School"
-          />
-          <NavLink
-            href="kids-street-dance-classes-for-kids"
-            text="Kids Classes"
-          />
-          <NavLink
-            href="street-dance-classes-for-adults"
-            text="Adult Classes"
-          />
+          <NavCategory name="Dance Schools">
+            <NavLink
+              href="/street-dance-classes/schools/harlow"
+              text="Harlow Dance School"
+            />
+            <NavLink
+              href="/street-dance-classes/schools/bishops-stortford"
+              text="Stortford Dance School"
+            />
+          </NavCategory>
+          <NavCategory name="Dance Classes">
+            <NavLink
+              href="kids-street-dance-classes-for-kids"
+              text="Kids Classes"
+            />
+            <NavLink
+              href="street-dance-classes-for-adults"
+              text="Adult Classes"
+            />
+          </NavCategory>
           <NavLink
             href="dance-workshops-in-schools-primary"
             text="In Schools"

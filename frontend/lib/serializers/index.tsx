@@ -1,3 +1,4 @@
+// @ts-nocheck
 import getImageUrl from '../getImageUrl';
 import Heading from "../../components/Heading";
 import PageImage from "../../components/PageImage";
@@ -12,6 +13,7 @@ import List from 'components/List';
 import { Url } from 'url';
 
 /** CUSTOM SERIALIZER TYPES **/
+/** Work in Progress **/
 // Based on expected query return shape
 
 interface SanityBlockContent {
