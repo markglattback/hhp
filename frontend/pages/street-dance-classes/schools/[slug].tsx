@@ -4,6 +4,7 @@ import { getAllSlugs, SlugObject, getPageWithSlug, PageContent } from "lib/api/q
 import BlockContent from "@sanity/block-content-to-react";
 import serializers from "lib/serializers";
 import trimSlugPath from "lib/trimSlugPath";
+import getSlugsForDirectory from "lib/getSlugsForDirectory";
 
 type GetStaticPropsParams = {
   params: {
@@ -14,14 +15,14 @@ type GetStaticPropsParams = {
 // trim this from slugs pulled in from CMS
 const directory = 'street-dance-classes/schools/';
 
-export const getStaticPaths: GetStaticPaths = async () => {  
-  const slugs: SlugObject[] = await getAllSlugs();  
-  
+export const getStaticPaths: GetStaticPaths = async () => {
+  const slugs: SlugObject[] = await getSlugsForDirectory(directory);
+
   const params = slugs.map(slug => {
     let slugStr = trimSlugPath(slug.current, directory);
-    
+
     return { params: { slug: slugStr } }
-  });    
+  });
 
   return { paths: params, fallback: false };
 }
@@ -29,7 +30,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps = async ({ params }: GetStaticPropsParams) => {
   const { slug } = params;
-  
+
+  console.log(slug);
+
+
   const pageContent: PageContent = await getPageWithSlug(`${directory}${slug}`);
 
   return {
