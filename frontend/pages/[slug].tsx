@@ -13,13 +13,13 @@ type GetStaticPropsParams = {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const slugs: SlugObject[] = await getAllSlugs();  
-  
+  const slugs: SlugObject[] = await getAllSlugs();
+
   const params = slugs.map(slug => {
     let slugStr = slug.current;
-    
+
     return { params: { slug: slugStr } }
-  });    
+  });
 
   return { paths: params, fallback: false };
 }
@@ -27,7 +27,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps = async ({ params }: GetStaticPropsParams) => {
   const { slug } = params;
-  
+
   const pageContent: PageContent = await getPageWithSlug(slug);
 
   return {
@@ -38,7 +38,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsParams) => {
 }
 
 export default function DynamicPage({ pageContent }: { pageContent: PageContent }) {
-  const { content } = pageContent;
+  const { content = [] } = pageContent;
 
   return (
     <>

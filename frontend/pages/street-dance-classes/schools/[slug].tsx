@@ -31,9 +31,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps = async ({ params }: GetStaticPropsParams) => {
   const { slug } = params;
 
-  console.log(slug);
-
-
   const pageContent: PageContent = await getPageWithSlug(`${directory}${slug}`);
 
   return {

@@ -9,19 +9,19 @@ export type CustomAppProps = AppProps & {
   appProps: any;
 }
 
-export default function MyApp(props: CustomAppProps) {    
+export default function MyApp(props: CustomAppProps) {
   return (
     <>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" href="/favicon.png" />
-
+        <link rel="preconnect" href="https://fonts.gstatic.com"></link>
         <link
-          href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500&display=swap"
           rel="stylesheet"
         ></link>
         <link
-          href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;700&display=swap"
           rel="stylesheet"
         ></link>
       </Head>
@@ -33,7 +33,9 @@ export default function MyApp(props: CustomAppProps) {
 MyApp.getInitialProps = async () => {
   const footerContent = await getFooterContent();
 
-  return { appProps: {
-    footerContent
-  } }
+  return {
+    appProps: {
+      footerContent
+    }
+  }
 }

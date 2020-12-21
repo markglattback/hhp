@@ -1,4 +1,3 @@
-import React from "react";
 import myConfiguredSanityClient from "./client";
 import imageUrlBuilder from "@sanity/image-url";
 
