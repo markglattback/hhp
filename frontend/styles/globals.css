@@ -56,6 +56,10 @@ body {
   height: 100%;
 }
 
+.preload * {
+  transition: none !important;
+}
+
 a {
   color: inherit;
 }

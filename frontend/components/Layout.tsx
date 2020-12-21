@@ -1,6 +1,6 @@
 import { AppProps } from "next/app";
 import Nav from "./Nav";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Container from "../styled components/Container";
 import Footer from "./Footer";
@@ -20,11 +20,16 @@ const ContentGrid = styled.div`
 `;
 
 export default function Layout({ Component, pageProps, appProps }: CustomAppProps) {
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    if (!hydrated) setHydrated(true);
+  }, [])
 
   return (
     <>
-      <ContentGrid>
-        <Nav compact={false} />
+      <ContentGrid className={!hydrated ? 'preload' : undefined}>
+        <Nav />
         <Main>
           <Container>
             <Component {...pageProps} />

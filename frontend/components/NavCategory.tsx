@@ -7,12 +7,15 @@ const NavCatergoryWrapper = styled.li`
   cursor: pointer;
 
   &:before {
-
-      content: "";
+    content: "";
     display: inline-block;
     align-self: stretch;
     width: 1px;
     background: var(--white);
+
+    @media (max-width: 480px) {
+      display: none;
+    }
   }
 
   span {
@@ -25,8 +28,10 @@ const NavCatergoryWrapper = styled.li`
   
     @media (max-width: 1050px) {
       display: block;
+    }
 
-
+    @media (max-width: 480px) {
+      display: none;
     }
   }
 
@@ -49,6 +54,7 @@ const NavCatergoryWrapper = styled.li`
       ul {
         display: flex;
         flex-direction: column;
+        margin-top: 0;
 
         li:hover {
           color: var(--white);
@@ -58,6 +64,14 @@ const NavCatergoryWrapper = styled.li`
           display: none;
         }
       }
+    }
+
+    @media (max-width: 480px) {
+      display: block;
+      position: initial;
+      background: transparent;
+      color: var(--white);
+      transform: translateY(0);
     }
   }
 
