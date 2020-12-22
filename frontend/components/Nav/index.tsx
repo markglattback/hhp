@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import NavCategory from '../NavCategory';
 import NavLink from '../NavLink';
 import NavToggle from '../NavToggle';
@@ -6,11 +6,50 @@ import Header from './styles';
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
+  // const [hydrated, setHydrated] = useState(false);
+  const navRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // if (!hydrated) {
+    //   setHydrated(true);
+    //   navRef.current?.classList.remove('no-transition');
+    // }
+
+    setNavClasses();
+
+    function setNavClasses() {
+      // after first render and when window resize happens, 
+      // if the window is > 700px we re-apply the no-transition class 
+      // and remove it if the window is < 700px
+
+      if (window.innerWidth > 700) {
+
+        if (!navRef.current?.classList.contains('no-transition')) {
+          navRef.current?.classList.add('no-transition');
+        }
+      } else {
+        if (navRef.current?.classList.contains('no-transition')) {
+          navRef.current?.classList.remove('no-transition');
+        }
+      }
+    }
+
+    function handleResize(e: Event) {
+      setNavClasses();
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    }
+
+  }, []);
 
   return (
     <>
       <Header open={open}>
-        <nav>
+        <nav ref={navRef} className="no-transition">
           <div className="brand-logo">
             <img src="/hhp-logo.png" alt="Hip Hop Pop Logo" />
           </div>
