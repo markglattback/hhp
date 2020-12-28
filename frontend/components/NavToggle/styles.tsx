@@ -23,6 +23,8 @@ export default styled.button<Props>`
 
   @media screen and (max-width: 700px) {
     display: block;
+    position: fixed;
+    right: 8px;
   }
 
   span {
@@ -30,7 +32,7 @@ export default styled.button<Props>`
     position: relative;
     /* top: 23px; */
     left: 20px;
-    height: 2px;
+    height: 3px;
     width: 24px;
     background: var(--white);
     transition: all 0.15s ease-in-out 0.15s;
@@ -41,7 +43,7 @@ export default styled.button<Props>`
     content: "";
     display: block;
     position: absolute;
-    height: 2px;
+    height: 3px;
     width: 24px;
     background: var(--white);
     transition: all 0.3s ease-in-out;

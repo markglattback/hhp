@@ -25,6 +25,9 @@ export default styled.header<{ open: boolean }>`
   div.brand-logo > img {
     display: block;
     width: 52px;
+    object-fit: cover;
+    filter: contrast(150%);
+    image-rendering: crisp-edges;
   }
 
   ul {
@@ -67,6 +70,8 @@ export default styled.header<{ open: boolean }>`
   }
 
   @media screen and (max-width: 700px) {
+    height: 64px;
+
     nav {
       flex-direction: column;
       justify-content: flex-start;
@@ -94,9 +99,9 @@ export default styled.header<{ open: boolean }>`
       align-items: center;
     }
 
-     li:not(:first-of-type) a:before {
-       display: none;
-     }
+    li:not(:first-of-type) a:before {
+      display: none;
+    }
   }
   
 `;

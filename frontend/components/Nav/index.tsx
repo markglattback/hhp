@@ -51,52 +51,52 @@ export default function Nav() {
       <Header open={open}>
         <nav ref={navRef} className="no-transition">
           <div className="brand-logo">
-            <img src="/hhp-logo.png" alt="Hip Hop Pop Logo" />
+            <img src="/hip-hop-pop.png" alt="Hip Hop Pop Logo" />
           </div>
           <ul>
             <NavLink
-              href="street-dance-facts"
+              href="/street-dance-facts"
               text="News"
               setOpen={setOpen} />
             <NavCategory name="Dance Schools">
               <NavLink
-                href="street-dance-classes/schools/harlow"
+                href="/street-dance-classes/schools/harlow"
                 text="Harlow Dance School"
                 setOpen={setOpen}
               />
               <NavLink
-                href="street-dance-classes/schools/bishops-stortford"
+                href="/street-dance-classes/schools/bishops-stortford"
                 text="Stortford Dance School"
                 setOpen={setOpen}
               />
             </NavCategory>
             <NavCategory name="Dance Classes">
               <NavLink
-                href="kids-street-dance-classes-for-kids"
+                href="/kids-street-dance-classes-for-kids"
                 text="Kids Classes"
                 setOpen={setOpen}
               />
               <NavLink
-                href="street-dance-classes-for-adults"
+                href="/street-dance-classes-for-adults"
                 text="Adult Classes"
                 setOpen={setOpen}
               />
             </NavCategory>
             <NavLink
-              href="dance-workshops-in-schools-primary"
+              href="/dance-workshops-in-schools-primary"
               text="In Schools"
               setOpen={setOpen}
             />
             <NavLink
-              href="street-dance-events-uk"
+              href="/street-dance-events-uk"
               text="Events"
               setOpen={setOpen} />
             <NavLink
-              href="contact-us-street-dance-classes"
+              href="/contact-us-street-dance-classes"
               text="Contact"
               setOpen={setOpen} />
             <NavLink
-              href="shop-merchandise-street-dance-wear"
+              href="/shop-merchandise-street-dance-wear"
               text="Shop"
               setOpen={setOpen} />
           </ul>

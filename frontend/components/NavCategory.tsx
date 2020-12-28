@@ -13,7 +13,7 @@ const NavCatergoryWrapper = styled.li`
     width: 1px;
     background: var(--white);
 
-    @media (max-width: 480px) {
+    @media (max-width: 700px) {
       display: none;
     }
   }
@@ -30,7 +30,7 @@ const NavCatergoryWrapper = styled.li`
       display: block;
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 700px) {
       display: none;
     }
   }
@@ -66,7 +66,7 @@ const NavCatergoryWrapper = styled.li`
       }
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 700px) {
       display: block;
       position: initial;
       background: transparent;

@@ -19,12 +19,14 @@ const ContentGrid = styled.div`
   flex: 1 0 auto;
 `;
 
+
+
 export default function Layout({ Component, pageProps, appProps }: CustomAppProps) {
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
     if (!hydrated) setHydrated(true);
-  }, [])
+  }, []);
 
   return (
     <>
