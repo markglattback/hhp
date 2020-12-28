@@ -1,3 +1,4 @@
+import NavLogo from "components/NavLogo";
 import { useEffect, useRef, useState } from "react";
 import NavCategory from '../NavCategory';
 import NavLink from '../NavLink';
@@ -6,15 +7,9 @@ import Header from './styles';
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
-  // const [hydrated, setHydrated] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // if (!hydrated) {
-    //   setHydrated(true);
-    //   navRef.current?.classList.remove('no-transition');
-    // }
-
     setNavClasses();
 
     function setNavClasses() {
@@ -49,10 +44,8 @@ export default function Nav() {
   return (
     <>
       <Header open={open}>
+        <NavLogo path="/hip-hop-pop.png" />
         <nav ref={navRef} className="no-transition">
-          <div className="brand-logo">
-            <img src="/hip-hop-pop.png" alt="Hip Hop Pop Logo" />
-          </div>
           <ul>
             <NavLink
               href="/street-dance-facts"

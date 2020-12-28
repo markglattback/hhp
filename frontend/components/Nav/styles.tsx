@@ -73,6 +73,8 @@ export default styled.header<{ open: boolean }>`
     height: 64px;
 
     nav {
+      position: fixed;
+      width: 100%;
       flex-direction: column;
       justify-content: flex-start;
       height: 100vh;

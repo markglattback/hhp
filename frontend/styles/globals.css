@@ -60,6 +60,10 @@ body {
   transition: none !important;
 }
 
+.stop-scroll {
+  overflow: hidden;
+}
+
 a {
   color: inherit;
 }
