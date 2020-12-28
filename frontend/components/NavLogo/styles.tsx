@@ -14,4 +14,12 @@ export default styled.div`
     top: 6px;
     left: 12px;
   }
+
+  @media (max-width: 480px) {
+    top: 12px;
+    left: 24px;
+    img {
+      width: 40px;
+    }
+  }
 `;

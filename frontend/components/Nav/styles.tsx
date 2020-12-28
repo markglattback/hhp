@@ -1,6 +1,8 @@
 import styled, { css } from "styled-components";
 
 export default styled.header<{ open: boolean }>`
+  display: flex;
+  justify-content: center;
   grid-area: content;
   position: fixed;
   top: 0px;
@@ -19,7 +21,6 @@ export default styled.header<{ open: boolean }>`
     justify-content: center;
     align-items: center;
     max-width: min(100%, var(--maxWidth));
-    margin: 0 auto;
   }
 
   div.brand-logo > img {
