@@ -81,6 +81,7 @@ export default styled.header<{ open: boolean }>`
       height: 100vh;
       background: var(--black);
       opacity: 0;
+      visibility: hidden;
       transition: 0.15s ease-in;
 
       &.no-transition {
@@ -88,6 +89,7 @@ export default styled.header<{ open: boolean }>`
       }
 
       ${({ open }) => open && css`
+        visibility: initial;
         opacity: 1;
       `}
     }
