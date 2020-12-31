@@ -14,7 +14,7 @@ jobs:
       - run: ls
       - run: npm install
       - run: npm run build 
-      - save-cache:
+      - save_cache:
           key: dependency-cache
           paths:
             - node_modules
