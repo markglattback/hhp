@@ -1,7 +1,21 @@
 version: 2.1
 orbs:
   node: circleci/node@3.0.0
+executors:
+  frontend-executor:
+    working-directory: ~/frontend/
+jobs:
+  build:
+    steps:
+      - checkout
+      - run: next build
+  test:
+    steps:
+      - node/test
 workflows:
   node-tests:
     jobs:
-      - node/test
+      - build
+      - test:
+        requires:
+          - build
