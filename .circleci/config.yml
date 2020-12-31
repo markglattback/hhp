@@ -1,15 +1,18 @@
 version: 2.1
-orbs:
-  node: circleci/node@3.0.0
 executors:
-  frontend-executor:
-    working-directory: ~/frontend/
+  frontend:
+    docker:
+      - image: cimg/node:14.15.1
 jobs:
   build:
+    executor:
+      frontend
     steps:
       - checkout
       - run: next build
   test:
+    executor:
+      frontend
     steps:
       - node/test
 workflows:
@@ -17,5 +20,5 @@ workflows:
     jobs:
       - build
       - test:
-        requires:
+          requires:
           - build
