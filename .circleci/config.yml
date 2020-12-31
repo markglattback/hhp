@@ -3,18 +3,24 @@ executors:
   frontend:
     docker:
       - image: cimg/node:14.15.1
+    working_directory: ~/hhp/frontend
 jobs:
   build:
     executor:
       frontend
     steps:
-      - checkout
-      - run: next build
+      - checkout:
+          path: ~/hhp
+      - run: ls
+      - run: npm install
+      - run: npm run build 
   test:
     executor:
       frontend
     steps:
-      - node/test
+      - checkout:
+          path: ~/hhp
+      - run: npm run test
 workflows:
   node-tests:
     jobs:
