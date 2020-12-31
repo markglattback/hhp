@@ -14,12 +14,18 @@ jobs:
       - run: ls
       - run: npm install
       - run: npm run build 
+      - save-cache:
+          key: dependency-cache
+          paths:
+            - node_modules
   test:
     executor:
       frontend
     steps:
       - checkout:
           path: ~/hhp
+      - restore_cache:
+          key: dependency-cache
       - run: npm run test
 workflows:
   node-tests:
