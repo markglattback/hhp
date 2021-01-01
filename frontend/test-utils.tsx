@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { render, RenderOptions, RenderResult, Queries } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
+import '@testing-library/jest-dom';
 import { RouterContext } from 'next/dist/next-server/lib/router-context'
 import { NextRouter } from 'next/router';
 
