@@ -1,19 +1,6 @@
 version: 2.1
 orbs:
   node: circleci/node@4.1.0
-jobs:
-  build-and-test:
-    parameters:
-      frontend:
-        default: "./frontend"
-        type: string
-    docker:
-      - image: 'cimg/node:14.15.1'
-    steps:
-      - checkout
-      - node/install-packages:
-          app-dir: << parameters.frontend >>
-          cache-path: ./frontend/node_modules
 workflows:
   node-tests:
     jobs:
