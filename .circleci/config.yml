@@ -17,6 +17,5 @@ jobs:
 workflows:
   node-tests:
     jobs:
-      - build-and-test
       - node/test:
           app-dir: './frontend'
