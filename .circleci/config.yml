@@ -1,36 +1,22 @@
 version: 2.1
-executors:
-  frontend:
-    docker:
-      - image: cimg/node:14.15.1
-    working_directory: ~/hhp/frontend
+orbs:
+  node: circleci/node@4.1.0
 jobs:
-  build:
-    executor:
-      frontend
+  build-and-test:
+    parameters:
+      frontend:
+        default: "./frontend"
+        type: string
+    docker:
+      - image: 'cimg/node:14.15.1'
     steps:
-      - checkout:
-          path: ~/hhp
-      - run: ls
-      - run: npm install
-      - run: npm run build 
-      - save_cache:
-          key: dependency-cache
-          paths:
-            - node_modules
-  test:
-    executor:
-      frontend
-    steps:
-      - checkout:
-          path: ~/hhp
-      - restore_cache:
-          key: dependency-cache
-      - run: npm run test
+      - checkout
+      - node/install-packages:
+          app-dir: << parameters.frontend >>
+          cache-path: ./frontend/node_modules
 workflows:
   node-tests:
     jobs:
-      - build
-      - test:
-          requires:
-          - build
+      - build-and-test
+      - node/test:
+          app-dir: './frontend'
