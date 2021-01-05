@@ -6,18 +6,22 @@ import { NextRouter } from 'next/router';
 
 type CustomRendererOptions = RenderOptions<Queries>;
 
-const router: NextRouter = {
+export const mockedRouter: NextRouter = {
   asPath: '',
   basePath: '',
   pathname: '',
   query: {},
   route: '',
   back: jest.fn(),
-  push: jest.fn(),
+  push: (path) => {
+    const pushed = jest.fn();
+    pushed(path);
+    return new Promise((resolve, reject) => resolve(true));
+  },
   replace: jest.fn(),
   reload: jest.fn(),
   beforePopState: jest.fn(),
-  prefetch: jest.fn(),
+  prefetch: () => new Promise((resolve, reject) => { }),
   events: {
     emit: jest.fn(),
     on: jest.fn(),
@@ -30,7 +34,7 @@ const router: NextRouter = {
 // as and when they get added to the app
 const AllAppProviders = ({ children }: { children?: ReactNode }) => {
   return (
-    <RouterContext.Provider value={router}>
+    <RouterContext.Provider value={mockedRouter}>
       {children}
     </RouterContext.Provider>
   )
