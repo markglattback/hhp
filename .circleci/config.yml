@@ -6,9 +6,8 @@ jobs:
     docker:
       - image: cimg/node:14.15.1
     steps:
-      - restore_cache:
-          keys:
-            - node-deps-v1
+      - checkout
+      - run: npm install
       - run:
           name: "Run Jest and Collect Coverage Reports"
           command: jest --collectCoverage=true
@@ -19,6 +18,4 @@ workflows:
     jobs:
       - node/test:
           app-dir: './frontend'
-      - coverage:
-          requires: 
-            - node/test
+      - coverage
