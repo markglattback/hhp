@@ -18,7 +18,7 @@ jobs:
       - store_artifacts:
           path: frontend/coverage
       - codecov/upload:
-          file: /hhp/frontend/coverage/clover.xml
+          file: /home/circleci/project/frontend/coverage/clover.xml
 workflows:
   node-tests:
     jobs:
