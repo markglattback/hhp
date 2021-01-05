@@ -1,4 +1,4 @@
-[![markglattback](https://circleci.com/gh/markglattback/hhp.svg?style=shield)](https://app.circleci.com/pipelines/github/markglattback/hhp)
+![CircleCI](https://img.shields.io/circleci/build/gh/markglattback/hhp?label=tests)
 
 # HHP
 
