@@ -1,4 +1,5 @@
-![CircleCI](https://img.shields.io/circleci/build/gh/markglattback/hhp?label=tests)
+![CircleCI](https://img.shields.io/circleci/build/gh/markglattback/hhp?label=tests) [![codecov](https://codecov.io/gh/markglattback/hhp/branch/main/graph/badge.svg?token=4W0FHJSRDV)](https://codecov.io/gh/markglattback/hhp)
+
 
 # HHP
 
