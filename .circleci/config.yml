@@ -12,7 +12,7 @@ jobs:
           working_directory: './frontend'
       - run:
           name: "Run Jest and Collect Coverage Reports"
-          command: jest --collectCoverage=true
+          command: coverage
           working_directory: './frontend'
       - store_artifacts:
           path: frontend/coverage
