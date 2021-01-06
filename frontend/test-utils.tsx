@@ -30,6 +30,9 @@ export const mockedRouter: NextRouter = {
   isFallback: false
 }
 
+export const leftClickConfig = { button: 0 };
+
+
 // add all application context providers in here 
 // as and when they get added to the app
 const AllAppProviders = ({ children }: { children?: ReactNode }) => {

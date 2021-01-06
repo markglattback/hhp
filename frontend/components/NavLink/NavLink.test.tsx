@@ -1,5 +1,5 @@
 import userEvent from '@testing-library/user-event'
-import { mockedRouter, render, screen } from 'test-utils';
+import { leftClickConfig, mockedRouter, render, screen } from 'test-utils';
 import { useState } from 'react';
 import NavLink from './index';
 
@@ -9,7 +9,7 @@ const text = 'Dance Classes';
 const href = '/test';
 
 // Nav Mock
-function NavBar() {
+function NavMock() {
   const [open, setOpen] = useState(true);
 
   return (
@@ -20,7 +20,7 @@ function NavBar() {
 }
 
 test('displays correctly', () => {
-  render(<NavBar />);
+  render(<NavMock />);
 
   const link = screen.getByRole('link');
 
@@ -29,12 +29,12 @@ test('displays correctly', () => {
 });
 
 test('pushes new route correctly', () => {
-  render(<NavBar />);
+  render(<NavMock />);
 
   const link = screen.getByRole('link');
   const push = jest.spyOn(mockedRouter, 'push');
 
-  userEvent.click(link, { button: 0 });
+  userEvent.click(link, leftClickConfig);
   expect(push).toHaveBeenCalledWith(href, href, { locale: undefined, shallow: undefined });
 });
 

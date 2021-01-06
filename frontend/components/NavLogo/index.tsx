@@ -11,7 +11,7 @@ export default function NavLogo({ path }: { path: string; }) {
   }
 
   return (
-    <LogoWrapper onClick={handleOnClick}>
+    <LogoWrapper onClick={handleOnClick} data-testid="nav-logo">
       <img src={path} alt="Hip Hop Pop Logo" />
     </LogoWrapper>
   )

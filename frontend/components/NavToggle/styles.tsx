@@ -30,7 +30,6 @@ export default styled.button<Props>`
   span {
     display: block;
     position: relative;
-    /* top: 23px; */
     left: 20px;
     height: 3px;
     width: 24px;

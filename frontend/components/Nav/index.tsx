@@ -43,9 +43,9 @@ export default function Nav() {
 
   return (
     <>
-      <Header open={open}>
+      <Header open={open} data-testid="header">
         <NavLogo path="/hip-hop-pop.png" />
-        <nav ref={navRef} className="no-transition">
+        <nav ref={navRef} className="no-transition" data-testid="nav">
           <ul>
             <NavLink
               href="/street-dance-facts"

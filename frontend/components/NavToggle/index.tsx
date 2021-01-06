@@ -17,8 +17,8 @@ export default function NavToggle({ open, setOpen }: Props) {
   }
 
   return (
-    <StyledToggle open={open} onMouseDown={toggleMenu}>
-      <span id="mobile-navigation-toggle" role=""></span>
+    <StyledToggle open={open} onMouseDown={toggleMenu} data-testid="nav-toggle">
+      <span id="mobile-navigation-toggle" data-testid="nav-toggle-span"></span>
     </StyledToggle>
   );
 }
