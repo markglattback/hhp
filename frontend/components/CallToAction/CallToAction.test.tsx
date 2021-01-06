@@ -19,6 +19,7 @@ test('it should render correctly', () => {
   render(<CallToAction {...props} />);
 
   // Text displays correctly
+  expect(screen.getAllByTestId('call-to-action')).toBeInTheDocument();
   expect(screen.getByTestId('cta-first-line')).toHaveTextContent(firstLine);
   expect(screen.getByTestId('cta-second-line')).toHaveTextContent(secondLine as string);
 
