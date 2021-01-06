@@ -18,6 +18,10 @@ export default styled.div`
     margin-bottom: 1.5rem;
   }
 
+  div.text {
+    line-height: 1.3;
+  }
+
   div.buttons {
     display: grid;
     grid-template-columns: repeat(2, 1fr);

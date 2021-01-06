@@ -17,7 +17,8 @@ export function LinkButton({ text, ...props }: ButtonProps) {
 }
 
 export type CallToActionProps = {
-  headline: BlockContentProps['blocks'];
+  firstLine: string;
+  secondLine?: string;
   buttonOneText: string;
   buttonOneLink: string;
   buttonTwoText: string;
@@ -25,7 +26,8 @@ export type CallToActionProps = {
 };
 
 export default function CallToAction({
-  headline,
+  firstLine,
+  secondLine,
   buttonOneText,
   buttonOneLink,
   buttonTwoText,
@@ -33,7 +35,16 @@ export default function CallToAction({
 }: CallToActionProps) {
   return (
     <StyledCallToAction data-testid="call-to-action">
-      <BlockContent blocks={headline} serializers={serializers} />
+      <div className="text">
+        <span>{firstLine}</span>
+        {secondLine && (
+          <>
+            <br />
+            <span>{secondLine}</span>
+          </>
+        )
+        }
+      </div>
       <div className="buttons">
         <LinkButton text={buttonOneText} href={buttonOneLink} />
         <LinkButton text={buttonTwoText} href={buttonTwoLink} />

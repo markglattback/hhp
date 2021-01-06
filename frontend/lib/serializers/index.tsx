@@ -186,7 +186,8 @@ export default {
     callToAction: (props) => {
       return (
         <CallToActionSection
-          headline={props.node.headlineText}
+          firstLine={props.node.firstLine}
+          secondLine={props.node.secondLine}
           buttonOneText={props.node.buttonOneText}
           buttonOneLink={props.node.buttonOneLink.slug}
           buttonTwoText={props.node.buttonTwoText}
