@@ -11,7 +11,7 @@ export type ButtonProps = {
 export function LinkButton({ text, ...props }: ButtonProps) {
   return (
     <Link {...props} >
-      <a className="button">{text}</a>
+      <a className="link">{text}</a>
     </Link>
   )
 }
@@ -36,16 +36,16 @@ export default function CallToAction({
   return (
     <StyledCallToAction data-testid="call-to-action">
       <div className="text">
-        <span>{firstLine}</span>
+        <span data-testid="cta-first-line">{firstLine}</span>
         {secondLine && (
           <>
             <br />
-            <span>{secondLine}</span>
+            <span data-testid="cta-second-line">{secondLine}</span>
           </>
         )
         }
       </div>
-      <div className="buttons">
+      <div className="links" data-testid="cta-links">
         <LinkButton text={buttonOneText} href={buttonOneLink} />
         <LinkButton text={buttonTwoText} href={buttonTwoLink} />
       </div>

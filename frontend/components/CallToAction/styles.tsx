@@ -22,13 +22,13 @@ export default styled.div`
     line-height: 1.3;
   }
 
-  div.buttons {
+  div.links {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
   }
 
-  a.button {
+  a.link {
     background: var(--white);
     color: var(--black);
     font-size: 1rem;
