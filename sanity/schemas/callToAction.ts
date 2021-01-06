@@ -8,9 +8,14 @@ export default Sanity.createDocumentType({
   fields: [
     internal,
     {
-      name: "headlineText",
-      title: "Headline Text",
-      type: "blockContent",
+      name: "firstLine",
+      title: "Text - First Line",
+      type: "string",
+    },
+    {
+      name: "secondLine",
+      title: "Text - Second Line",
+      type: "string",
     },
     {
       name: "buttonOneText",
