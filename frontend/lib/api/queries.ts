@@ -21,7 +21,7 @@ export type PageContent = {
   slug: {
     _type: string;
     current: string;
-  };  
+  };
 };
 
 export async function getPageWithSlug(slug: string): Promise<PageContent> {
@@ -69,7 +69,7 @@ export async function getPageWithSlug(slug: string): Promise<PageContent> {
       }
     }
     
-    `, 
+    `,
     { slug }
   )
 
@@ -106,7 +106,7 @@ export async function getAllSlugs(): Promise<SlugObject[]> {
   return data.map((page: PageContent) => page.slug);
 }
 
-export default async function getAllPageContent({slug}: {slug: string}): Promise<{ pageContent: PageContent, footerContent: Category[] }> {
+export default async function getAllPageContent({ slug }: { slug: string }): Promise<{ pageContent: PageContent, footerContent: Category[] }> {
   const pageContent = await getPageWithSlug(slug);
   const footerContent = await getFooterContent();
 
