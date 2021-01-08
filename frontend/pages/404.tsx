@@ -1,8 +1,7 @@
 import Head from "next/head";
 import { InferGetStaticPropsType } from "next";
-import BlockContent from "@sanity/block-content-to-react";
 import { getPageWithSlug, PageContent } from "lib/api/queries";
-import serializers from "lib/serializers";
+import SanityBlockContent from "components/SanityBlockContent";
 
 export const getStaticProps = async () => {
   const pageContent: PageContent = await getPageWithSlug('/404');
@@ -29,7 +28,7 @@ export default function Custom404({
         {content.map((section) => {
           return (
             <section id={section.sectionName} key={section._key}>
-              <BlockContent blocks={section.content} serializers={serializers} />
+              <SanityBlockContent blocks={section.content} />
             </section>
           )
         })}

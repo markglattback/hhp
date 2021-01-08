@@ -1,7 +1,6 @@
-import * as React from 'react';
 import styled from 'styled-components';
 
-const NavCatergoryWrapper = styled.li`
+export default styled.li`
   display: flex;
   position: relative;
   cursor: pointer;
@@ -88,27 +87,3 @@ const NavCatergoryWrapper = styled.li`
   }
 
 `;
-
-type NavCategoryProps = {
-  name: string;
-  children: JSX.Element[];
-}
-
-export default function NavCategory({ name, children }: NavCategoryProps) {
-  return (
-    <NavCatergoryWrapper className="nav-category">
-      <span>{name}</span>
-      <div className="dropdown-wrapper">
-        <ul role="group">
-          {children.map((link, index) => {
-            return React.cloneElement(
-              link,
-              { ...link.props, role: "menuitem", key: `${name}-${index}` },
-              null
-            );
-          })}
-        </ul>
-      </div>
-    </NavCatergoryWrapper>
-  )
-}

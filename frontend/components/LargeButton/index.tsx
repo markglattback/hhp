@@ -1,44 +1,7 @@
-import styled from "styled-components";
 import Link, { LinkProps } from "next/link";
 import BlockContent from "@sanity/block-content-to-react";
-import serializers from "../lib/serializers";
-import { UrlObject } from "url";
-import { useRouter } from "next/router";
-
-const Wrapper = styled.div`
-  width: fit-content;
-  margin: 1.5rem auto;
-
-  button, a.button {
-    display: block;
-    border: none;
-    background: var(--yellow);
-    color: var(--black);
-    padding: 1rem 2rem;
-    font-size: 1rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    margin: 0 auto;
-    cursor: pointer;
-
-    :hover {
-      background: var(--white);
-    }
-  }
-
-  a.button {
-    text-decoration: none;
-  }
-
-  .caption {
-    width: 100%;
-
-    p {
-      margin: 0;
-      margin-top: 0.5rem;
-    }
-  }
-`;
+import serializers from "../../lib/serializers";
+import StyledWrapper from './styles'
 
 interface Props extends LinkProps {
   buttonText: string;
@@ -61,7 +24,7 @@ export default function LargeButton({
   if (!href.startsWith('/')) isExternalUrl = true;
 
   return (
-    <Wrapper>
+    <StyledWrapper>
       <div>
         {!isExternalUrl && (<Link href={href} {...props}>
           <button type="button">{buttonText}</button>
@@ -73,6 +36,6 @@ export default function LargeButton({
           </div>
         )}
       </div>
-    </Wrapper>
+    </StyledWrapper>
   );
 }

@@ -1,25 +1,9 @@
-import { AppProps } from "next/app";
-import Nav from "./Nav";
 import { useEffect, useState } from "react";
-import styled from "styled-components";
-import Container from "../styled components/Container";
-import Footer from "./Footer";
 import { CustomAppProps } from "pages/_app";
-
-const Main = styled.main`
-  grid-area: content;
-  padding-top: 54px;
-  text-align: center;
-  flex: 1 0 auto;
-`;
-
-const ContentGrid = styled.div`
-  display: grid;
-  grid-template-areas: "content";
-  flex: 1 0 auto;
-`;
-
-
+import Nav from "../Nav";
+import Footer from "../Footer";
+import { ContentGrid, Main } from "./styles";
+import Container from "../../styles/styled components/Container";
 
 export default function Layout({ Component, pageProps, appProps }: CustomAppProps) {
   const [hydrated, setHydrated] = useState(false);

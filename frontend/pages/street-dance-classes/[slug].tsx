@@ -1,10 +1,9 @@
 import Head from "next/head";
 import { GetStaticPaths } from "next"
-import { getAllSlugs, SlugObject, getPageWithSlug, PageContent } from "lib/api/queries"
-import BlockContent from "@sanity/block-content-to-react";
-import serializers from "lib/serializers";
+import { SlugObject, getPageWithSlug, PageContent } from "lib/api/queries"
 import trimSlugPath from "lib/trimSlugPath";
 import getSlugsForDirectory from "lib/getSlugsForDirectory";
+import SanityBlockContent from "components/SanityBlockContent";
 
 type GetStaticPropsParams = {
   params: {
@@ -54,7 +53,7 @@ export default function DynamicPage({ pageContent }: { pageContent: PageContent 
         {content.map((section) => {
           return (
             <section id={section.sectionName} key={section._key}>
-              <BlockContent blocks={section.content} serializers={serializers} />
+              <SanityBlockContent blocks={section.content} />
             </section>
           )
         })}
