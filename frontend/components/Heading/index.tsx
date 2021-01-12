@@ -1,4 +1,4 @@
-import { HeadingTagProps } from '../../lib/serializers/index';
+import { HeadingProps } from './types';
 import StyledHeading from './styles';
 
 function NewLine({ text }: { text: string | undefined }) {
@@ -12,7 +12,7 @@ function NewLine({ text }: { text: string | undefined }) {
   )
 }
 
-export default function Heading(props: HeadingTagProps['node']) {
+export default function Heading(props: HeadingProps['node']) {
   const reversed = props.displaySubHeadingFirst;
 
   const HeadingContent = () => (

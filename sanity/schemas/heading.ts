@@ -1,7 +1,7 @@
 import { Rule } from '@sanity/validation/src/Rule';
 import Sanity from './helpers';
 
-export default Sanity.createObjectType({
+const { object: heading, query } = Sanity.defineObject({
   name: "heading",
   title: "Heading",
   type: "object",
@@ -139,3 +139,6 @@ export default Sanity.createObjectType({
     }
   ],
 });
+
+export type HeadingQuery = typeof query;
+export default heading;

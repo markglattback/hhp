@@ -1,0 +1,1 @@
+export type { HeadingQuery } from '../../../sanity/schemas/heading'; 

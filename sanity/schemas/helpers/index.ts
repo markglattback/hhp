@@ -1,3 +1,4 @@
+import * as React from "react"; // to access JSX namespace
 import createSchema from "part:@sanity/base/schema-creator";
 import schemaTypes from "all:part:@sanity/base/schema-type";
 import { Rule } from "@sanity/validation/src/Rule";
@@ -13,7 +14,6 @@ export interface SanitySchemaType {
   hidden?: boolean;
   readOnly?: boolean;
   description?: string;
-  validation?: Validation;
 }
 
 export interface SanityArrayType extends SanitySchemaType {
@@ -62,7 +62,7 @@ export interface SanityDocumentType extends SanitySchemaType {
   type: 'document';
   liveEdit?: boolean;
   orderings?: DocumentOrderings[];
-  fields: SanityFields[];
+  fields: SanityField[];
   fieldsets?: SanityFieldset[];
   preview?: SanityPreview;
 }
@@ -99,7 +99,7 @@ export interface SanityImageType extends SanitySchemaType {
 export interface SanityNumberType extends SanitySchemaType {
   type: 'number';
   options?: {
-    list?: Array<number | { value: number, title: string }>;
+    list?: Array<number> | Array<{ value: number, title: string }>;
 
   }
   // validation?: SanityValidationFunction<NumberValidationRule>;
@@ -107,7 +107,7 @@ export interface SanityNumberType extends SanitySchemaType {
 
 export interface SanityObjectType extends SanitySchemaType {
   type: 'object';
-  fields: SanityFields[];
+  fields: SanityField[];
   fieldsets?: SanityFieldset[];
   preview?: SanityPreview;
   inputComponent?: JSX.Element;
@@ -202,6 +202,80 @@ export type SanityContentTypes =
   | SanityTextType
   | SanityURLType
 
+// export type SanityField =
+//   {
+//     name: string;
+//     fieldset?: string;
+//   } &
+//   (
+//     | SanityArrayType
+//     | SanityBlockType
+//     | SanityBooleanType
+//     | SanityDateType
+//     | SanityDateTimeType
+//     | SanityFileType
+//     | SanityGeopointType
+//     | SanityImageType
+//     | SanityNumberType
+//     | SanityObjectType
+//     | SanityReferenceType
+//     | SanitySlugType
+//     | ({ type: 'string' } & Omit<SanityStringType, 'type'>)
+//     | SanityTextType
+//     | SanityURLType
+//     | ({ type: string extends DefaultSchemaTypes ? never : string; } &
+//       SanitySchemaType & { [key: string]: any })
+//   )
+
+type PropertiesFromType<T extends SanitySchemaType> = Exclude<T, 'type'>;
+
+export type SanityField = StandardSanityField | CustomSanityField
+
+export type StandardSanityField = {
+  name: string;
+  fieldset?: string;
+} &
+  (
+    { type: 'array' } & PropertiesFromType<SanityArrayType>
+    | { type: 'block' } & PropertiesFromType<SanityBlockType>
+    | { type: 'boolean' } & PropertiesFromType<SanityBooleanType>
+    | { type: 'date' } & PropertiesFromType<SanityDateType>
+    | { type: 'datetime' } & PropertiesFromType<SanityDateTimeType>
+    | { type: 'file' } & PropertiesFromType<SanityFileType>
+    | { type: 'geopoint' } & PropertiesFromType<SanityGeopointType>
+    | { type: 'image' } & PropertiesFromType<SanityImageType>
+    | { type: 'number' } & PropertiesFromType<SanityNumberType>
+    | { type: 'object' } & PropertiesFromType<SanityObjectType>
+    | { type: 'reference' } & PropertiesFromType<SanityReferenceType>
+    | { type: 'slug' } & PropertiesFromType<SanitySlugType>
+    | { type: 'string' } & PropertiesFromType<SanityStringType>
+    | { type: 'text' } & PropertiesFromType<SanityTextType>
+    | { type: 'url' } & PropertiesFromType<SanityURLType>
+  );
+
+export type CustomSanityField = {
+  name: string;
+  fieldset?: string;
+  type: string extends
+  'array'
+  | 'block'
+  | 'boolean'
+  | 'date'
+  | 'datetime'
+  | 'file'
+  | 'geopoint'
+  | 'image'
+  | 'number'
+  | 'object'
+  | 'reference'
+  | 'slug'
+  | 'string'
+  | 'text'
+  | 'url'
+  ? never
+  : string;
+}
+
 //  Array specific types
 type ArrayContentTypes =
   | { type: 'reference', to: { type: string, title?: string }[] }
@@ -289,9 +363,9 @@ interface DocumentOrderings {
 /* Field Types */
 // type SanityFields = SanityContentTypes;
 type Overwrite<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;
-type SanityFields = SanityContentTypes | Overwrite<SanityContentTypes, { type: string }> // required to allow custom types in field name
+export type SanityFields = { fieldset?: string } & SanityContentTypes | Overwrite<SanityContentTypes, { type: string }> // required to allow custom types in field name
 
-interface SanityFieldset {
+export interface SanityFieldset {
   name: string;
   title: string;
   options?: {
@@ -302,7 +376,7 @@ interface SanityFieldset {
 }
 
 //  Previews
-type SanityPreview =
+export type SanityPreview =
   | {
     select: {
       title?: string;
@@ -324,11 +398,15 @@ interface Validation {
 
 // Result Types
 
-export interface SanityObjectResult {
-  _key?: string; // if part of an array response
-  _type: string;
-}
+export type SanityObjectResult<T extends SanityObjectType> = SanityObjectResultHelper<T, T['fields'][number]>
 
+type SanityObjectResultHelper<T extends SanityObjectType, X extends SanityFields> = {
+  _type: T['name'];
+  _key?: string;
+} &
+  {
+    [K in X['name']]: FieldResult<X & { name: K }>
+  }
 
 
 // Works
@@ -349,9 +427,15 @@ type FieldResult<T extends SanityFields> =
   T['type'] extends 'array' ? SanityFields[]
   : T['type'] extends 'boolean' ? boolean
   : T['type'] extends 'number' ? number
+  : T extends (SanityStringType & { fieldset: string }) ? StringLiteral<T>
   : T['type'] extends 'string' ? string
   : any;
 
+
+type StringLiteral<T extends SanityStringType> =
+  T['options'] extends { list: Array<string | { value: string, title: string }>;[key: string]: any } ?
+  T['options']['list'] extends Array<string> ? T['options']['list'][number] :
+  string : string;
 
 // Types for creation of content types when using Sanity static methods
 type CreateArrayTypeSchema<T extends SanityArrayType> = {
@@ -368,8 +452,11 @@ type CreateObjectTypeSchema<T extends SanityObjectType> = {
   [K in keyof T]: T[K];
 } & {
   fields: Array<Readonly<T['fields'][number]>>;
-  fieldset?: Array<Readonly<T['fieldsets'] extends Array<SanityFieldset> ? T['fieldsets'][number] : undefined>>;
 }
+
+type SanityObjectTypeWithFieldsets = Overwrite<SanityObjectType, { fieldsets: SanityFieldset[] }>
+
+type FieldsetHelper<T extends SanityObjectType> = T['fieldsets'] extends Array<SanityFieldset> ? Array<T['fieldsets'][number]> : undefined;
 
 type CreateReferenceTypeSchema<T extends SanityReferenceType> = {
   [K in keyof T]: T[K];
@@ -395,19 +482,36 @@ export default class Sanity {
     return { ...schema };
   }
 
-  static createDocumentType<T extends SanityDocumentType>(schema: CreateDocumentTypeSchema<T>): { [K in keyof typeof schema]: typeof schema[K] } {
-    return { ...schema, fields: schema.fields, fieldsets: schema.fieldsets };
+  static createDocumentType<T extends SanityDocumentType>(schema: CreateDocumentTypeSchema<T>) {
+    return { ...schema };
   }
 
-  static createObjectType<T extends SanityObjectType>(schema: CreateObjectTypeSchema<T>): { [K in keyof typeof schema]: typeof schema[K] } {
-    return { ...schema, fields: schema.fields, fieldsets: schema.fieldsets };
+  static createObjectType<T extends SanityObjectType>(schema: CreateObjectTypeSchema<T>) {
+
+    return { ...schema }
   }
+
 
   static createReferenceType<T extends SanityReferenceType>(schema: CreateReferenceTypeSchema<T>): { [K in keyof typeof schema]: typeof schema[K] } {
     return { ...schema, to: schema.to };
   }
+
+  static getStringLiteralValues(field: SanityFields) {
+    if (isStringType(field)) {
+      field.options?.list?.map(val => {
+        if (typeof val === 'string') return val;
+        return val.title;
+      })
+    }
+
+    return field;
+  }
+
 }
 
+export function isStringType(field: SanityFields): field is SanityStringType {
+  return (field as SanityStringType).options !== undefined;
+}
 
 interface SchemaReturnType<N, T> {
   _source: {
