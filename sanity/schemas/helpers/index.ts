@@ -3,9 +3,18 @@ import createSchema from "part:@sanity/base/schema-creator";
 import schemaTypes from "all:part:@sanity/base/schema-type";
 import { Rule } from "@sanity/validation/src/Rule";
 
+
+
+/**********************************************************************
+ **
+ **    Sanity Schema Types
+ **
+ *********************************************************************/
+
+
 type DefaultSchemaTypes = 'array' | 'block' | 'boolean' | 'date' | 'datetime' | 'document' | 'file' | 'geopoint' | 'image' | 'number' | 'object' | 'reference' | 'slug' | 'string' | 'span' | 'text' | 'url';
 
-//  SCHEMA TYPES
+/*********************************************************************/
 
 export interface SanitySchemaType {
   type: DefaultSchemaTypes;
@@ -16,6 +25,8 @@ export interface SanitySchemaType {
   description?: string;
 }
 
+/*********************************************************************/
+
 export interface SanityArrayType extends SanitySchemaType {
   type: 'array';
   of: ArrayContentTypes[];
@@ -25,8 +36,17 @@ export interface SanityArrayType extends SanitySchemaType {
     list?: { value: string, title: string }[];
     editModal?: 'dialog' | 'fullscreen' | 'popover';
   };
-  // validation?: SanityValidationFunction<ArrayValidation>;
 }
+
+/*********************************************************************/
+//  Array Specific Types
+
+type ArrayContentTypes =
+  | { type: 'reference', to: { type: string, title?: string }[] }
+  | { type: string extends 'reference' | 'block' ? never : string, title?: string, options?: any }
+  | SanityBlockType;
+
+/*********************************************************************/
 
 export interface SanityBlockType extends SanitySchemaType {
   type: 'block';
@@ -35,256 +55,11 @@ export interface SanityBlockType extends SanitySchemaType {
   marks?: BlockMarks;
   of?: ArrayContentTypes[];
   icon?: JSX.Element;
-  // validation?: SanityValidationFunction<BasicValidation>;
 }
 
-export interface SanityBooleanType extends SanitySchemaType {
-  type: 'boolean';
-  options?: {
-    layout?: 'switch' | 'checkbox';
-  };
-  // validation?: SanityValidationFunction<BasicValidation>;
-}
+/*********************************************************************/
+//  Block Specific Types
 
-export interface SanityDateType extends SanitySchemaType {
-  type: 'date';
-  options?: DateOptions;
-  // validation?: SanityValidationFunction<BasicValidation>;
-}
-
-export interface SanityDateTimeType extends SanitySchemaType {
-  type: 'datetime';
-  options?: DateTimeOptions;
-  // validation?: SanityValidationFunction<BasicValidation>;
-}
-
-export interface SanityDocumentType extends SanitySchemaType {
-  type: 'document';
-  liveEdit?: boolean;
-  orderings?: DocumentOrderings[];
-  fields: SanityField[];
-  fieldsets?: SanityFieldset[];
-  preview?: SanityPreview;
-}
-
-export interface SanityFileType extends SanitySchemaType {
-  type: 'file';
-  fields?: SanityFields[];
-  options?: {
-    storeOriginalFilename: boolean;
-    accept: string; // Note: any valid file type specifier
-  }
-  // validation?: SanityValidationFunction<BasicValidation>;
-}
-
-export interface SanityGeopointType extends SanitySchemaType {
-  type: 'geopoint';
-  // validation?: SanityValidationFunction<BasicValidation>;
-}
-
-export interface SanityImageType extends SanitySchemaType {
-  type: 'image';
-  fields?: SanityFields & { isHighlighted: boolean }[];
-  options?: {
-    metadata?: Array<'exif' | 'location' | 'lqip' | 'palette'>;
-    hotspot?: boolean;
-    storeOriginalFilename?: boolean;
-    accept?: string; // Note: any valid file type specifier
-    sources?: Array<string>;
-  }
-  // validation?: SanityValidationFunction<BasicValidation>;
-  // validation?: (Rule: Rule) => Rule;
-}
-
-export interface SanityNumberType extends SanitySchemaType {
-  type: 'number';
-  options?: {
-    list?: Array<number> | Array<{ value: number, title: string }>;
-
-  }
-  // validation?: SanityValidationFunction<NumberValidationRule>;
-}
-
-export interface SanityObjectType extends SanitySchemaType {
-  type: 'object';
-  fields: SanityField[];
-  fieldsets?: SanityFieldset[];
-  preview?: SanityPreview;
-  inputComponent?: JSX.Element;
-  options?: {
-    collapsible?: boolean;
-    collapsed?: boolean;
-  }
-  // validation?: SanityValidationFunction<BasicValidation>;
-}
-
-export interface SanityReferenceType extends SanitySchemaType {
-  type: 'reference';
-  to: Array<{ type: string; }>;
-  weak?: boolean;
-  options?: {
-    filter?: string | (({ document, parent, parentPath }: { document: string; parent: string; parentPath: string; }) => { filter: string; params: { [key: string]: string } });
-    filterParams?: {
-      [key: string]: string;
-    }
-  }
-  // validation?: SanityValidationFunction<BasicValidation>;
-}
-
-export interface SanitySlugType extends SanitySchemaType {
-  type: 'slug';
-  options?: {
-    source?: string | ((object: any, options: any) => string); // TODO: supply the correct types to this function
-    maxLength?: number;
-    slugify?: (input: string, object: any) => string;
-    isUnique?: (slug: string, options: any) => any;
-  }
-  // validation?: SanityValidationFunction<BasicValidation>;
-}
-
-export interface SanityStringType extends SanitySchemaType {
-  type: 'string';
-  options?: {
-    list?: Array<string | { value: string; title: string }>;
-    layout?: 'radio' | 'dropdown';
-    direction?: 'horizontal' | 'vertical';
-  }
-  // validation?: SanityValidationFunction<StringValidationRule>;
-  // validation?: (Rule: Rule) => Rule;
-}
-
-export interface SanityTextType extends SanitySchemaType {
-  type: 'text';
-  rows?: number;
-  // validation?: SanityValidationFunction<StringValidationRule>;
-}
-
-
-export interface SanityURLType extends SanitySchemaType {
-  type: 'url';
-  // validation?: SanityValidationFunction<URLValidationRule>;
-}
-
-export type SanityContentTypesRecord = {
-  array: SanityArrayType
-  block: SanityBlockType
-  boolean: SanityBooleanType
-  date: SanityDateType
-  datetime: SanityDateTimeType
-  document: SanityDocumentType
-  file: SanityFileType
-  geopoint: SanityGeopointType
-  image: SanityImageType
-  number: SanityNumberType
-  object: SanityObjectType
-  reference: SanityReferenceType
-  slug: SanitySlugType
-  sring: SanityStringType
-  text: SanityTextType
-  url: SanityURLType
-}
-
-export type SanityContentTypes =
-  SanityArrayType
-  | SanityBlockType
-  | SanityBooleanType
-  | SanityDateType
-  | SanityDateTimeType
-  | SanityDocumentType
-  | SanityFileType
-  | SanityGeopointType
-  | SanityImageType
-  | SanityNumberType
-  | SanityObjectType
-  | SanityReferenceType
-  | SanitySlugType
-  | SanityStringType
-  | SanityTextType
-  | SanityURLType
-
-// export type SanityField =
-//   {
-//     name: string;
-//     fieldset?: string;
-//   } &
-//   (
-//     | SanityArrayType
-//     | SanityBlockType
-//     | SanityBooleanType
-//     | SanityDateType
-//     | SanityDateTimeType
-//     | SanityFileType
-//     | SanityGeopointType
-//     | SanityImageType
-//     | SanityNumberType
-//     | SanityObjectType
-//     | SanityReferenceType
-//     | SanitySlugType
-//     | ({ type: 'string' } & Omit<SanityStringType, 'type'>)
-//     | SanityTextType
-//     | SanityURLType
-//     | ({ type: string extends DefaultSchemaTypes ? never : string; } &
-//       SanitySchemaType & { [key: string]: any })
-//   )
-
-type PropertiesFromType<T extends SanitySchemaType> = Exclude<T, 'type'>;
-
-export type SanityField = StandardSanityField | CustomSanityField
-
-export type StandardSanityField = {
-  name: string;
-  fieldset?: string;
-} &
-  (
-    { type: 'array' } & PropertiesFromType<SanityArrayType>
-    | { type: 'block' } & PropertiesFromType<SanityBlockType>
-    | { type: 'boolean' } & PropertiesFromType<SanityBooleanType>
-    | { type: 'date' } & PropertiesFromType<SanityDateType>
-    | { type: 'datetime' } & PropertiesFromType<SanityDateTimeType>
-    | { type: 'file' } & PropertiesFromType<SanityFileType>
-    | { type: 'geopoint' } & PropertiesFromType<SanityGeopointType>
-    | { type: 'image' } & PropertiesFromType<SanityImageType>
-    | { type: 'number' } & PropertiesFromType<SanityNumberType>
-    | { type: 'object' } & PropertiesFromType<SanityObjectType>
-    | { type: 'reference' } & PropertiesFromType<SanityReferenceType>
-    | { type: 'slug' } & PropertiesFromType<SanitySlugType>
-    | { type: 'string' } & PropertiesFromType<SanityStringType>
-    | { type: 'text' } & PropertiesFromType<SanityTextType>
-    | { type: 'url' } & PropertiesFromType<SanityURLType>
-  );
-
-export type CustomSanityField = {
-  name: string;
-  fieldset?: string;
-  type: string extends
-  'array'
-  | 'block'
-  | 'boolean'
-  | 'date'
-  | 'datetime'
-  | 'file'
-  | 'geopoint'
-  | 'image'
-  | 'number'
-  | 'object'
-  | 'reference'
-  | 'slug'
-  | 'string'
-  | 'text'
-  | 'url'
-  ? never
-  : string;
-}
-
-//  Array specific types
-type ArrayContentTypes =
-  | { type: 'reference', to: { type: string, title?: string }[] }
-  | { type: string extends 'reference' | 'block' ? never : string, title?: string, options?: any }
-  | SanityBlockType;
-
-
-
-//  Block specific types
 type BlockStyles =
   | {
     title: string extends 'Normal' ? never : string; // normal represents unstyled text
@@ -327,7 +102,7 @@ type CustomAnnotation =
     title: string;
     name: string;
     type: string;
-    fields?: SanityFields[];
+    fields?: SanityField[];
     blockEditor?: BlockEditorOptions;
   }
 
@@ -336,22 +111,60 @@ interface BlockEditorOptions {
   render?: (props: any) => JSX.Element;
 }
 
+/*********************************************************************/
 
+export interface SanityBooleanType extends SanitySchemaType {
+  type: 'boolean';
+  options?: {
+    layout?: 'switch' | 'checkbox';
+  };
+}
 
-//  Date specific types
+/*********************************************************************/
+
+export interface SanityDateType extends SanitySchemaType {
+  type: 'date';
+  options?: DateOptions;
+}
+
+/*********************************************************************/
+//  Date Specific Types
+
 interface DateOptions {
   dateFormat?: string; // Note: any valid moment.js format
   calendarTodayLabel?: string;
 };
+
+/*********************************************************************/
+
+export interface SanityDateTimeType extends SanitySchemaType {
+  type: 'datetime';
+  options?: DateTimeOptions;
+}
+
+/*********************************************************************/
+//  DateTime Specific Types
 
 interface DateTimeOptions extends DateOptions {
   timeFormat?: string; // Note: any valid moment.js format
   timeStep?: number; // default is 15
 }
 
+/*********************************************************************/
 
+export interface SanityDocumentType extends SanitySchemaType {
+  type: 'document';
+  liveEdit?: boolean;
+  orderings?: DocumentOrderings[];
+  fields: SanityField[];
+  fieldsets?: SanityFieldset[];
+  preview?: SanityPreview;
+  validation: Validation;
+}
 
-// Document specific types
+/*********************************************************************/
+//  Document Specific Types
+
 interface DocumentOrderings {
   title: string;
   name: string;
@@ -360,22 +173,8 @@ interface DocumentOrderings {
   }[];
 }
 
-/* Field Types */
-// type SanityFields = SanityContentTypes;
-type Overwrite<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;
-export type SanityFields = { fieldset?: string } & SanityContentTypes | Overwrite<SanityContentTypes, { type: string }> // required to allow custom types in field name
-
-export interface SanityFieldset {
-  name: string;
-  title: string;
-  options?: {
-    collapsible?: boolean;
-    collapsed?: boolean;
-    columns?: number;
-  }
-}
-
-//  Previews
+/*********************************************************************/
+//  Document and Object Preview Type
 export type SanityPreview =
   | {
     select: {
@@ -391,16 +190,347 @@ export type SanityPreview =
     prepare: (selection: { [key: string]: string }) => { title: string; subtitle?: string; media?: string | JSX.Element; };
   }
 
-/* Validation Types */
+/*********************************************************************/
+
+export interface SanityFileType extends SanitySchemaType {
+  type: 'file';
+  fields?: SanityField[];
+  options?: {
+    storeOriginalFilename: boolean;
+    accept: string; // Note: any valid file type specifier
+  }
+}
+
+/*********************************************************************/
+
+export interface SanityGeopointType extends SanitySchemaType {
+  type: 'geopoint';
+}
+
+/*********************************************************************/
+
+export interface SanityImageType extends SanitySchemaType {
+  type: 'image';
+  fields?: SanityField & { isHighlighted: boolean }[];
+  options?: {
+    metadata?: Array<'exif' | 'location' | 'lqip' | 'palette'>;
+    hotspot?: boolean;
+    storeOriginalFilename?: boolean;
+    accept?: string; // Note: any valid file type specifier
+    sources?: Array<string>;
+  }
+}
+
+/*********************************************************************/
+
+export interface SanityNumberType extends SanitySchemaType {
+  type: 'number';
+  options?: {
+    list?: Array<number> | Array<{ value: number, title: string }>;
+
+  }
+}
+
+/*********************************************************************/
+
+export interface SanityObjectType extends SanitySchemaType {
+  type: 'object';
+  fields: SanityField[];
+  fieldsets?: SanityFieldset[];
+  preview?: SanityPreview;
+  inputComponent?: JSX.Element;
+  options?: {
+    collapsible?: boolean;
+    collapsed?: boolean;
+  }
+}
+
+/*********************************************************************/
+
+export interface SanityReferenceType extends SanitySchemaType {
+  type: 'reference';
+  to: Array<{ type: string; }>;
+  weak?: boolean;
+  options?: {
+    filter?: string | (({ document, parent, parentPath }: { document: string; parent: string; parentPath: string; }) => { filter: string; params: { [key: string]: string } });
+    filterParams?: {
+      [key: string]: string;
+    }
+  }
+}
+
+/*********************************************************************/
+
+export interface SanitySlugType extends SanitySchemaType {
+  type: 'slug';
+  options?: {
+    source?: string | ((object: any, options: any) => string); // TODO: supply the correct types to this function
+    maxLength?: number;
+    slugify?: (input: string, object: any) => string;
+    isUnique?: (slug: string, options: any) => any;
+  }
+}
+
+/*********************************************************************/
+
+export interface SanityStringType extends SanitySchemaType {
+  type: 'string';
+  options?: {
+    list?: Array<string | { value: string; title: string }>;
+    layout?: 'radio' | 'dropdown';
+    direction?: 'horizontal' | 'vertical';
+  }
+}
+
+/*********************************************************************/
+
+export interface SanityTextType extends SanitySchemaType {
+  type: 'text';
+  rows?: number;
+}
+
+/*********************************************************************/
+
+export interface SanityURLType extends SanitySchemaType {
+  type: 'url';
+}
+
+/*********************************************************************/
+
+export type SanityContentTypesRecord = {
+  array: SanityArrayType
+  block: SanityBlockType
+  boolean: SanityBooleanType
+  date: SanityDateType
+  datetime: SanityDateTimeType
+  document: SanityDocumentType
+  file: SanityFileType
+  geopoint: SanityGeopointType
+  image: SanityImageType
+  number: SanityNumberType
+  object: SanityObjectType
+  reference: SanityReferenceType
+  slug: SanitySlugType
+  sring: SanityStringType
+  text: SanityTextType
+  url: SanityURLType
+}
+
+/*********************************************************************/
+
+// export type SanityContentTypes =
+//   SanityArrayType
+//   | SanityBlockType
+//   | SanityBooleanType
+//   | SanityDateType
+//   | SanityDateTimeType
+//   | SanityDocumentType
+//   | SanityFileType
+//   | SanityGeopointType
+//   | SanityImageType
+//   | SanityNumberType
+//   | SanityObjectType
+//   | SanityReferenceType
+//   | SanitySlugType
+//   | SanityStringType
+//   | SanityTextType
+//   | SanityURLType
+
+
+/**********************************************************************
+ **
+ **    Sanity Fields
+ **
+ *********************************************************************/
+
+export type SanityField = StandardSanityField | CustomSanityField;
+
+/*********************************************************************/
+
+type PropertiesFromType<T extends SanitySchemaType> = Exclude<T, 'type'>;
+
+/*********************************************************************/
+
+export type StandardSanityField = {
+  name: string;
+  fieldset?: string;
+  validation?: Validation;
+} &
+  (
+    { type: 'array' } & PropertiesFromType<SanityArrayType>
+    | { type: 'block' } & PropertiesFromType<SanityBlockType>
+    | { type: 'boolean' } & PropertiesFromType<SanityBooleanType>
+    | { type: 'date' } & PropertiesFromType<SanityDateType>
+    | { type: 'datetime' } & PropertiesFromType<SanityDateTimeType>
+    | { type: 'file' } & PropertiesFromType<SanityFileType>
+    | { type: 'geopoint' } & PropertiesFromType<SanityGeopointType>
+    | { type: 'image' } & PropertiesFromType<SanityImageType>
+    | { type: 'number' } & PropertiesFromType<SanityNumberType>
+    | { type: 'object' } & PropertiesFromType<SanityObjectType>
+    | { type: 'reference' } & PropertiesFromType<SanityReferenceType>
+    | { type: 'slug' } & PropertiesFromType<SanitySlugType>
+    | { type: 'string' } & PropertiesFromType<SanityStringType>
+    | { type: 'text' } & PropertiesFromType<SanityTextType>
+    | { type: 'url' } & PropertiesFromType<SanityURLType>
+  );
+
+/*********************************************************************/
+
+export type CustomSanityField = {
+  name: string;
+  validation?: Validation;
+  [key: string]: unknown;
+}
+
+/**********************************************************************
+ **
+ **    Validation
+ **
+ *********************************************************************/
+
 interface Validation {
   (rule: Rule): Rule
 }
+
+/**********************************************************************
+ **
+ **    Utility Classes
+ **
+ *********************************************************************/
+
+export type SanityObjectSchema = Omit<SanityObjectType, 'type'>;
+
+/*********************************************************************/
+
+export type InferredObjectSchema<T extends SanityObjectSchema> = {
+  [K in keyof T]: T[K];
+}
+  & {
+    //  The below provides typed unions instead of generic types
+    fields: Array<Readonly<T['fields'][number]>>
+    fieldsets?: T['fieldsets'] extends Array<SanityFieldset> ? Array<Readonly<T['fieldsets'][number]>> : undefined;
+  }
+
+/*********************************************************************/
+//  For typing the fields that make up the query shape
+
+type ExtractedObjectFields<T extends SanityField[]> = {
+  [K in T[number]['name']]: FieldReturnType<T[number] & { name: K }>
+}
+
+/*********************************************************************/
+//  Field query types
+//  TODO: include all types
+
+type FieldReturnType<T extends SanityField> =
+  T['type'] extends 'boolean' ? boolean :
+  T['type'] extends 'number' ? number :
+  T['type'] extends 'string' | 'date' | 'datetime' ? string :
+  T['type'] extends 'array' ? Array<any> :
+  unknown;
+
+/**********************************************************************
+ **
+ **    Helper Functions
+ **
+ *********************************************************************/
+
+// Sanity class with methods to assist in creation of types
+export default class Sanity {
+
+  static defineObject<T extends SanityObjectSchema = SanityObjectSchema>(schema: InferredObjectSchema<T>) {
+    const object = {
+      ...schema,
+    };
+
+    let extractedFields: ExtractedObjectFields<typeof schema['fields']> = schema.fields.reduce((acc, field) => {
+      // we're interested in the query shape here rather than the value    
+      return { ...acc, [field.name]: null }
+    }, {} as ExtractedObjectFields<typeof schema['fields']>);
+
+    const query = {
+      _type: schema.name,
+      ...extractedFields
+    }
+
+    return {
+      object,
+      query
+    };
+  }
+
+
+
+
+
+
+
+
+  // static createContentType<T extends keyof SanityContentTypesRecord>(schema: SanityContentTypesRecord[T]): object {
+  //   return schema;
+  // }
+
+  // static createArrayType<T extends SanityArrayType>(schema: CreateArrayTypeSchema<T>): { [K in keyof typeof schema]: typeof schema[K] } {
+  //   return { ...schema };
+  // }
+
+  // static createDocumentType<T extends SanityDocumentType>(schema: CreateDocumentTypeSchema<T>) {
+  //   return { ...schema };
+  // }
+
+  // static createObjectType<T extends SanityObjectType>(schema: CreateObjectTypeSchema<T>) {
+
+  //   return { ...schema }
+  // }
+
+
+  // static createReferenceType<T extends SanityReferenceType>(schema: CreateReferenceTypeSchema<T>): { [K in keyof typeof schema]: typeof schema[K] } {
+  //   return { ...schema, to: schema.to };
+  // }
+
+  // static getStringLiteralValues(field: SanityFields) {
+  //   if (isStringType(field)) {
+  //     field.options?.list?.map(val => {
+  //       if (typeof val === 'string') return val;
+  //       return val.title;
+  //     })
+  //   }
+
+  //   return field;
+  // }
+
+}
+
+
+
+
+/* TODO: Remove when sure it's not needed
+
+// type SanityFields = SanityContentTypes;
+type Overwrite<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;
+export type SanityFields = { fieldset?: string } & SanityContentTypes | Overwrite<SanityContentTypes, { type: string }> // required to allow custom types in field name
+*/
+
+export interface SanityFieldset {
+  name: string;
+  title: string;
+  options?: {
+    collapsible?: boolean;
+    collapsed?: boolean;
+    columns?: number;
+  }
+}
+
+
+
+
+/* TODO: Remove when sure it's not needed
 
 // Result Types
 
 export type SanityObjectResult<T extends SanityObjectType> = SanityObjectResultHelper<T, T['fields'][number]>
 
-type SanityObjectResultHelper<T extends SanityObjectType, X extends SanityFields> = {
+type SanityObjectResultHelper<T extends SanityObjectType, X extends SanityField> = {
   _type: T['name'];
   _key?: string;
 } &
@@ -464,50 +594,10 @@ type CreateReferenceTypeSchema<T extends SanityReferenceType> = {
   to: Array<Readonly<T['to'][number]>>
 }
 
-
-// Sanity class with methods to assist in creation of types
-export default class Sanity {
-  static createContentType<T extends keyof SanityContentTypesRecord>(schema: SanityContentTypesRecord[T]): object {
-    return schema;
-  }
-
-  static createSchema<T extends SanityContentTypes[]>(name: string, schema: T): SchemaReturnType<typeof name, typeof schema> {
-    return createSchema({
-      name,
-      types: schemaTypes.concat(schema)
-    });
-  }
-
-  static createArrayType<T extends SanityArrayType>(schema: CreateArrayTypeSchema<T>): { [K in keyof typeof schema]: typeof schema[K] } {
-    return { ...schema };
-  }
-
-  static createDocumentType<T extends SanityDocumentType>(schema: CreateDocumentTypeSchema<T>) {
-    return { ...schema };
-  }
-
-  static createObjectType<T extends SanityObjectType>(schema: CreateObjectTypeSchema<T>) {
-
-    return { ...schema }
-  }
+*/
 
 
-  static createReferenceType<T extends SanityReferenceType>(schema: CreateReferenceTypeSchema<T>): { [K in keyof typeof schema]: typeof schema[K] } {
-    return { ...schema, to: schema.to };
-  }
 
-  static getStringLiteralValues(field: SanityFields) {
-    if (isStringType(field)) {
-      field.options?.list?.map(val => {
-        if (typeof val === 'string') return val;
-        return val.title;
-      })
-    }
-
-    return field;
-  }
-
-}
 
 export function isStringType(field: SanityFields): field is SanityStringType {
   return (field as SanityStringType).options !== undefined;
