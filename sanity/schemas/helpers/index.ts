@@ -159,7 +159,7 @@ export interface SanityDocumentType extends SanitySchemaType {
   fields: SanityField[];
   fieldsets?: SanityFieldset[];
   preview?: SanityPreview;
-  validation: Validation;
+  validation?: Validation;
 }
 
 /*********************************************************************/
@@ -318,23 +318,23 @@ export type SanityContentTypesRecord = {
 
 /*********************************************************************/
 
-// export type SanityContentTypes =
-//   SanityArrayType
-//   | SanityBlockType
-//   | SanityBooleanType
-//   | SanityDateType
-//   | SanityDateTimeType
-//   | SanityDocumentType
-//   | SanityFileType
-//   | SanityGeopointType
-//   | SanityImageType
-//   | SanityNumberType
-//   | SanityObjectType
-//   | SanityReferenceType
-//   | SanitySlugType
-//   | SanityStringType
-//   | SanityTextType
-//   | SanityURLType
+export type SanityContentTypes =
+  SanityArrayType
+  | SanityBlockType
+  | SanityBooleanType
+  | SanityDateType
+  | SanityDateTimeType
+  | SanityDocumentType
+  | SanityFileType
+  | SanityGeopointType
+  | SanityImageType
+  | SanityNumberType
+  | SanityObjectType
+  | SanityReferenceType
+  | SanitySlugType
+  | SanityStringType
+  | SanityTextType
+  | SanityURLType
 
 
 /**********************************************************************
@@ -357,22 +357,38 @@ export type StandardSanityField = {
   validation?: Validation;
 } &
   (
-    { type: 'array' } & PropertiesFromType<SanityArrayType>
-    | { type: 'block' } & PropertiesFromType<SanityBlockType>
-    | { type: 'boolean' } & PropertiesFromType<SanityBooleanType>
-    | { type: 'date' } & PropertiesFromType<SanityDateType>
-    | { type: 'datetime' } & PropertiesFromType<SanityDateTimeType>
-    | { type: 'file' } & PropertiesFromType<SanityFileType>
-    | { type: 'geopoint' } & PropertiesFromType<SanityGeopointType>
-    | { type: 'image' } & PropertiesFromType<SanityImageType>
-    | { type: 'number' } & PropertiesFromType<SanityNumberType>
-    | { type: 'object' } & PropertiesFromType<SanityObjectType>
-    | { type: 'reference' } & PropertiesFromType<SanityReferenceType>
-    | { type: 'slug' } & PropertiesFromType<SanitySlugType>
-    | { type: 'string' } & PropertiesFromType<SanityStringType>
-    | { type: 'text' } & PropertiesFromType<SanityTextType>
-    | { type: 'url' } & PropertiesFromType<SanityURLType>
+    SanityArrayField
+    | SanityBlockField
+    | SanityBooleanField
+    | SanityDateField
+    | SanityDateTimeField
+    | SanityFileField
+    | SanityGeopointField
+    | SanityImageField
+    | SanityNumberField
+    | SanityObjectField
+    | SanityReferenceField
+    | SanitySlugField
+    | SanityStringField
+    | SanityTextField
+    | SanityURLField
   );
+
+type SanityArrayField = { type: 'array' } & PropertiesFromType<SanityArrayType>;
+type SanityBlockField = { type: 'block' } & PropertiesFromType<SanityStringType>;
+type SanityBooleanField = { type: 'boolean' } & PropertiesFromType<SanityBooleanType>;
+type SanityDateField = { type: 'date' } & PropertiesFromType<SanityDateType>;
+type SanityDateTimeField = { type: 'datetime' } & PropertiesFromType<SanityDateTimeType>;
+type SanityFileField = { type: 'file' } & PropertiesFromType<SanityFileType>;
+type SanityGeopointField = { type: 'geopoint' } & PropertiesFromType<SanityGeopointType>;
+type SanityImageField = { type: 'image' } & PropertiesFromType<SanityImageType>;
+type SanityNumberField = { type: 'number' } & PropertiesFromType<SanityNumberType>;
+type SanityObjectField = { type: 'object' } & PropertiesFromType<SanityObjectType>;
+type SanityReferenceField = { type: 'reference' } & PropertiesFromType<SanityReferenceType>;
+type SanitySlugField = { type: 'slug' } & PropertiesFromType<SanitySlugType>;
+type SanityStringField = { type: 'string' } & PropertiesFromType<SanityStringType>;
+type SanityTextField = { type: 'text' } & PropertiesFromType<SanityTextType>;
+type SanityURLField = { type: 'url' } & PropertiesFromType<SanityURLType>;
 
 /*********************************************************************/
 
@@ -407,9 +423,18 @@ export type InferredObjectSchema<T extends SanityObjectSchema> = {
 }
   & {
     //  The below provides typed unions instead of generic types
-    fields: Array<Readonly<T['fields'][number]>>
-    fieldsets?: T['fieldsets'] extends Array<SanityFieldset> ? Array<Readonly<T['fieldsets'][number]>> : undefined;
+    fields: Array<Readonly<T['fields'][number]>>;
+    fieldsets?: ConditionalFieldsets<T['fieldsets']>;
   }
+
+// type Overwrite<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;
+
+// export type InferredObjectSchema<T extends SanityObjectSchema> = Overwrite<Exclude<T, 'fields'>, {
+//   [K in keyof T]: T[K];
+// } & {
+//   fields: Array<Readonly<T['fields'][number]>>
+// }>;
+
 
 /*********************************************************************/
 //  For typing the fields that make up the query shape
@@ -417,6 +442,17 @@ export type InferredObjectSchema<T extends SanityObjectSchema> = {
 type ExtractedObjectFields<T extends SanityField[]> = {
   [K in T[number]['name']]: FieldReturnType<T[number] & { name: K }>
 }
+
+type ReturnedQueryShape<F extends SanityField[], N extends string> = {
+  _key?: string;
+  _type: N;
+} & ExtractedObjectFields<F>;
+
+/*********************************************************************/
+//  For typing the fieldsets during object creation
+
+type ConditionalFieldsets<T extends SanityFieldset[] | undefined> = T extends SanityFieldset[] ? RequiredFieldsets<T> : undefined;
+type RequiredFieldsets<T extends SanityFieldset[]> = ReadonlyArray<T[number]>;
 
 /*********************************************************************/
 //  Field query types
@@ -429,6 +465,8 @@ type FieldReturnType<T extends SanityField> =
   T['type'] extends 'array' ? Array<any> :
   unknown;
 
+
+
 /**********************************************************************
  **
  **    Helper Functions
@@ -438,7 +476,8 @@ type FieldReturnType<T extends SanityField> =
 // Sanity class with methods to assist in creation of types
 export default class Sanity {
 
-  static defineObject<T extends SanityObjectSchema = SanityObjectSchema>(schema: InferredObjectSchema<T>) {
+  static defineObject<T extends SanityObjectSchema>(schema: InferredObjectSchema<T>) {
+
     const object = {
       ...schema,
     };
@@ -448,7 +487,7 @@ export default class Sanity {
       return { ...acc, [field.name]: null }
     }, {} as ExtractedObjectFields<typeof schema['fields']>);
 
-    const query = {
+    const query: ReturnedQueryShape<typeof schema['fields'], typeof schema['name']> = {
       _type: schema.name,
       ...extractedFields
     }
@@ -459,57 +498,49 @@ export default class Sanity {
     };
   }
 
+  static createContentType<T extends keyof SanityContentTypesRecord>(schema: SanityContentTypesRecord[T]): object {
+    return schema;
+  }
+
+  static createArrayType<T extends SanityArrayType>(schema: CreateArrayTypeSchema<T>): { [K in keyof typeof schema]: typeof schema[K] } {
+    return { ...schema };
+  }
+
+  static createDocumentType<T extends SanityDocumentType>(schema: CreateDocumentTypeSchema<T>) {
+    return { ...schema };
+  }
+
+  static createObjectType<T extends SanityObjectType>(schema: CreateObjectTypeSchema<T>) {
+
+    return { ...schema }
+  }
 
 
-
-
-
-
-
-  // static createContentType<T extends keyof SanityContentTypesRecord>(schema: SanityContentTypesRecord[T]): object {
-  //   return schema;
-  // }
-
-  // static createArrayType<T extends SanityArrayType>(schema: CreateArrayTypeSchema<T>): { [K in keyof typeof schema]: typeof schema[K] } {
-  //   return { ...schema };
-  // }
-
-  // static createDocumentType<T extends SanityDocumentType>(schema: CreateDocumentTypeSchema<T>) {
-  //   return { ...schema };
-  // }
-
-  // static createObjectType<T extends SanityObjectType>(schema: CreateObjectTypeSchema<T>) {
-
-  //   return { ...schema }
-  // }
-
-
-  // static createReferenceType<T extends SanityReferenceType>(schema: CreateReferenceTypeSchema<T>): { [K in keyof typeof schema]: typeof schema[K] } {
-  //   return { ...schema, to: schema.to };
-  // }
-
-  // static getStringLiteralValues(field: SanityFields) {
-  //   if (isStringType(field)) {
-  //     field.options?.list?.map(val => {
-  //       if (typeof val === 'string') return val;
-  //       return val.title;
-  //     })
-  //   }
-
-  //   return field;
-  // }
+  static createReferenceType<T extends SanityReferenceType>(schema: CreateReferenceTypeSchema<T>): { [K in keyof typeof schema]: typeof schema[K] } {
+    return { ...schema, to: schema.to };
+  }
 
 }
 
 
 
+function isArrayField(field: StandardSanityField): field is SanityArrayField {
+  return field.type === 'array';
+}
 
-/* TODO: Remove when sure it's not needed
+
+function isStringField(field: StandardSanityField): field is SanityStringField {
+  return field.type === 'string';
+}
+
+
+
+
 
 // type SanityFields = SanityContentTypes;
 type Overwrite<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;
-export type SanityFields = { fieldset?: string } & SanityContentTypes | Overwrite<SanityContentTypes, { type: string }> // required to allow custom types in field name
-*/
+
+export type SanityFields = { fieldset?: string } & (SanityContentTypes | Overwrite<SanityContentTypes, { type: string }>) // required to allow custom types in field name
 
 export interface SanityFieldset {
   name: string;
@@ -523,8 +554,6 @@ export interface SanityFieldset {
 
 
 
-
-/* TODO: Remove when sure it's not needed
 
 // Result Types
 
@@ -542,7 +571,7 @@ type SanityObjectResultHelper<T extends SanityObjectType, X extends SanityField>
 // Works
 export type SanityDocumentResult<T extends SanityDocumentType> = SanityDocumentResultHelper<T, T['fields'][number]>
 
-type SanityDocumentResultHelper<T extends SanityDocumentType, X extends SanityFields> = {
+type SanityDocumentResultHelper<T extends SanityDocumentType, X extends SanityField> = {
   _createdAt: string;
   _id: string;
   _rev: string;
@@ -553,7 +582,7 @@ type SanityDocumentResultHelper<T extends SanityDocumentType, X extends SanityFi
     [K in X['name']]: FieldResult<X & { name: K }>
   }
 
-type FieldResult<T extends SanityFields> =
+type FieldResult<T extends SanityField> =
   T['type'] extends 'array' ? SanityFields[]
   : T['type'] extends 'boolean' ? boolean
   : T['type'] extends 'number' ? number
@@ -594,12 +623,8 @@ type CreateReferenceTypeSchema<T extends SanityReferenceType> = {
   to: Array<Readonly<T['to'][number]>>
 }
 
-*/
 
-
-
-
-export function isStringType(field: SanityFields): field is SanityStringType {
+export function isStringType(field: SanityField): field is SanityStringType {
   return (field as SanityStringType).options !== undefined;
 }
 

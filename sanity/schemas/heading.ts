@@ -4,7 +4,6 @@ import Sanity from './helpers';
 const { object: heading, query } = Sanity.defineObject({
   name: "heading",
   title: "Heading",
-  type: "object",
   preview: {
     select: {
       firstLine: 'firstLine',
@@ -40,7 +39,7 @@ const { object: heading, query } = Sanity.defineObject({
         collapsible: true,
         collapsed: true,
       }
-    }
+    },
   ],
   fields: [
     {
@@ -136,9 +135,17 @@ const { object: heading, query } = Sanity.defineObject({
       options: {
         layout: 'checkbox'
       }
+    },
+    {
+      name: 'test',
+      type: 'string',
+      options: {
+
+      }
     }
   ],
 });
 
 export type HeadingQuery = typeof query;
+
 export default heading;
