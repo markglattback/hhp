@@ -1,17 +1,18 @@
 import Link, { LinkProps } from "next/link";
 import BlockContent, { BlockContentProps } from "@sanity/block-content-to-react";
-import serializers from "../../lib/serializers";
+import serializers from "../SanityBlockContent/serializers";
 import StyledCallToAction from './styles';
+import { PropsWithoutRef } from "react";
 
 export type ButtonProps = {
   text: string;
-} & LinkProps;
+} & LinkProps & PropsWithoutRef<JSX.IntrinsicElements['a']>;
 
 
-export function LinkButton({ text, ...props }: ButtonProps) {
+export function LinkButton({ text, className, ...props }: ButtonProps) {
   return (
     <Link {...props} >
-      <a className="link">{text}</a>
+      <a className={`link ${className}`}>{text}</a>
     </Link>
   )
 }
@@ -34,8 +35,8 @@ export default function CallToAction({
   buttonTwoLink,
 }: CallToActionProps) {
   return (
-    <StyledCallToAction data-testid="call-to-action">
-      <div className="text">
+    <StyledCallToAction data-testid="call-to-action" className="grid">
+      <div className="text cell">
         <span data-testid="cta-first-line">{firstLine}</span>
         {secondLine && (
           <>
@@ -45,9 +46,9 @@ export default function CallToAction({
         )
         }
       </div>
-      <div className="links" data-testid="cta-links">
-        <LinkButton text={buttonOneText} href={buttonOneLink} />
-        <LinkButton text={buttonTwoText} href={buttonTwoLink} />
+      <div className="grid grid-margin" data-testid="cta-links">
+        <LinkButton text={buttonOneText} href={buttonOneLink} className="cell medium-5 medium-offset-1" />
+        <LinkButton text={buttonTwoText} href={buttonTwoLink} className="cell medium-5" />
       </div>
     </StyledCallToAction>
   );

@@ -10,7 +10,7 @@ export default function MainQuote({ text, person, reference }: Props) {
   return (
     <StyledMainQuote className="grid">
       <q className="cell" >
-        <BlockContent blocks={text} serializers={serializers} />
+        <span>{text}</span>
       </q>
       <figcaption className="cell">{person}</figcaption>
     </StyledMainQuote>

@@ -29,6 +29,7 @@ export default styled.div`
   }
 
   a.link {
+    display: block;
     background: var(--white);
     color: var(--black);
     font-size: 1rem;
@@ -36,7 +37,7 @@ export default styled.div`
     letter-spacing: 0.14rem;
     text-transform: uppercase;
     padding: 0.5rem;
-    margin: 1rem 0;
+    margin-block: 1rem;
     cursor: pointer;
     border: none;
 

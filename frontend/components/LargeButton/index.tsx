@@ -24,8 +24,8 @@ export default function LargeButton({
   if (!href.startsWith('/')) isExternalUrl = true;
 
   return (
-    <StyledWrapper className="grid-max-padded">
-      <div className="cell medium-8 medium-offset-2">
+    <StyledWrapper className="grid">
+      <div className="">
         {!isExternalUrl && (<Link href={href} {...props}>
           <button type="button">{buttonText}</button>
         </Link>)}

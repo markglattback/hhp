@@ -1,7 +1,11 @@
 import styled from "styled-components";
 
 export default styled.figure`
+  margin: 0;
+
   q {
+    display: block;
+    width: 100%;
     font-size: 1.5rem;
     font-weight: 300;
     letter-spacing: 0.125em;

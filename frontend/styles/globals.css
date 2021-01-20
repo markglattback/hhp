@@ -14,6 +14,7 @@
   --zIndexForward: 1;
 
   --grid-container-padding: 35px;
+  --grid-gap: 1rem;
 }
 
 html {
