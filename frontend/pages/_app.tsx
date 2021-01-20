@@ -1,6 +1,7 @@
 import { AppProps } from "next/app";
 import "styles/normalize.css";
 import "styles/globals.css";
+import "styles/grid.css";
 import Head from "next/head";
 import Layout from "components/Layout";
 import { getFooterContent } from "lib/api/queries";

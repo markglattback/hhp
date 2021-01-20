@@ -64,7 +64,7 @@ export default function YoutubeVideo({ url }: { url: string }) {
   }, [inView]);
 
   return (
-    <YoutubeWrapper ref={ref}>
+    <YoutubeWrapper ref={ref} className="grid">
       <PreserveAspectRatioWrap>
         <Youtube
           videoId={id}

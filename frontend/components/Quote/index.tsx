@@ -11,7 +11,7 @@ type Props = {
 
 export default function Quote({ text, snippet, person }: Props) {
   return (
-    <StyledQuote>
+    <StyledQuote className="grid">
       <article id={snippet}>
         <div className="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
         <div className="snippet">"{snippet}"</div>

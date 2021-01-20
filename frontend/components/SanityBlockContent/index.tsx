@@ -6,5 +6,5 @@ type SanityBlockContentProps = {
 }
 
 export default function SanityBlockContent(props: SanityBlockContentProps) {
-  return <BlockContent {...props} serializers={serializers} />
+  return <BlockContent {...props} serializers={serializers} className="grid-container" renderContainerOnSingleChild={true} />
 }

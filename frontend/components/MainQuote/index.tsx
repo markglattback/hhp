@@ -8,11 +8,11 @@ type Props = Pick<BigQuoteProps['node'], 'text' | 'person' | 'reference'>;
 
 export default function MainQuote({ text, person, reference }: Props) {
   return (
-    <StyledMainQuote>
-      <q>
+    <StyledMainQuote className="grid">
+      <q className="cell" >
         <BlockContent blocks={text} serializers={serializers} />
       </q>
-      <figcaption>{person}</figcaption>
+      <figcaption className="cell">{person}</figcaption>
     </StyledMainQuote>
   );
 }

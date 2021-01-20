@@ -1,8 +1,7 @@
 import styled from "styled-components";
 
 export default styled.div`
-  width: fit-content;
-  margin: 1.5rem auto;
+  margin: 1.5rem 0;
 
   button, a.button {
     display: block;

@@ -11,6 +11,7 @@ import BlockContent from "@sanity/block-content-to-react";
 import Link from 'next/link';
 import List from 'components/List';
 import { Url } from 'url';
+import styled from 'styled-components';
 
 /** CUSTOM SERIALIZER TYPES **/
 /** Work in Progress **/
@@ -84,6 +85,9 @@ export interface LargeButtonProps {
 
 
 const BlockRenderer = (props: any) => {
+  console.log(props);
+
+
   const { style = "normal", children = [], markDefs = [] } = props.node;
 
   if (style === "normal") {
@@ -102,7 +106,7 @@ const BlockRenderer = (props: any) => {
   }
 
   // check for custom styles
-  if (style === "smallertext") {
+  if (style === "small") {
     return <p className="smaller-text">{props.children}</p>;
   }
 
@@ -139,7 +143,7 @@ function checkChildrenForHighlights(children: any[]): boolean {
 
 export default {
   types: {
-    block: BlockRenderer,
+    block: (props) => <div className="grid"><BlockRenderer {...props} /></div>,
     heading: (props: HeadingTagProps) => <Heading {...props.node} />,
     bigQuote: ({ node }: BigQuoteProps) => (
       <MainQuote
@@ -166,8 +170,6 @@ export default {
     },
     lineBreak: (props) => <br />,
     pageImage: (props) => {
-      console.log(JSON.stringify(props, null, 2));
-
       return (
         <PageImage
           src={getImageUrl(props.node.file.asset._ref as string)
