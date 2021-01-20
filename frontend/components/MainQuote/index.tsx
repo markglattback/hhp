@@ -1,6 +1,6 @@
 // @ts-ignore
 import BlockContent from "@sanity/block-content-to-react";
-import serializers, { BigQuoteProps } from "../../lib/serializers";
+import serializers, { BigQuoteProps } from "../SanityBlockContent/serializers";
 import StyledMainQuote from './styles';
 
 

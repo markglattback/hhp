@@ -1,4 +1,4 @@
-import serializers from "../../lib/serializers";
+import serializers from "../SanityBlockContent/serializers";
 import StyledQuote from './styles';
 // @ts-ignore
 import BlockContent from "@sanity/block-content-to-react";

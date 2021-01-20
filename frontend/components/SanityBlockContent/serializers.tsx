@@ -166,6 +166,8 @@ export default {
     },
     lineBreak: (props) => <br />,
     pageImage: (props) => {
+      console.log(JSON.stringify(props, null, 2));
+
       return (
         <PageImage
           src={getImageUrl(props.node.file.asset._ref as string)

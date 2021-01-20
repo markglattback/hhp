@@ -6,7 +6,7 @@ function NewLine({ text }: { text: string | undefined }) {
 
   return (
     <>
-      <br />
+      <br data-testid="line-break" />
       {text}
     </>
   )
@@ -23,9 +23,9 @@ export default function Heading(props: HeadingProps['node']) {
   )
 
   const Headings = {
-    H1: () => <h1><HeadingContent /></h1>,
-    H2: () => <h2><HeadingContent /></h2>,
-    H3: () => <h3><HeadingContent /></h3>,
+    H1: () => <h1 data-testid="heading-h1"><HeadingContent /></h1>,
+    H2: () => <h2 data-testid="heading-h2"><HeadingContent /></h2>,
+    H3: () => <h3 data-testid="heading-h3"><HeadingContent /></h3>,
     none: () => null,
   }
 
@@ -36,7 +36,7 @@ export default function Heading(props: HeadingProps['node']) {
   // if there's subheading content
   if (props.subHeadingFirstLine) {
     const SubHeading = () => (
-      <div className="sub-heading">
+      <div className="sub-heading" data-testid="sub-heading">
         {props.subHeadingFirstLine}
         {<NewLine text={props.subHeadingSecondLine} />}
       </div>);
@@ -49,7 +49,7 @@ export default function Heading(props: HeadingProps['node']) {
   }
 
   return (
-    <StyledHeading fontSize={props.headingSize} subHeadingFontSize={props.subHeadingSize} useBodyColor={props.useBodyColor} subHeadingWithH1={props.headingElement === 'H1'}>
+    <StyledHeading fontSize={props.headingSize} subHeadingFontSize={props.subHeadingSize} useBodyColor={props.useBodyColor} subHeadingWithH1={props.headingElement === 'H1'} data-testid="heading">
       {content.map((Component, index) => <Component key={`${props._key}_${index}`} />)}
     </StyledHeading>
   )

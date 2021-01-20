@@ -15,7 +15,7 @@ const props: CallToActionProps = {
 
 const { buttonOneLink, buttonOneText, buttonTwoLink, buttonTwoText, firstLine, secondLine } = props;
 
-test('it should render correctly', () => {
+test('it renders correctly', () => {
   render(<CallToAction {...props} />);
 
   // Text displays correctly

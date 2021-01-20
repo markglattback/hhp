@@ -1,4 +1,4 @@
-import { HeadingTagProps } from 'lib/serializers';
+import { HeadingProps } from './types';
 import styled from 'styled-components'
 
 const fontSizes = {
@@ -9,15 +9,15 @@ const fontSizes = {
 }
 
 type StyledProps = {
-  fontSize: HeadingTagProps['node']['subHeadingSize'];
-  subHeadingFontSize: HeadingTagProps['node']['subHeadingSize'];
-  useBodyColor: HeadingTagProps['node']['useBodyColor'];
+  fontSize: HeadingProps['node']['subHeadingSize'];
+  subHeadingFontSize: HeadingProps['node']['subHeadingSize'];
+  useBodyColor: HeadingProps['node']['useBodyColor'];
   subHeadingWithH1: boolean;
 }
 
 export default styled.div<StyledProps>`
   h1, h2, h3 {
-    ${({ fontSize }) => fontSize ? `font-size: ${fontSizes[fontSize]}` : ''};
+    ${({ fontSize }) => fontSize ? `font-size: ${fontSizes[fontSize as 'big' | 'medium' | 'small' | 'smallest']}` : ''};
   }
 
   div.sub-heading {
