@@ -14,7 +14,7 @@ const bigQuote = Sanity.createDocumentType({
     {
       name: "text",
       title: "Text",
-      type: "blockQuoteContent",
+      type: "text",
       validation: (Rule) => Rule.required(),
     },
     {
