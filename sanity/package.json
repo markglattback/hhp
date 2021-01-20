@@ -27,5 +27,7 @@
     "react-icons": "^3.11.0",
     "sanity-typed-queries": "^0.7.3"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "ts-essentials": "^7.0.1"
+  }
 }

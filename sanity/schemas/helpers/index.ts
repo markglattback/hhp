@@ -13,6 +13,7 @@ import { Rule } from "@sanity/validation/src/Rule";
 
 
 type DefaultSchemaTypes = 'array' | 'block' | 'boolean' | 'date' | 'datetime' | 'document' | 'file' | 'geopoint' | 'image' | 'number' | 'object' | 'reference' | 'slug' | 'string' | 'span' | 'text' | 'url';
+type DefaultFieldTypes = 'array' | 'block' | 'boolean' | 'date' | 'datetime' | 'file' | 'geopoint' | 'image' | 'number' | 'object' | 'reference' | 'slug' | 'string' | 'text' | 'url'
 
 /*********************************************************************/
 
@@ -42,8 +43,8 @@ export interface SanityArrayType extends SanitySchemaType {
 //  Array Specific Types
 
 type ArrayContentTypes =
-  | { type: 'reference', to: { type: string, title?: string }[] }
-  | { type: string extends 'reference' | 'block' ? never : string, title?: string, options?: any }
+  | { type: 'reference', to: { type: DefaultFieldTypes, title?: string }[] }
+  | { type: string extends 'reference' | 'block' ? never : DefaultFieldTypes, title?: string, options?: any }
   | SanityBlockType;
 
 /*********************************************************************/
@@ -249,7 +250,7 @@ export interface SanityObjectType extends SanitySchemaType {
 
 export interface SanityReferenceType extends SanitySchemaType {
   type: 'reference';
-  to: Array<{ type: string; }>;
+  to: Array<{ type: DefaultFieldTypes; }>;
   weak?: boolean;
   options?: {
     filter?: string | (({ document, parent, parentPath }: { document: string; parent: string; parentPath: string; }) => { filter: string; params: { [key: string]: string } });
@@ -275,12 +276,18 @@ export interface SanitySlugType extends SanitySchemaType {
 
 export interface SanityStringType extends SanitySchemaType {
   type: 'string';
-  options?: {
-    list?: Array<string | { value: string; title: string }>;
-    layout?: 'radio' | 'dropdown';
-    direction?: 'horizontal' | 'vertical';
-  }
+  options?: SanityStringOptions;
 }
+
+export interface SanityStringOptions {
+  list?: SanityStringOptionsList;
+  layout?: 'radio' | 'dropdown';
+  direction?: 'horizontal' | 'vertical';
+}
+
+export type SanityStringOptionsList = SanityStringOptionsListStrings | SanityStringOptionsListObjects;
+export type SanityStringOptionsListStrings = Array<string>;
+export type SanityStringOptionsListObjects = Array<{ value: string; title: string }>;
 
 /*********************************************************************/
 
@@ -343,7 +350,8 @@ export type SanityContentTypes =
  **
  *********************************************************************/
 
-export type SanityField = StandardSanityField | CustomSanityField;
+export type SanityField = StandardSanityField
+//  | CustomSanityField;
 
 /*********************************************************************/
 
@@ -384,7 +392,7 @@ type SanityGeopointField = { type: 'geopoint' } & PropertiesFromType<SanityGeopo
 type SanityImageField = { type: 'image' } & PropertiesFromType<SanityImageType>;
 type SanityNumberField = { type: 'number' } & PropertiesFromType<SanityNumberType>;
 type SanityObjectField = { type: 'object' } & PropertiesFromType<SanityObjectType>;
-type SanityReferenceField = { type: 'reference' } & PropertiesFromType<SanityReferenceType>;
+type SanityReferenceField = { type: 'reference' } & Omit<PropertiesFromType<SanityReferenceType>, 'name'>;
 type SanitySlugField = { type: 'slug' } & PropertiesFromType<SanitySlugType>;
 type SanityStringField = { type: 'string' } & PropertiesFromType<SanityStringType>;
 type SanityTextField = { type: 'text' } & PropertiesFromType<SanityTextType>;
@@ -439,15 +447,18 @@ export type InferredObjectSchema<T extends SanityObjectSchema> = {
 /*********************************************************************/
 //  For typing the fields that make up the query shape
 
-type ExtractedObjectFields<T extends SanityField[]> = {
+type ExtractedObjectFields<T extends ReadonlyArray<SanityField>> = {
   [K in T[number]['name']]: FieldReturnType<T[number] & { name: K }>
+}
+
+type ExtractedMappedFields<F extends SanityField[]> = {
+  [K in F[number]['name']]: FieldReturnType<F[number] & { name: K }>;
 }
 
 type ReturnedQueryShape<F extends SanityField[], N extends string> = {
   _key?: string;
   _type: N;
-} & ExtractedObjectFields<F>;
-
+} & ExtractedMappedFields<F>
 /*********************************************************************/
 //  For typing the fieldsets during object creation
 
@@ -457,15 +468,80 @@ type RequiredFieldsets<T extends SanityFieldset[]> = ReadonlyArray<T[number]>;
 /*********************************************************************/
 //  Field query types
 //  TODO: include all types
+//  NOTE: Change extends SanityField to all the individual types
+//  and then check for things like T['options'] on the string type
 
-type FieldReturnType<T extends SanityField> =
-  T['type'] extends 'boolean' ? boolean :
-  T['type'] extends 'number' ? number :
-  T['type'] extends 'string' | 'date' | 'datetime' ? string :
-  T['type'] extends 'array' ? Array<any> :
+type FilteredFieldTypes<T extends SanityField> =
+  T extends { type: infer FieldType; } & infer FieldRest ? { type: FieldType } & FieldRest : never;
+
+type FieldReturnType<T extends SanityField
+  // SanityArrayField |
+  // SanityBlockField |
+  // SanityBooleanField |
+  // SanityDateField |
+  // SanityDateTimeField |
+  // SanityFileField |
+  // SanityGeopointField |
+  // SanityImageField |
+  // SanityNumberField |
+  // SanityObjectField |
+  // SanityReferenceField |
+  // SanitySlugField |
+  // SanityStringField |
+  // SanityTextField |
+  // SanityURLField
+  > =
+  FilteredFieldTypes<T> extends { type: 'array' } & infer Rest ? Array<any> :
+  FilteredFieldTypes<T> extends { type: 'block' } & infer Rest ? 'object' :
+  FilteredFieldTypes<T> extends { type: 'boolean' } & infer Rest ? 'boolean' :
+  FilteredFieldTypes<T> extends { type: 'date' } & infer Rest ? 'date string' :
+  FilteredFieldTypes<T> extends { type: 'datetime' } & infer Rest ? 'datetime string' :
+  FilteredFieldTypes<T> extends { type: 'file' } & infer Rest ? 'file' :
+  FilteredFieldTypes<T> extends { type: 'string' } & infer Rest ?
+  Rest extends { options: SanityStringOptions } ?
+  Rest['options']['list'] extends SanityStringOptionsList ?
+  Rest['options']['list'] extends SanityStringOptionsListStrings ? Rest['options']['list'][number] :
+  Rest['options']['list'] extends SanityStringOptionsListObjects ? Rest['options']['list'][number]['value'] :
+  string : string : string :
   unknown;
 
+type StringWithoutOptions<R extends Omit<SanityStringField, 'type'>> =
+  R extends { options: SanityStringOptions } ? R['options'] : string;
 
+
+// T extends SanityArrayField ? Array<T['of'][number]> : // augment this
+// T extends SanityBlockField ? Array<{ _type: string, _key: string }> : // augment this
+// T extends SanityBooleanField ? boolean :
+// T extends SanityDateField ? string :
+// T extends SanityDateTimeField ? string :
+// T extends SanityFileField ? { _type: string } : // augment this
+// T extends SanityGeopointField ? unknown : // TODO
+// T extends SanityImageField ? {
+//   _type: 'image', asset: {
+//     _ref: string,
+//     _type: 'reference'
+//   }
+// } :
+// T extends SanityNumberField ? number :
+// // T extends SanityObjectField ? {
+// //   _type: ReturnedQueryShape<T['fields'], T['name']>
+// // } :
+// T extends SanityReferenceField ? { _ref: string } : // check this
+// T extends SanitySlugField ? { _type: 'slug', current: string } :
+// T extends SanityStringField ? SanityStringReturnType<T['options']> :
+// T extends SanityTextField ? string :
+// T extends SanityURLField ? string :
+// unknown;
+
+type SanityStringReturnType<T extends SanityStringOptions | undefined> =
+  T extends SanityStringOptions ? GetStringLiteralsFromList<T['list']> : string;
+
+
+type GetStringLiteralsFromList<T extends SanityStringOptionsList | undefined> =
+  T extends SanityStringOptionsList ?
+  T extends SanityStringOptionsListStrings ? T[number] :
+  T extends SanityStringOptionsListObjects ? T[number]['value'] :
+  string : string;
 
 /**********************************************************************
  **
@@ -476,20 +552,50 @@ type FieldReturnType<T extends SanityField> =
 // Sanity class with methods to assist in creation of types
 export default class Sanity {
 
-  static defineObject<T extends SanityObjectSchema>(schema: InferredObjectSchema<T>) {
+  static defineObject<T extends SanityObjectSchema>(schema: InferredObjectSchema<T>, customTypes?: { name: string;[key: string]: any }[]) {
 
-    const object = {
+    function deepFreeze(object: { [key: string]: any }) {
+      // Retrieve the property names defined on object
+      const propNames = Object.getOwnPropertyNames(object);
+
+      // Freeze properties before freezing self
+
+      for (const name of propNames) {
+        const value = object[name];
+
+        if (value && typeof value === "object") {
+          deepFreeze(value);
+        }
+      }
+
+      return Object.freeze(object);
+    }
+
+    const object: { type: 'object' } & InferredObjectSchema<T> = {
+      type: 'object',
       ...schema,
+      fields: schema.fields.map(f => {
+        if (f.type === 'string') {
+          if (f.options?.list) {
+            if (typeof f.options.list[0] === 'string') {
+              f.options.list = [...f.options.list] as Array<Readonly<string>>
+            } else {
+              f.options.list = [...f.options.list] as Array<Readonly<{ title: string; value: string }>>
+            }
+          }
+        }
+
+        return f as Readonly<typeof f>;
+      })
     };
 
-    let extractedFields: ExtractedObjectFields<typeof schema['fields']> = schema.fields.reduce((acc, field) => {
-      // we're interested in the query shape here rather than the value    
-      return { ...acc, [field.name]: null }
-    }, {} as ExtractedObjectFields<typeof schema['fields']>);
+    let mappedFields = schema.fields.reduce((acc, field) => {
+      return { ...acc, [field.name]: field }
+    }, {} as ExtractedMappedFields<typeof schema['fields']>);
 
-    const query: ReturnedQueryShape<typeof schema['fields'], typeof schema['name']> = {
+    const query: ReturnedQueryShape<typeof object['fields'], typeof schema['name']> = {
       _type: schema.name,
-      ...extractedFields
+      ...mappedFields
     }
 
     return {
@@ -498,8 +604,25 @@ export default class Sanity {
     };
   }
 
+  /*******************************************************
+  *
+  *   OLD HELPERS - TO BE DEPRECATED
+  *
+  *******************************************************/
+
+
+
+
+
   static createContentType<T extends keyof SanityContentTypesRecord>(schema: SanityContentTypesRecord[T]): object {
     return schema;
+  }
+
+  static createSchema<T extends SanityContentTypes[]>(name: string, schema: T): SchemaReturnType<typeof name, typeof schema> {
+    return createSchema({
+      name,
+      types: schemaTypes.concat(schema)
+    });
   }
 
   static createArrayType<T extends SanityArrayType>(schema: CreateArrayTypeSchema<T>): { [K in keyof typeof schema]: typeof schema[K] } {
@@ -522,7 +645,9 @@ export default class Sanity {
 
 }
 
-
+function isListofStrings(list: SanityStringOptionsListStrings | SanityStringOptionsListObjects): list is SanityStringOptionsListStrings {
+  return typeof list[0] === 'string';
+}
 
 function isArrayField(field: StandardSanityField): field is SanityArrayField {
   return field.type === 'array';

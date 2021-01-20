@@ -135,16 +135,9 @@ const { object: heading, query } = Sanity.defineObject({
       options: {
         layout: 'checkbox'
       }
-    },
-    {
-      name: 'test',
-      type: 'string',
-      options: {
-
-      }
     }
   ],
-});
+}, []);
 
 export type HeadingQuery = typeof query;
 
