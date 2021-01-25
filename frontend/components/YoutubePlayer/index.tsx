@@ -65,15 +65,17 @@ export default function YoutubeVideo({ url }: { url: string }) {
 
   return (
     <YoutubeWrapper ref={ref} className="grid">
-      <PreserveAspectRatioWrap>
-        <Youtube
-          videoId={id}
-          opts={opts}
-          onReady={onReady}
-          onPlay={onPlayVideo}
-          onPause={onPauseVideo}
-        />
-      </PreserveAspectRatioWrap>
+      <div className="cell medium-8 offset medium-offset-2">
+        <PreserveAspectRatioWrap>
+          <Youtube
+            videoId={id}
+            opts={opts}
+            onReady={onReady}
+            onPlay={onPlayVideo}
+            onPause={onPauseVideo}
+          />
+        </PreserveAspectRatioWrap>
+      </div>
     </YoutubeWrapper>
   );
 }

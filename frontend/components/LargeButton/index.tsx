@@ -25,7 +25,7 @@ export default function LargeButton({
 
   return (
     <StyledWrapper className="grid">
-      <div className="">
+      <div className="cell medium-8 offset medium-offset-2">
         {!isExternalUrl && (<Link href={href} {...props}>
           <button type="button">{buttonText}</button>
         </Link>)}

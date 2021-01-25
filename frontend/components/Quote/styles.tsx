@@ -1,10 +1,13 @@
 import styled from "styled-components";
 
 export default styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: 0.95rem;
+  
+  article {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.95rem;
+  }
 
   div.stars {
     font-size: 2rem;

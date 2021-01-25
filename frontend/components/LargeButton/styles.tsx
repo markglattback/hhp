@@ -8,7 +8,7 @@ export default styled.div`
     border: none;
     background: var(--yellow);
     color: var(--black);
-    padding: 1rem 2rem;
+    padding: 1rem;
     font-size: 1rem;
     font-weight: 500;
     text-transform: uppercase;

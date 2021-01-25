@@ -9,7 +9,7 @@ type Props = Pick<BigQuoteProps['node'], 'text' | 'person' | 'reference'>;
 export default function MainQuote({ text, person, reference }: Props) {
   return (
     <StyledMainQuote className="grid">
-      <q className="cell" >
+      <q className="cell medium-10 offset medium-offset-1" >
         <span>{text}</span>
       </q>
       <figcaption className="cell">{person}</figcaption>

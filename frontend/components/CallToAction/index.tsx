@@ -46,8 +46,8 @@ export default function CallToAction({
         )
         }
       </div>
-      <div className="grid grid-margin" data-testid="cta-links">
-        <LinkButton text={buttonOneText} href={buttonOneLink} className="cell medium-5 medium-offset-1" />
+      <div className="grid grid-gap" data-testid="cta-links">
+        <LinkButton text={buttonOneText} href={buttonOneLink} className="cell medium-5 offset medium-offset-1" />
         <LinkButton text={buttonTwoText} href={buttonTwoLink} className="cell medium-5" />
       </div>
     </StyledCallToAction>

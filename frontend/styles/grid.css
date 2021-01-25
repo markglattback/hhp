@@ -1,8 +1,44 @@
-.grid-container {
-  width: 100%;
-  display: grid;
-  grid-template-columns: [gutter-left-start] var(--grid-container-padding) [content-start] repeat(12, [col-start] 1fr [col-end]) [content-end gutter-right-start] var(--grid-container-padding) [gutter-right-end];
+:root {
+  --grid-content-width: 90em;   /* 1440px @ 16px font-size */
+  --grid-gutter-width: 1.875em; /* 30px @ 16px font-size */
+  --grid-frame-width: var(var(--grid-content-width));
+  --grid-frame-max-width: calc(var(--grid-gutter-width)*2 + var(--grid-content-width));
+  --grid-gap: 1em;
+  --grid-columns: 12;
+  --cell-columns: 12;
+  --cell-offset: 1;
+  --cell-width: calc(100% / var(--grid-columns) * var(--grid-cells));
 }
+
+
+/*  Frames  */ 
+/************/
+
+/*  For use as the parent of the grid system  */
+
+.grid-frame {
+  display: grid;
+  max-width: var(--grid-frame-width);
+  grid-template-columns: [content-start] repeat(12, [col-start] 1fr [col-end]) [content-end];
+  margin: 0 auto;
+}
+
+.grid-frame-max {
+  display: grid;
+  max-width: var(--grid-frame-max-width);
+  grid-template-columns: [gutter-left-start] var(--grid-container-padding) [gutter-left-end content-start] repeat(12, [col-start] 1fr [col-end]) [content-end gutter-right-start] var(--grid-container-padding) [gutter-right-end];
+  margin: 0 auto;
+}
+
+
+
+
+/*  Grids  */
+/***********/
+
+/*  For general use as a wrapper for children cells, but numbered variants can also be used to create  */
+/*  asymmetrical designs. e.g. within a grid-frame-max, one edge may need to spill over into the  */
+/*  gutters whereas the other side may end where the grid content area ends */
 
 .grid, .grid-max, .grid-max-padded, .grid-6, .grid-6-left-max, .grid-6-right-max {
   display: flex;
@@ -10,145 +46,436 @@
   width: 100%;
 }
 
+
+
+/*  Main Grids  */
+
+/*  Use within .grid-frame  */
 .grid {
   grid-column: content-start / content-end;
 }
 
+/*  Use within .grid-frame-max  */
 .grid-max {
   grid-column: gutter-left-start / gutter-right-end;
 }
 
-.grid-max-padded {
-  grid-column: gutter-left-start / gutter-right-end;
-  padding: 0 var(--grid-container-padding);
+
+
+/*  For use with .grid-max, it controls where the content will start */
+.grid-max.grid-pad-left > *:first-of-type {
+  margin-left: var(--grid-gutter-width);
 }
 
+.grid-max.grid-pad-right > *:last-of-type {
+  margin-right: var(--grid-gutter-width);
+}
+
+
+
+/*  Use to provide a gap between cells  */
+.grid-gap > * {
+  margin: 0 calc(var(--grid-gap) / 2);
+}
+
+.grid-max.grid-pad-left.grid-gap > *:first-of-type {
+  margin-left: calc(var(--grid-gutter-width) + (var(--grid-gap) / 2));
+}
+
+.grid-max.grid-pad-right.grid-gap > *:first-of-type {
+  margin-right: calc(var(--grid-gutter-width) + (var(--grid-gap) / 2));
+}
+
+
+/*  Use with Sub-Grids to expand into gutter of .grid-frame-max  */
+/*********************************************/
+
+.grid-expand-left.grid-pad-left > *:first-of-type {
+  margin-left: var(--grid-gutter-width);
+}
+
+.grid-expand-left.grid-pad-left.grid-gap > *:first-of-type {
+  margin-left: calc(var(--grid-gutter-width) + (var(--grid-gap) / 2));
+}
+
+.grid-expand-right.grid-pad-right > *:first-of-type {
+  margin-right: var(--grid-gutter-width);
+}
+
+.grid-expand-right.grid-pad-right.grid-gap > *:first-of-type {
+  margin-right: calc(var(--grid-gutter-width) + (var(--grid-gap) / 2));
+}
+
+/*********************************************/
+
+
+/*  Sub Grids  */
+/*********************************************/
+
+.grid-1 {
+  --grid-columns: 1;
+  grid-column-start: col-start;
+  grid-column-end: span 1;
+}
+
+.grid-1.grid-expand-left {
+  grid-column: gutter-left-start / col-end 1;
+}
+
+.grid-1.grid-expand-right {
+  grid-column: col-start 12 / gutter-right-end;
+}
+
+/*********************************************/
+
+.grid-2 {
+  --grid-columns: 2;
+  grid-column-start: col-start;
+  grid-column-end: span 2;
+}
+
+.grid-2.grid-expand-left {
+  grid-column: gutter-left-start / col-end 2;
+}
+
+.grid-2.grid-expand-right {
+  grid-column: col-start 11 / gutter-right-end;
+}
+
+/*********************************************/
+
+.grid-3 {
+  --grid-columns: 3;
+  grid-column-start: col-start;
+  grid-column-end: span 3;
+}
+
+.grid-3.grid-expand-left {
+  grid-column: gutter-left-start / col-end 3;
+}
+
+.grid-3.grid-expand-right {
+  grid-column: col-start 10 / gutter-right-end;
+}
+
+/*********************************************/
+
+.grid-4 {
+  --grid-columns: 4;
+  grid-column-start: col-start;
+  grid-column-end: span 4;
+}
+
+.grid-4.grid-expand-left {
+  grid-column: gutter-left-start / col-end 4;
+}
+
+.grid-4.grid-expand-right {
+  grid-column: col-start 9 / gutter-right-end;
+}
+
+/*********************************************/
+
+.grid-5 {
+  --grid-columns: 5;
+  grid-column-start: col-start;
+  grid-column-end: span 5;
+}
+
+.grid-5.grid-expand-left {
+  grid-column: gutter-left-start / col-end 5;
+}
+
+.grid-5.grid-expand-right {
+  grid-column: col-start 8 / gutter-right-end;
+}
+
+/*********************************************/
+
 .grid-6 {
+  --grid-columns: 6;
   grid-column-start: col-start;
   grid-column-end: span 6;
 }
 
-.grid-6-left-max {
+.grid-6.grid-expand-left {
   grid-column: gutter-left-start / col-end 6;
 }
 
-.grid-6-right-max {
+.grid-6.grid-expand-right {
   grid-column: col-start 7 / gutter-right-end;
 }
 
-.grid-margin > .cell {
-  margin: 0 calc(var(--grid-gap) / 2);
+/*********************************************/
+
+.grid-7 {
+  --grid-columns: 7;
+  grid-column-start: col-start;
+  grid-column-end: span 7;
 }
 
+.grid-7.grid-expand-left {
+  grid-column: gutter-left-start / col-end 7;
+}
 
-/*  Target children directly  */
+.grid-7.grid-expand-right {
+  grid-column: col-start 6 / gutter-right-end;
+}
+
+/*********************************************/
+
+.grid-8 {
+  --grid-columns: 8;
+  grid-column-start: col-start;
+  grid-column-end: span 8;
+}
+
+.grid-8.grid-expand-left {
+  grid-column: gutter-left-start / col-end 8;
+}
+
+.grid-8.grid-expand-right {
+  grid-column: col-start 5 / gutter-right-end;
+}
+
+/*********************************************/
+
+.grid-9 {
+  --grid-columns: 9;
+  grid-column-start: col-start;
+  grid-column-end: span 9;
+}
+
+.grid-9.grid-expand-left {
+  grid-column: gutter-left-start / col-end 9;
+}
+
+.grid-9.grid-expand-right {
+  grid-column: col-start 4 / gutter-right-end;
+}
+
+/*********************************************/
+
+.grid-10 {
+  --grid-columns: 10;
+  grid-column-start: col-start;
+  grid-column-end: span 10;
+}
+
+.grid-10.grid-expand-left {
+  grid-column: gutter-left-start / col-end 10;
+}
+
+.grid-10.grid-expand-right {
+  grid-column: col-start 3 / gutter-right-end;
+}
+
+/*********************************************/
+
+.grid-11 {
+  --grid-columns: 11;
+  grid-column-start: col-start;
+  grid-column-end: span 11;
+}
+
+.grid-11.grid-expand-left {
+  grid-column: gutter-left-start / col-end 11;
+}
+
+.grid-11.grid-expand-right {
+  grid-column: col-start 2 / gutter-right-end;
+}
+
+/*********************************************/
+
+.grid-12 {
+  --grid-columns: 12;
+  grid-column-start: col-start;
+  grid-column-end: span 12;
+}
+
+.grid-12.grid-expand-left {
+  grid-column: gutter-left-start / col-end 12;
+}
+
+.grid-12.grid-expand-right {
+  grid-column: col-start 1 / gutter-right-end;
+}
+
+/*********************************************/
+
+
+
+
+/*  Cells  */
+/***********/
 
 .cell {
   flex: 0 0 auto;
-  width: 100%;
+  width: calc(100% / var(--grid-columns) * var(--cell-columns));
 }
 
 .shrink {
   flex: 0 1 0;
 }
 
+/*  Cell Sizing Within Different Grids  */
+
+.grid-gap > .cell {
+  width: calc(100% / var(--grid-columns) * min(var(--grid-columns), var(--cell-columns)) - var(--grid-gap));
+}
+
+.grid-max.grid-pad-left > .cell {
+  width: calc((100% - var(--grid-gutter-width)) / var(--grid-columns) * min(var(--grid-columns), var(--cell-columns)));
+}
+
+.grid-max.grid-pad-right > .cell {
+  width: calc((100% - var(--grid-gutter-width)) / var(--grid-columns) * min(var(--grid-columns), var(--cell-columns)));
+}
+
+.grid-max.grid-pad-left.grid-pad-right > .cell {
+  width: calc((100% - var(--grid-gutter-width) * 2) / var(--grid-columns) * min(var(--grid-columns), var(--cell-columns)));
+}
+
+.grid-max.grid-pad-left.grid-gap > .cell {
+  width: calc(((100% - var(--grid-gutter-width)) / var(--grid-columns) * min(var(--grid-columns), var(--cell-columns))) - var(--grid-gap));
+}
+
+.grid-max.grid-pad-right.grid-gap > .cell {
+  width: calc(((100% - var(--grid-gutter-width)) / var(--grid-columns) * min(var(--grid-columns), var(--cell-columns))) - var(--grid-gap));
+}
+
+.grid-max.grid-pad-left.grid-pad-right.grid-gap > .cell {
+  width: calc(((100% - var(--grid-gutter-width) * 2) / var(--grid-columns) * min(var(--grid-columns), var(--cell-columns))) - var(--grid-gap));
+}
+
+
+/*  Cell Offsets Within Different Grids  */
+.offset {
+  margin-left: calc(100% / var(--grid-columns) * var(--cell-offset));
+}
+
+.grid-gap > .offset {
+  margin-left: calc(100% / var(--grid-columns) * var(--cell-offset) + var(--grid-gap) / 2);
+}
+
+.grid-max.grid-pad-left > .offset {
+  margin-left: calc((100% - var(--grid-gutter-width)) / var(--grid-columns) * var(--cell-offset) + var(--grid-gutter-width));
+}
+
+.grid-max.grid-pad-left.grid-gap > .offset {
+  margin-left: calc((100% - var(--grid-gutter-width)) / var(--grid-columns) * var(--cell-offset) + var(--grid-gutter-width) + var(--grid-gap) / 2);
+}
+
+.grid-max.grid-pad-right.grid-gap > .offset {
+  margin-left: calc((100% - var(--grid-gutter-width)) / var(--grid-columns) * var(--cell-offset) + var(--grid-gutter-width) + var(--grid-gap) / 2);
+}
+
+.grid-max.grid-pad-left.grid-pad-right.grid-gap > .offset {
+  margin-left: calc((100% - var(--grid-gutter-width) * 2) / var(--grid-columns) * var(--cell-offset) + var(--grid-gutter-width) + var(--grid-gap) / 2);
+}
+
+
 
 @media screen and (min-width: 1024px) {
-  .grid > .medium-1, .medium-2, .medium-3, .medium-4, .medium-5, .medium-6, .medium-7, .medium-8, .medium-9, .medium-10, .medium-11, .medium-12 {
-    flex: 0 0 auto;
-  }
-
-  .grid-max > .medium-1, .medium-2, .medium-3, .medium-4, .medium-5, .medium-6, .medium-7, .medium-8, .medium-9, .medium-10, .medium-11, .medium-12 {
-    flex: 0 0 auto;
-  }
-
-  .grid-max-padded > .medium-1, .medium-2, .medium-3, .medium-4, .medium-5, .medium-6, .medium-7, .medium-8, .medium-9, .medium-10, .medium-11, .medium-12 {
-    flex: 0 0 auto;
-  }
-
-  .grid-6 > .medium-1, .medium-2, .medium-3, .medium-4, .medium-5, .medium-6, .medium-7, .medium-8, .medium-9, .medium-10, .medium-11, .medium-12 {
-    flex: 0 0 auto;
-  }
-
-  .grid-6-left-max > .medium-1, .medium-2, .medium-3, .medium-4, .medium-5, .medium-6, .medium-7, .medium-8, .medium-9, .medium-10, .medium-11, .medium-12 {
-    flex: 0 0 auto;
-  }
-
-  .grid-6-right-max > .medium-1, .medium-2, .medium-3, .medium-4, .medium-5, .medium-6, .medium-7, .medium-8, .medium-9, .medium-10, .medium-11, .medium-12 {
-    flex: 0 0 auto;
-  }
 
   .medium-1 {
-    width: calc(100% / 12);
+    --cell-columns: 1;
   }
-
+ 
   .medium-2 {
-    width: calc(100% / 12 * 2);
+    --cell-columns: 2;
   }
-
+ 
   .medium-3 {
-    width: calc(100% / 12 * 3);
+    --cell-columns: 3;
   }
-
+ 
   .medium-4 {
-    width: calc(100% / 12 * 4);
+    --cell-columns: 4;
   }
-
-  .grid-margin > .medium-4 {
-    width: calc((100% / 12 * 4) - var(--grid-gap));
-  }
-
+ 
   .medium-5 {
-    width: calc(100% / 12 * 5);
+    --cell-columns: 5;
   }
-
-  .grid-margin > .medium-5 {
-    width: calc((100% / 12 * 5) - var(--grid-gap));
-  }  
-
+ 
   .medium-6 {
-    width: calc(100% / 12 * 6);
+    --cell-columns: 6;
   }
-
+ 
   .medium-7 {
-    width: calc(100% / 12 * 7);
+    --cell-columns: 7;
   }
-  
+ 
   .medium-8 {
-    width: calc(100% / 12 * 8);
+    --cell-columns: 8;
   }
-  
+ 
   .medium-9 {
-    width: calc(100% / 12 * 9);
+    --cell-columns: 9;
   }
-  
+ 
   .medium-10 {
-    width: calc(100% / 12 * 10);
+    --cell-columns: 10;
   }
-  
+ 
   .medium-11 {
-    width: calc(100% / 12 * 11);
+    --cell-columns: 11;
   }
-  
+ 
   .medium-12 {
-    width: calc(100% / 12 * 12);
+    --cell-columns: 12;
   }
 
+  
   /*  Offsets  */
   
   .medium-offset-1 {
-    margin-left: calc(100% / 12);
-  }
-
-  .grid-margin > .medium-offset-1 {
-    margin-left: calc(100% / 12 + var(--grid-gap) / 2);
-  }
-
-  .medium-offset-2 {
-    margin-left: calc(100% / 12 * 2);
+    --cell-offset: 1;
   }
   
-  .grid-margin > .medium-offset-2 {
-    margin-left: calc(100% / 12 * 2 + var(--grid-gap) / 2);
+  .medium-offset-2 {
+    --cell-offset: 2;
   }
+
+  .medium-offset-3 {
+    --cell-offset: 3
+  }
+
+  .medium-offset-4 {
+    --cell-offset: 4
+  }
+
+  .medium-offset-5 {
+    --cell-offset: 5
+  }
+
+  .medium-offset-6 {
+    --cell-offset: 6
+  }
+
+  .medium-offset-7 {
+    --cell-offset: 7
+  }
+
+  .medium-offset-8 {
+    --cell-offset: 8
+  }
+
+  .medium-offset-9 {
+    --cell-offset: 9
+  }
+
+  .medium-offset-10 {
+    --cell-offset: 10
+  }
+
+  .medium-offset-11 {
+    --cell-offset: 11
+  }
+
+  .medium-offset-12 {
+    --cell-offset: 12
+  }
+  
 }

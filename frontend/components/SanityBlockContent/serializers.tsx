@@ -85,9 +85,6 @@ export interface LargeButtonProps {
 
 
 const BlockRenderer = (props: any) => {
-  console.log(props);
-
-
   const { style = "normal", children = [], markDefs = [] } = props.node;
 
   if (style === "normal") {
@@ -101,7 +98,46 @@ const BlockRenderer = (props: any) => {
     });
 
     return (
-      <p className={noSpacing ? "no-spacing" : undefined}>{props.children}</p>
+      <p className={`${noSpacing ? "no-spacing" : ""} cell medium-10 offset medium-offset-1`}>{props.children}</p>
+    );
+  }
+
+  // check for custom styles
+  if (style === "small") {
+    return <p className="smaller-text cell medium-10 offset medium-offset-1">{props.children}</p>;
+  }
+
+  if (style === "large") {
+    return <p className="large-text cell medium-10 offset medium-offset-1">{props.children}</p>;
+  }
+
+  if (style === "largeCaps") {
+    return <p className="large-text large-text--caps cell medium-10 offset medium-offset-1">{props.children}</p>;
+  }
+
+  if (style === "caption") {
+    return <span className="caption cell medium-10 offset medium-offset-1">{props.children}</span>;
+  }
+
+  // fall back to default
+  return BlockContent.defaultSerializers.types.block(props);
+};
+
+export const NonGridBlockRenderer = (props: any) => {
+  const { style = "normal", children = [], markDefs = [] } = props.node;
+
+  if (style === "normal") {
+    let noSpacing = false;
+    children.forEach((child: any) => {
+      if (child.marks.length) {
+        for (let i = 0; i < child.marks.length; i++) {
+          if (child.marks[i] === "noSpacing") noSpacing = true;
+        }
+      }
+    });
+
+    return (
+      <p className={`${noSpacing ? "no-spacing" : ""}`}>{props.children}</p>
     );
   }
 
@@ -115,7 +151,7 @@ const BlockRenderer = (props: any) => {
   }
 
   if (style === "largeCaps") {
-    return <p className="large-text large-text--caps">{props.children}</p>;
+    return <p className="large-text">{props.children}</p>;
   }
 
   if (style === "caption") {
@@ -124,7 +160,7 @@ const BlockRenderer = (props: any) => {
 
   // fall back to default
   return BlockContent.defaultSerializers.types.block(props);
-};
+}
 
 
 /* check if child is highlighted */
