@@ -51,6 +51,7 @@ test('multiline headings and sub-headings render', () => {
   const headingLineBreak = lineBreaks[positionOfLineBreak(data, 'heading')];
   const subHeadingLineBreak = lineBreaks[positionOfLineBreak(data, 'sub-heading')];
   const wrapper = screen.getByTestId('heading');
+  const contentWrapper = screen.getByTestId('heading-content');
   const h1 = screen.queryByTestId('heading-h1');
   const h2 = screen.queryByTestId('heading-h2');
   const h3 = screen.queryByTestId('heading-h3');
@@ -72,7 +73,7 @@ test('multiline headings and sub-headings render', () => {
   expect(subHeadingLineBreak).toBeInTheDocument();
 
   // Check sub-heading is displayed first
-  expect(wrapper.firstChild).toHaveAttribute('data-testid', 'sub-heading');
+  expect(contentWrapper.firstChild).toHaveAttribute('data-testid', 'sub-heading');
 
   // Check no other heading tags are rendered
   expect(h2).not.toBeInTheDocument();
@@ -98,6 +99,7 @@ test('single line headings render', () => {
 
   const lineBreaks = screen.queryAllByTestId('line-break');
   const wrapper = screen.getByTestId('heading');
+  const contentWrapper = screen.getByTestId('heading-content');
   const h1 = screen.queryByTestId('heading-h1');
   const h2 = screen.queryByTestId('heading-h2');
   const h3 = screen.queryByTestId('heading-h3');
@@ -110,14 +112,18 @@ test('single line headings render', () => {
   // Wrapper
   expect(wrapper).toBeInTheDocument();
 
-  // H1 tag
+  // H2 tag
   expect(h2).toBeInTheDocument();
   expect(h2).toHaveTextContent(data.node.firstLine as string);
+
+  // Check no other tags are rendered
+  expect(h1).not.toBeInTheDocument();
+  expect(h3).not.toBeInTheDocument();
 
   // Sub-Heading
   expect(subHeading).toBeInTheDocument();
   expect(subHeading).toHaveTextContent(data.node.subHeadingFirstLine as string);
 
   // Check heading is displayed first
-  expect(wrapper.firstChild).toHaveAttribute('data-testid', 'heading-h2');
+  expect(contentWrapper.firstChild).toHaveAttribute('data-testid', 'heading-h2');
 });

@@ -50,7 +50,7 @@ export default function Heading(props: HeadingProps['node']) {
 
   return (
     <StyledHeading className="grid" fontSize={props.headingSize} subHeadingFontSize={props.subHeadingSize} useBodyColor={props.useBodyColor} subHeadingWithH1={props.headingElement === 'H1'} data-testid="heading">
-      <div className="cell">
+      <div className="cell" data-testid="heading-content">
         {content.map((Component, index) => <Component key={`${props._key}_${index}`} />)}
       </div>
     </StyledHeading>
