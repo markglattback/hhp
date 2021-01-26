@@ -3,15 +3,6 @@ import StyledQuote from './styles';
 // @ts-ignore
 import BlockContent from "@sanity/block-content-to-react";
 
-//  Override default block serializer 
-const customSerializers = {
-  ...serializers,
-  types: {
-    ...serializers.types,
-    block: (props: any) => <NonGridBlockRenderer {...props} />
-  }
-}
-
 type Props = {
   text: string;
   snippet: string;
@@ -27,7 +18,13 @@ export default function Quote({ text, snippet, person }: Props) {
         <div className="text">
           <figure>
             <q>
-              <BlockContent blocks={text} serializers={customSerializers} />
+              <BlockContent blocks={text} serializers={{
+                ...serializers,
+                types: {
+                  ...serializers.types,
+                  block: (props: any) => <NonGridBlockRenderer {...props} />
+                }
+              }} />
             </q>
             <figcaption>{person}</figcaption>
           </figure>

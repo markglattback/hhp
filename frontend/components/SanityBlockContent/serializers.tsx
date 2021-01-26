@@ -1,4 +1,5 @@
 // @ts-nocheck
+import BlockContent from "@sanity/block-content-to-react";
 import getImageUrl from '../../lib/getImageUrl';
 import Heading from "../Heading";
 import PageImage from "../PageImage";
@@ -7,11 +8,9 @@ import Quote from "../Quote";
 import CallToActionSection from "../CallToAction";
 import YoutubeVideo from "../YoutubePlayer";
 import LargeButton from '../LargeButton';
-import BlockContent from "@sanity/block-content-to-react";
 import Link from 'next/link';
 import List from 'components/List';
 import { Url } from 'url';
-import styled from 'styled-components';
 
 /** CUSTOM SERIALIZER TYPES **/
 /** Work in Progress **/
@@ -82,8 +81,8 @@ export interface LargeButtonProps {
   } & SanityObjectResult;
 }
 
-
-
+/*  Block Renderers */
+/********************/
 const BlockRenderer = (props: any) => {
   const { style = "normal", children = [], markDefs = [] } = props.node;
 
@@ -177,7 +176,7 @@ function checkChildrenForHighlights(children: any[]): boolean {
   return false;
 }
 
-export default {
+const serializers = {
   types: {
     block: (props) => <div className="grid"><BlockRenderer {...props} /></div>,
     heading: (props: HeadingTagProps) => <Heading {...props.node} />,
@@ -262,3 +261,6 @@ export default {
     ),
   },
 };
+
+
+export { serializers as default };
