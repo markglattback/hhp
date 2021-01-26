@@ -103,5 +103,5 @@ test('the internal links function properly', () => {
   const push = jest.spyOn(mockedRouter, 'push');
 
   userEvent.click(screen.getByText('twoLinkTwo'));
-  expect(push).toHaveBeenCalledWith('/twoInternalLinkTwo', '/twoInternalLinkTwo', { locale: undefined, shallow: undefined });
+  expect(push).toHaveBeenCalledWith('/twoInternalLinkTwo', '/twoInternalLinkTwo', { locale: undefined, scroll: true, shallow: undefined });
 });

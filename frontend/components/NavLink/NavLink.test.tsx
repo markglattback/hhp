@@ -35,6 +35,6 @@ test('pushes new route correctly', () => {
   const push = jest.spyOn(mockedRouter, 'push');
 
   userEvent.click(link, leftClickConfig);
-  expect(push).toHaveBeenCalledWith(href, href, { locale: undefined, shallow: undefined });
+  expect(push).toHaveBeenCalledWith(href, href, { locale: undefined, scroll: true, shallow: undefined });
 });
 

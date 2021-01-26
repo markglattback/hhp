@@ -41,9 +41,9 @@ test('links should work correctly', () => {
   const push = jest.spyOn(mockedRouter, 'push');
 
   userEvent.click(links[0]);
-  expect(push).toHaveBeenCalledWith(buttonOneLink, buttonOneLink, { locale: undefined, shallow: undefined });
+  expect(push).toHaveBeenCalledWith(buttonOneLink, buttonOneLink, { locale: undefined, scroll: true, shallow: undefined });
 
   userEvent.click(links[1]);
-  expect(push).toHaveBeenCalledWith(buttonTwoLink, buttonTwoLink, { locale: undefined, shallow: undefined });
+  expect(push).toHaveBeenCalledWith(buttonTwoLink, buttonTwoLink, { locale: undefined, scroll: true, shallow: undefined });
 
 });
