@@ -375,9 +375,109 @@
   margin-left: calc((100% - var(--grid-gutter-width) * 2) / var(--grid-columns) * var(--cell-offset) + var(--grid-gutter-width) + var(--grid-gap) / 2);
 }
 
+@media screen and (min-width: 0px) {
+  .small-1 {
+    --cell-columns: 1;
+  }
+ 
+  .small-2 {
+    --cell-columns: 2;
+  }
+ 
+  .small-3 {
+    --cell-columns: 3;
+  }
+ 
+  .small-4 {
+    --cell-columns: 4;
+  }
+ 
+  .small-5 {
+    --cell-columns: 5;
+  }
+ 
+  .small-6 {
+    --cell-columns: 6;
+  }
+ 
+  .small-7 {
+    --cell-columns: 7;
+  }
+ 
+  .small-8 {
+    --cell-columns: 8;
+  }
+ 
+  .small-9 {
+    --cell-columns: 9;
+  }
+ 
+  .small-10 {
+    --cell-columns: 10;
+  }
+ 
+  .small-11 {
+    --cell-columns: 11;
+  }
+ 
+  .small-12 {
+    --cell-columns: 12;
+  }
+
+  
+  /*  Offsets  */
+  
+  .small-offset-1 {
+    --cell-offset: 1;
+  }
+  
+  .small-offset-2 {
+    --cell-offset: 2;
+  }
+
+  .small-offset-3 {
+    --cell-offset: 3
+  }
+
+  .small-offset-4 {
+    --cell-offset: 4
+  }
+
+  .small-offset-5 {
+    --cell-offset: 5
+  }
+
+  .small-offset-6 {
+    --cell-offset: 6
+  }
+
+  .small-offset-7 {
+    --cell-offset: 7
+  }
+
+  .small-offset-8 {
+    --cell-offset: 8
+  }
+
+  .small-offset-9 {
+    --cell-offset: 9
+  }
+
+  .small-offset-10 {
+    --cell-offset: 10
+  }
+
+  .small-offset-11 {
+    --cell-offset: 11
+  }
+
+  .small-offset-12 {
+    --cell-offset: 12
+  }
+}
 
 
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 640px) {
 
   .medium-1 {
     --cell-columns: 1;
@@ -475,6 +575,110 @@
   }
 
   .medium-offset-12 {
+    --cell-offset: 12
+  }
+  
+}
+
+
+@media screen and (min-width: 1024px) {
+
+  .large-1 {
+    --cell-columns: 1;
+  }
+ 
+  .large-2 {
+    --cell-columns: 2;
+  }
+ 
+  .large-3 {
+    --cell-columns: 3;
+  }
+ 
+  .large-4 {
+    --cell-columns: 4;
+  }
+ 
+  .large-5 {
+    --cell-columns: 5;
+  }
+ 
+  .large-6 {
+    --cell-columns: 6;
+  }
+ 
+  .large-7 {
+    --cell-columns: 7;
+  }
+ 
+  .large-8 {
+    --cell-columns: 8;
+  }
+ 
+  .large-9 {
+    --cell-columns: 9;
+  }
+ 
+  .large-10 {
+    --cell-columns: 10;
+  }
+ 
+  .large-11 {
+    --cell-columns: 11;
+  }
+ 
+  .large-12 {
+    --cell-columns: 12;
+  }
+
+  
+  /*  Offsets  */
+  
+  .large-offset-1 {
+    --cell-offset: 1;
+  }
+  
+  .large-offset-2 {
+    --cell-offset: 2;
+  }
+
+  .large-offset-3 {
+    --cell-offset: 3
+  }
+
+  .large-offset-4 {
+    --cell-offset: 4
+  }
+
+  .large-offset-5 {
+    --cell-offset: 5
+  }
+
+  .large-offset-6 {
+    --cell-offset: 6
+  }
+
+  .large-offset-7 {
+    --cell-offset: 7
+  }
+
+  .large-offset-8 {
+    --cell-offset: 8
+  }
+
+  .large-offset-9 {
+    --cell-offset: 9
+  }
+
+  .large-offset-10 {
+    --cell-offset: 10
+  }
+
+  .large-offset-11 {
+    --cell-offset: 11
+  }
+
+  .large-offset-12 {
     --cell-offset: 12
   }
   
