@@ -1,9 +1,6 @@
 import BlockContent, { BlockContentProps } from '@sanity/block-content-to-react';
 import serializers from './serializers';
 
-console.log(serializers);
-
-
 type SanityBlockContentProps = {
   blocks: BlockContentProps['blocks'];
 }
