@@ -18,6 +18,7 @@
 
 .grid-frame {
   display: grid;
+  width: 100%;
   max-width: var(--grid-frame-width);
   grid-template-columns: [content-start] repeat(12, [col-start] 1fr [col-end]) [content-end];
   margin: 0 auto;
@@ -25,6 +26,7 @@
 
 .grid-frame-max {
   display: grid;
+  width: 100%;
   max-width: var(--grid-frame-max-width);
   grid-template-columns: [gutter-left-start] var(--grid-container-padding) [gutter-left-end content-start] repeat(12, [col-start] 1fr [col-end]) [content-end gutter-right-start] var(--grid-container-padding) [gutter-right-end];
   margin: 0 auto;
