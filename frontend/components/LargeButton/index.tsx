@@ -1,7 +1,7 @@
 import Link, { LinkProps } from "next/link";
 import BlockContent from "@sanity/block-content-to-react";
 import serializers from "../SanityBlockContent/serializers";
-import StyledWrapper from './styles'
+import StyledWrapper from './styles';
 
 interface Props extends LinkProps {
   buttonText: string;
