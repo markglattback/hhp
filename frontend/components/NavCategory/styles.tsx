@@ -12,7 +12,7 @@ export default styled.li`
     width: 1px;
     background: var(--white);
 
-    @media (max-width: 700px) {
+    @media (max-width: 830px) {
       display: none;
     }
   }
@@ -25,17 +25,17 @@ export default styled.li`
     text-decoration: none;
     white-space: nowrap;
   
-    @media (max-width: 1050px) {
+    @media (max-width: 1280px) {
       display: block;
     }
 
-    @media (max-width: 700px) {
+    @media (max-width: 830px) {
       display: none;
     }
   }
 
   &:hover > .dropdown-wrapper {
-    @media (max-width: 1050px) {
+    @media (max-width: 1280px) {
       display: block;
 
       
@@ -43,7 +43,7 @@ export default styled.li`
   }
  
   .dropdown-wrapper {
-    @media (max-width: 1050px) {
+    @media (max-width: 1280px) {
       display: none;
       position: absolute;
       transform: translateY(2rem);
@@ -65,7 +65,7 @@ export default styled.li`
       }
     }
 
-    @media (max-width: 700px) {
+    @media (max-width: 830px) {
       display: block;
       position: initial;
       background: transparent;

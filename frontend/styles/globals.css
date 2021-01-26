@@ -9,12 +9,11 @@
   --textRed: #d31f3d;
   --fontMin: 16px;
   --fontMax: 19px;
-  --maxWidth: 980px;
+  --maxWidth: 1260px;
   --zIndexFront: 10;
   --zIndexForward: 1;
 
-  --grid-container-padding: 35px;
-  --grid-gap: 1rem;
+  --header-height-desktop: 64px;
 }
 
 html {

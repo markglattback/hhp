@@ -1,9 +1,12 @@
-import { route } from 'next/dist/next-server/server/router';
 import { useRouter } from 'next/router';
 import { SyntheticEvent } from 'react';
 import LogoWrapper from './styles';
 
-export default function NavLogo({ path }: { path: string; }) {
+type NavLogoProps = {
+  path: string;
+} & React.PropsWithoutRef<JSX.IntrinsicElements['div']>
+
+export default function NavLogo({ path, ...props }: NavLogoProps) {
   const router = useRouter();
 
   function handleOnClick(e: SyntheticEvent) {
@@ -11,7 +14,7 @@ export default function NavLogo({ path }: { path: string; }) {
   }
 
   return (
-    <LogoWrapper onClick={handleOnClick} data-testid="nav-logo">
+    <LogoWrapper onClick={handleOnClick} data-testid="nav-logo" {...props} >
       <img src={path} alt="Hip Hop Pop Logo" />
     </LogoWrapper>
   )

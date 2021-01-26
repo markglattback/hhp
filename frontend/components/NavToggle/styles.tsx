@@ -21,7 +21,7 @@ export default styled.button<Props>`
     outline: none;
   }
 
-  @media screen and (max-width: 700px) {
+  @media screen and (max-width: 830px) {
     display: block;
     position: fixed;
     right: 8px;

@@ -1,5 +1,7 @@
+import NavLogin from "components/NavLogin";
 import NavLogo from "components/NavLogo";
 import { useEffect, useRef, useState } from "react";
+import Container from "styles/styled components/Container";
 import NavCategory from '../NavCategory';
 import NavLink from '../NavLink';
 import NavToggle from '../NavToggle';
@@ -44,55 +46,58 @@ export default function Nav() {
   return (
     <>
       <Header open={open} data-testid="header">
-        <NavLogo path="/hip-hop-pop.png" />
-        <nav ref={navRef} className="no-transition" data-testid="nav">
-          <ul>
-            <NavLink
-              href="/street-dance-facts"
-              text="News"
-              setOpen={setOpen} />
-            <NavCategory name="Dance Schools">
+        <nav ref={navRef} className="no-transition grid-frame-max" data-testid="nav">
+          <div className="grid nav-content grid-space-between">
+            <NavLogo path="/hip-hop-pop.png" className="cell shrink" />
+            <ul className="cell shrink">
               <NavLink
-                href="/street-dance-classes/schools/harlow"
-                text="Harlow Dance School"
+                href="/street-dance-facts"
+                text="News"
+                setOpen={setOpen} />
+              <NavCategory name="Dance Schools">
+                <NavLink
+                  href="/street-dance-classes/schools/harlow"
+                  text="Harlow Dance School"
+                  setOpen={setOpen}
+                />
+                <NavLink
+                  href="/street-dance-classes/schools/bishops-stortford"
+                  text="Stortford Dance School"
+                  setOpen={setOpen}
+                />
+              </NavCategory>
+              <NavCategory name="Dance Classes">
+                <NavLink
+                  href="/kids-street-dance-classes-for-kids"
+                  text="Kids Classes"
+                  setOpen={setOpen}
+                />
+                <NavLink
+                  href="/street-dance-classes-for-adults"
+                  text="Adult Classes"
+                  setOpen={setOpen}
+                />
+              </NavCategory>
+              <NavLink
+                href="/dance-workshops-in-schools-primary"
+                text="In Schools"
                 setOpen={setOpen}
               />
               <NavLink
-                href="/street-dance-classes/schools/bishops-stortford"
-                text="Stortford Dance School"
-                setOpen={setOpen}
-              />
-            </NavCategory>
-            <NavCategory name="Dance Classes">
+                href="/street-dance-events-uk"
+                text="Events"
+                setOpen={setOpen} />
               <NavLink
-                href="/kids-street-dance-classes-for-kids"
-                text="Kids Classes"
-                setOpen={setOpen}
-              />
+                href="/contact-us-street-dance-classes"
+                text="Contact"
+                setOpen={setOpen} />
               <NavLink
-                href="/street-dance-classes-for-adults"
-                text="Adult Classes"
-                setOpen={setOpen}
-              />
-            </NavCategory>
-            <NavLink
-              href="/dance-workshops-in-schools-primary"
-              text="In Schools"
-              setOpen={setOpen}
-            />
-            <NavLink
-              href="/street-dance-events-uk"
-              text="Events"
-              setOpen={setOpen} />
-            <NavLink
-              href="/contact-us-street-dance-classes"
-              text="Contact"
-              setOpen={setOpen} />
-            <NavLink
-              href="/shop-merchandise-street-dance-wear"
-              text="Shop"
-              setOpen={setOpen} />
-          </ul>
+                href="/shop-merchandise-street-dance-wear"
+                text="Shop"
+                setOpen={setOpen} />
+            </ul>
+            <NavLogin />
+          </div>
         </nav>
       </Header>
       <NavToggle open={open} setOpen={setOpen} />

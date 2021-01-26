@@ -6,9 +6,9 @@ export default styled.header<{ open: boolean }>`
   grid-area: content;
   position: fixed;
   top: 0px;
-  left: 0px;
   width: 100%;
-  height: 54px;
+  height: var(--header-height-desktop);
+  margin: 0 auto;
   background: var(--black);
   color: var(--white);
   font-size: 16px;
@@ -17,10 +17,51 @@ export default styled.header<{ open: boolean }>`
   z-index: var(--zIndexFront);
 
   nav {
-    display: flex;
     justify-content: center;
     align-items: center;
-    max-width: min(100%, var(--maxWidth));
+
+    .nav-content {
+      align-items: center;
+    }
+
+      ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    
+    li:hover,
+    li.active {
+      background: var(--activeLink);
+    }
+  
+    li:hover {
+      transition-duration: 0.15s;
+    }
+  
+    li.nav-category:hover,:link.nav-catergoy:active {
+      background: none;
+    }
+  
+    a {
+      display: flex;
+      margin: 0 1rem;
+      line-height: 2.25;
+      text-transform: uppercase;
+      text-decoration: none;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+  
+    li:not(:first-of-type) a:before {
+      content: "";
+      display: inline-block;
+      align-self: stretch;
+      width: 1px;
+      background: var(--white);
+      transform: translateX(-1rem);
+    }
+  }
   }
 
   div.brand-logo > img {
@@ -31,46 +72,10 @@ export default styled.header<{ open: boolean }>`
     image-rendering: crisp-edges;
   }
 
-  ul {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
 
-  li:hover,
-  li.active {
-    background: var(--activeLink);
-  }
 
-  li:hover {
-    transition-duration: 0.15s;
-  }
 
-  li.nav-category:hover,:link.nav-catergoy:active {
-    background: none;
-  }
-
-  a {
-    display: flex;
-    margin: 0 1rem;
-    line-height: 2.25;
-    text-transform: uppercase;
-    text-decoration: none;
-    white-space: nowrap;
-    cursor: pointer;
-  }
-
-  li:not(:first-of-type) a:before {
-    content: "";
-    display: inline-block;
-    align-self: stretch;
-    width: 1px;
-    background: var(--white);
-    transform: translateX(-1rem);
-  }
-
-  @media screen and (max-width: 700px) {
+  @media screen and (max-width: 830px) {
     height: 64px;
 
     nav {
@@ -92,21 +97,24 @@ export default styled.header<{ open: boolean }>`
         visibility: initial;
         opacity: 1;
       `}
+
+      ul {
+        margin-top: 2rem;
+        flex-direction: column;
+        align-items: center;
+        
+        li:not(:first-of-type) a:before {
+          display: none;
+        }
+      }
     }
 
     div.brand-logo {
       margin-top: 1rem;
     }
 
-    ul {
-      margin-top: 2rem;
-      flex-direction: column;
-      align-items: center;
-    }
+   
 
-    li:not(:first-of-type) a:before {
-      display: none;
-    }
   }
   
 `;
