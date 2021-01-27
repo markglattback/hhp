@@ -14,7 +14,7 @@ test('nav useEffect removes class correctly', () => {
   // simulate rendering collapsed version of nav
   global.innerWidth = 700;
   const { unmount } = render(<Nav />);
-  expect(screen.getByTestId('nav')).not.toHaveClass();
+  expect(screen.getByTestId('nav')).not.toHaveClass('no-transition');
   unmount();
 
   // simulate rendering expanded version of nav
@@ -25,7 +25,7 @@ test('nav useEffect removes class correctly', () => {
   // resize to sub-700px widths to trigger collapse
   global.innerWidth = 400;
   window.dispatchEvent(new Event('resize'));
-  expect(screen.getByTestId('nav')).not.toHaveClass();
+  expect(screen.getByTestId('nav')).not.toHaveClass('no-transition');
 
   // and resize back up again
   global.innerWidth = 800;
