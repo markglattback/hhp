@@ -3,8 +3,8 @@ import StyledList from './styles';
 
 export default function List({ children }: { children: ReactNode }) {
   return <StyledList className="grid">
-    <div className="cell">
+    <ul className="cell">
       {children}
-    </div>
+    </ul>
   </StyledList>;
 }
