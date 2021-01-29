@@ -27,7 +27,8 @@ export const mockedRouter: NextRouter = {
     on: jest.fn(),
     off: jest.fn()
   },
-  isFallback: false
+  isFallback: false,
+  isReady: true
 }
 
 export const leftClickConfig = { button: 0 };
