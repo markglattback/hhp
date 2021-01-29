@@ -11,7 +11,7 @@ export default function NavCategory({ name, children }: NavCategoryProps) {
     <StyledNavCategory className="nav-category">
       <span>{name}</span>
       <div className="dropdown-wrapper">
-        <ul role="group">
+        <ul>
           {children.map((link, index) => {
             return React.cloneElement(
               link,
